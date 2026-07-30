@@ -22,9 +22,6 @@ import {
   Sparkles,
   Flame,
 } from "lucide-react";
-import Navbar from "@/components/sections/Navbar";
-import Footer from "@/components/sections/Footer";
-import NoiseFilter from "@/components/ui/NoiseFilter";
 import { useToast } from "@/components/ui/Toast";
 import {
   apiGetEvents,
@@ -232,11 +229,8 @@ export default function AdminPage() {
   });
 
   return (
-    <div className="min-h-screen bg-black text-white relative flex flex-col font-sans selection:bg-[#ccff00] selection:text-black">
-      <NoiseFilter />
-      <Navbar />
-
-      <main className="flex-1 max-w-7xl mx-auto w-full px-6 pt-28 pb-20">
+    <div className="min-h-screen text-white relative flex flex-col font-sans">
+      <main className="flex-1 max-w-7xl mx-auto w-full px-6 pt-8 pb-20">
         {/* Header Section */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-zinc-900 pb-8 mb-8">
           <div>
@@ -727,8 +721,6 @@ export default function AdminPage() {
           </div>
         )}
       </AnimatePresence>
-
-      <Footer />
     </div>
   );
 }
