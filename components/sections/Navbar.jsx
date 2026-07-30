@@ -106,6 +106,15 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-4">
             {user ? (
               <div className="flex items-center gap-4">
+                {user.role === "admin" && (
+                  <Link
+                    href="/admin"
+                    className="flex items-center gap-1.5 border border-cyan-500/40 bg-cyan-500/10 px-3 py-2 font-mono text-xs text-cyan-400 hover:bg-cyan-500 hover:text-black transition-all"
+                    data-cursor="pointer"
+                  >
+                    <span>ADMIN PANEL</span>
+                  </Link>
+                )}
                 <Link
                   href="/dashboard"
                   className="flex items-center gap-2 border border-[#ccff00]/20 bg-[#ccff00]/5 px-4 py-2 font-mono text-xs text-[#ccff00] hover:bg-[#ccff00] hover:text-black transition-all"
