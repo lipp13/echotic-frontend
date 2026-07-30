@@ -1,7 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   async rewrites() {
-    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
+    let backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
+    backendUrl = backendUrl.trim().replace(/\/+$/, "");
+    if (!backendUrl.startsWith("http://") && !backendUrl.startsWith("https://")) {
+      backendUrl = `https://${backendUrl}`;
+    }
     return [
       {
         source: "/api/:path*",
