@@ -56,7 +56,7 @@ export default function Navbar() {
 
   const navLinks = [
     { name: "Jelajahi Events", href: "/events" },
-    { name: "Verifikasi Tiket (Gate)", href: user?.role === "admin" ? "/admin" : "/dashboard" },
+    ...(user?.role === "admin" ? [{ name: "Gate Control", href: "/admin" }] : []),
   ];
 
   return (
