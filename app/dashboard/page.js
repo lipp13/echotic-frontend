@@ -117,7 +117,7 @@ export default function UserDashboardPage() {
   }
 
   // Filter orders
-  const activeOrders = orders.filter((o) => o.status === "active");
+  const activeOrders = orders.filter((o) => o.status === "active" || o.status === "approved");
   const pastOrders = orders.filter((o) => o.status === "used" || o.status === "expired");
 
   const displayedOrders = activeTab === "active" ? activeOrders : pastOrders;
@@ -239,10 +239,20 @@ export default function UserDashboardPage() {
                       <span className="text-[10px] text-zinc-500 block">
                         {order.venueName} • {order.eventDate}
                       </span>
-                      <div className="flex gap-2">
+                      <div className="flex flex-wrap gap-2 pt-1">
                         <span className="text-[9px] bg-zinc-900 border border-zinc-800 text-zinc-400 px-2 py-0.5 uppercase">
                           {order.categoryName}
                         </span>
+                        {order.status === "approved" && (
+                          <span className="text-[9px] bg-emerald-950/80 border border-emerald-500/40 text-emerald-400 px-2 py-0.5 uppercase font-bold flex items-center gap-1">
+                            <ShieldCheck className="w-3 h-3" /> VERIFIED ENTRY
+                          </span>
+                        )}
+                        {order.status === "active" && (
+                          <span className="text-[9px] bg-amber-950/80 border border-amber-500/40 text-amber-300 px-2 py-0.5 uppercase font-bold flex items-center gap-1">
+                            <Ticket className="w-3 h-3 text-amber-400" /> SIAP GATE SCAN
+                          </span>
+                        )}
                         {order.isSeated && (
                           <span className="text-[9px] bg-[#ccff00]/5 border border-[#ccff00]/10 text-[#ccff00] px-2 py-0.5 uppercase font-bold">
                             SEATS: {order.seats.map((s) => `${s.row}-${s.seatNum}`).join(", ")}

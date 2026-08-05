@@ -3,14 +3,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Float } from "@react-three/drei";
-import * as THREE from "three";
 
 function MicModel() {
   const groupRef = useRef();
 
   useFrame((state) => {
     if (groupRef.current) {
-      groupRef.current.rotation.y = state.clock.getElapsedTime() * 0.5;
+      const t = state.clock.elapsedTime || 0;
+      groupRef.current.rotation.y = t * 0.5;
     }
   });
 
@@ -47,8 +47,9 @@ function SpeakerModel() {
 
   useFrame((state) => {
     if (meshRef.current) {
-      meshRef.current.rotation.y = state.clock.getElapsedTime() * 0.4;
-      meshRef.current.rotation.x = Math.sin(state.clock.getElapsedTime() * 0.5) * 0.1;
+      const t = state.clock.elapsedTime || 0;
+      meshRef.current.rotation.y = t * 0.4;
+      meshRef.current.rotation.x = Math.sin(t * 0.5) * 0.1;
     }
   });
 
@@ -80,7 +81,8 @@ function ShieldModel() {
 
   useFrame((state) => {
     if (meshRef.current) {
-      meshRef.current.rotation.y = state.clock.getElapsedTime() * 0.6;
+      const t = state.clock.elapsedTime || 0;
+      meshRef.current.rotation.y = t * 0.6;
     }
   });
 
@@ -91,12 +93,12 @@ function ShieldModel() {
         <cylinderGeometry args={[0.4, 0.4, 0.1, 32]} />
         <meshStandardMaterial color="#00f0ff" roughness={0.1} metalness={0.9} />
       </mesh>
-      {/* Core Core */}
+      {/* Core */}
       <mesh position={[0, 0, 0.02]}>
         <cylinderGeometry args={[0.32, 0.32, 0.08, 32]} />
         <meshStandardMaterial color="#09090d" roughness={0.4} metalness={0.5} />
       </mesh>
-      {/* Center Star shape (Double Cone) */}
+      {/* Center Star shape */}
       <mesh position={[0, 0, 0.08]} rotation={[Math.PI / 2, 0, 0]}>
         <octahedronGeometry args={[0.15]} />
         <meshStandardMaterial color="#ccff00" roughness={0.1} metalness={0.8} />
@@ -107,23 +109,30 @@ function ShieldModel() {
 
 export default function Decor3D({ type = "mic", className = "" }) {
   const [mounted, setMounted] = useState(false);
+  const [hasWebGLError, setHasWebGLError] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+    try {
+      const canvas = document.createElement("canvas");
+      const gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+      if (!gl) setHasWebGLError(true);
+    } catch {
+      setHasWebGLError(true);
+    }
   }, []);
 
-  if (!mounted) {
+  if (!mounted || hasWebGLError) {
     return (
-      <div className={`flex items-center justify-center border border-zinc-900 bg-zinc-950/20 ${className}`}>
-        {/* Flat fallback spacer */}
-        <div className="w-6 h-6 rounded-full border border-zinc-800 animate-pulse bg-zinc-900/60" />
+      <div className={`flex items-center justify-center border border-zinc-900 bg-zinc-950/40 rounded-full p-2 ${className}`}>
+        <div className="w-6 h-6 rounded-full border-2 border-[#ccff00]/60 animate-pulse bg-[#00f0ff]/10" />
       </div>
     );
   }
 
   return (
     <div className={`relative ${className}`}>
-      <Canvas>
+      <Canvas gl={{ alpha: true, antialias: true }}>
         <ambientLight intensity={1.5} />
         <directionalLight position={[2, 2, 2]} intensity={1.8} />
         <pointLight position={[-2, -2, -2]} intensity={0.5} color="#00f0ff" />

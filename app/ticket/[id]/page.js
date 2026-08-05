@@ -10,6 +10,7 @@ import { apiGetOrder, isAuthenticated } from "@/lib/api";
 import Button from "@/components/ui/Button";
 import { useToast } from "@/components/ui/Toast";
 import Decor3D from "@/components/ui/Decor3D";
+import QrCodeGenerator from "@/components/ui/QrCodeGenerator";
 
 export default function TicketConfirmationPage() {
   const params = useParams();
@@ -217,22 +218,24 @@ export default function TicketConfirmationPage() {
             </span>
           </div>
 
-          {/* Glowing QR Code */}
-          <div className="flex justify-center py-4">
-            <div className="w-48 h-48 bg-white p-4 border-2 border-[#ccff00] shadow-[0_0_20px_rgba(204,255,0,0.15)] flex flex-col items-center justify-center relative">
-              {/* QR Block Pattern simulation */}
-              <div className="grid grid-cols-5 gap-1.5 w-full h-full">
-                {Array.from({ length: 25 }).map((_, idx) => {
-                  const filled = (idx * 17) % 3 === 0 || idx === 0 || idx === 4 || idx === 20 || idx === 24;
-                  return (
-                    <div
-                      key={idx}
-                      className={`w-full h-full ${filled ? "bg-black" : "bg-transparent border border-slate-100"}`}
-                    />
-                  );
-                })}
+          {/* Status Badge */}
+          <div className="flex justify-center my-2">
+            {order.status === "approved" || order.status === "used" ? (
+              <div className="bg-emerald-950/80 border border-emerald-500/50 text-emerald-400 font-mono text-[10px] font-bold px-3 py-1.5 rounded flex items-center gap-1.5 shadow-[0_0_15px_rgba(16,185,129,0.3)]">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                <span>TERVERIFIKASI / DIPERSILAKAN MASUK</span>
               </div>
-            </div>
+            ) : (
+              <div className="bg-amber-950/80 border border-amber-500/50 text-amber-300 font-mono text-[10px] font-bold px-3 py-1.5 rounded flex items-center gap-1.5 shadow-[0_0_15px_rgba(245,158,11,0.2)]">
+                <Ticket className="w-3.5 h-3.5 text-amber-400" />
+                <span>MENUNGGU SCAN GATE ENTRY</span>
+              </div>
+            )}
+          </div>
+
+          {/* Glowing QR Code */}
+          <div className="flex justify-center py-2">
+            <QrCodeGenerator value={order.ticketCode} size={180} />
           </div>
 
           <div className="space-y-4 font-mono text-xs pt-4 border-t border-zinc-900">

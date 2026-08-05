@@ -21,6 +21,14 @@ import {
   Loader2,
   Sparkles,
   Flame,
+  QrCode,
+  Scan,
+  CheckCircle2,
+  XCircle,
+  Ticket,
+  User,
+  ShieldCheck,
+  RefreshCw,
 } from "lucide-react";
 import { useToast } from "@/components/ui/Toast";
 import {
@@ -29,9 +37,15 @@ import {
   apiCreateEvent,
   apiUpdateEvent,
   apiDeleteEvent,
+  apiVerifyTicket,
+  apiApproveTicketEntry,
+  apiGetAdminStats,
   getUserData,
   isAuthenticated,
 } from "@/lib/api";
+import QrCodeGenerator from "@/components/ui/QrCodeGenerator";
+import CameraQrScanner from "@/components/admin/CameraQrScanner";
+import { formatPrice } from "@/lib/utils";
 
 export default function AdminPage() {
   const router = useRouter();
@@ -42,6 +56,22 @@ export default function AdminPage() {
   const [venues, setVenues] = useState([]);
   const [search, setSearch] = useState("");
   const [selectedGenre, setSelectedGenre] = useState("all");
+
+  // Tab State: 'events' or 'scanner'
+  const [activeTab, setActiveTab] = useState("events");
+
+  // QR Scanner & Gate Verification State
+  const [scannerInput, setScannerInput] = useState("");
+  const [verifying, setVerifying] = useState(false);
+  const [approving, setApproving] = useState(false);
+  const [ticketInfo, setTicketInfo] = useState(null);
+  const [verifyError, setVerifyError] = useState(null);
+  const [adminStats, setAdminStats] = useState({
+    totalOrders: 0,
+    totalTicketsSold: 0,
+    checkedInCount: 0,
+    pendingCount: 0,
+  });
 
   // Modal States
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -82,17 +112,86 @@ export default function AdminPage() {
   const fetchInitialData = async () => {
     setLoading(true);
     try {
-      const [eventsRes, venuesRes] = await Promise.all([
+      const [eventsRes, venuesRes, statsRes] = await Promise.all([
         apiGetEvents(),
         apiGetVenues(),
+        apiGetAdminStats().catch(() => ({ success: false })),
       ]);
 
       if (eventsRes.success) setEvents(eventsRes.data);
       if (venuesRes.success) setVenues(venuesRes.data);
+      if (statsRes.success) setAdminStats(statsRes.data);
     } catch (err) {
-      addToast("Gagal memuat data event.", "error");
+      addToast("Gagal memuat data awal admin.", "error");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleFetchStats = async () => {
+    try {
+      const res = await apiGetAdminStats();
+      if (res.success) {
+        setAdminStats(res.data);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleVerifyTicket = async (e) => {
+    if (e) e.preventDefault();
+    if (!scannerInput.trim()) {
+      addToast("Masukkan Kode Tiket (TKT-XXXXXX) atau scan QR terlebih dahulu.", "error");
+      return;
+    }
+
+    setVerifying(true);
+    setVerifyError(null);
+    setTicketInfo(null);
+
+    try {
+      const res = await apiVerifyTicket(scannerInput.trim());
+      if (res.success) {
+        setTicketInfo(res.data);
+        if (res.data.isAlreadyScanned) {
+          addToast("Peringatan: Tiket ini sudah pernah di-scan!", "info");
+        } else {
+          addToast("Tiket ditemukan! Siap untuk verifikasi gate masuk.", "success");
+        }
+      }
+    } catch (err) {
+      setVerifyError(err.error || "Tiket tidak ditemukan / Kode salah.");
+      addToast(err.error || "Tiket tidak ditemukan.", "error");
+    } finally {
+      setVerifying(false);
+    }
+  };
+
+  const handleApproveTicket = async (codeToApprove) => {
+    const code = codeToApprove || ticketInfo?.ticketCode || scannerInput;
+    if (!code) return;
+
+    setApproving(true);
+    try {
+      const res = await apiApproveTicketEntry(code);
+      if (res.success) {
+        addToast(res.message || "Entry Approved! Pengunjung dipersilakan masuk.", "success");
+        if (ticketInfo) {
+          setTicketInfo({
+            ...ticketInfo,
+            status: "approved",
+            isAlreadyScanned: true,
+            canApprove: false,
+            scannedAt: res.data.scannedAt,
+          });
+        }
+        handleFetchStats();
+      }
+    } catch (err) {
+      addToast(err.error || "Gagal melakukan verifikasi gate entry.", "error");
+    } finally {
+      setApproving(false);
     }
   };
 
@@ -231,37 +330,288 @@ export default function AdminPage() {
   return (
     <div className="min-h-screen text-white relative flex flex-col font-sans">
       <main className="flex-1 max-w-7xl mx-auto w-full px-6 pt-8 pb-20">
-        {/* Header Section */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-zinc-900 pb-8 mb-8">
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 border border-cyan-500/30 bg-cyan-500/10 font-mono text-[10px] uppercase text-cyan-400 tracking-widest">
-                <Shield className="w-3 h-3" />
-                Admin Dashboard
-              </span>
-              <span className="font-mono text-xs text-zinc-500">
-                {events.length} Total Events
-              </span>
-            </div>
-            <h1 className="text-3xl md:text-4xl font-mono font-black text-white tracking-tight">
-              MANAJEMEN EVENT KONSER
-            </h1>
-            <p className="text-zinc-400 text-sm mt-1">
-              Tambah, perbarui detail, atur kategori tiket, atau hapus event konser platform EchoTic.
-            </p>
-          </div>
+        {/* Main Tab Navigation */}
+        <div className="flex border-b border-zinc-800 mb-8 gap-4 overflow-x-auto">
+          <button
+            onClick={() => setActiveTab("events")}
+            className={`flex items-center gap-2 pb-4 font-mono text-xs uppercase tracking-wider font-bold transition-all border-b-2 cursor-pointer whitespace-nowrap ${
+              activeTab === "events"
+                ? "border-[#ccff00] text-[#ccff00]"
+                : "border-transparent text-zinc-500 hover:text-zinc-300"
+            }`}
+          >
+            <Calendar className="w-4 h-4" />
+            <span>Manajemen Event ({events.length})</span>
+          </button>
 
           <button
-            onClick={handleOpenCreateModal}
-            className="flex items-center justify-center gap-2 bg-[#ccff00] text-black font-mono font-bold text-xs uppercase tracking-widest px-6 py-3.5 hover:bg-[#b8e600] hover:shadow-[0_0_20px_rgba(204,255,0,0.3)] transition-all cursor-pointer"
+            onClick={() => setActiveTab("scanner")}
+            className={`flex items-center gap-2 pb-4 font-mono text-xs uppercase tracking-wider font-bold transition-all border-b-2 cursor-pointer whitespace-nowrap ${
+              activeTab === "scanner"
+                ? "border-[#00f0ff] text-[#00f0ff]"
+                : "border-transparent text-zinc-500 hover:text-zinc-300"
+            }`}
           >
-            <Plus className="w-4 h-4" />
-            <span>Tambah Event Baru</span>
+            <Scan className="w-4 h-4" />
+            <span>Gate Entry & Scanner QR</span>
+            <span className="bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 text-[9px] px-2 py-0.5 rounded-full font-bold ml-1">
+              LIVE GATE CONTROL
+            </span>
           </button>
         </div>
 
-        {/* Filter & Search Bar */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-8">
+        {/* TAB 2: GATE ENTRY & SCANNER QR */}
+        {activeTab === "scanner" && (
+          <div className="space-y-8">
+            {/* Top Metric Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 font-mono">
+              <div className="bg-zinc-950 border border-zinc-800 p-5 rounded-lg">
+                <span className="text-[10px] text-zinc-500 uppercase tracking-widest block mb-1">Total Tiket Terjual</span>
+                <div className="text-2xl font-bold text-white">{adminStats.totalTicketsSold || 0} Tiket</div>
+              </div>
+
+              <div className="bg-zinc-950 border border-emerald-900/50 p-5 rounded-lg">
+                <span className="text-[10px] text-emerald-400 uppercase tracking-widest block mb-1">Sudah Di-Scan (Checked-In)</span>
+                <div className="text-2xl font-bold text-emerald-400">{adminStats.checkedInCount || 0} Pengunjung</div>
+              </div>
+
+              <div className="bg-zinc-950 border border-amber-900/50 p-5 rounded-lg">
+                <span className="text-[10px] text-amber-400 uppercase tracking-widest block mb-1">Menunggu Scan Entry</span>
+                <div className="text-2xl font-bold text-amber-300">{adminStats.pendingCount || 0} Tiket</div>
+              </div>
+
+              <div className="bg-zinc-950 border border-zinc-800 p-5 rounded-lg flex flex-col justify-between">
+                <span className="text-[10px] text-zinc-500 uppercase tracking-widest block">Update Realtime</span>
+                <button
+                  onClick={handleFetchStats}
+                  className="mt-2 flex items-center justify-center gap-2 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-zinc-300 py-2 px-3 text-xs uppercase tracking-wider transition-all cursor-pointer"
+                >
+                  <RefreshCw className="w-3.5 h-3.5" />
+                  <span>Refresh Stats</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Live Camera Scanner Component */}
+            <CameraQrScanner
+              onScanSuccess={(decodedText) => {
+                setScannerInput(decodedText);
+                handleApproveTicket(decodedText);
+              }}
+            />
+
+            {/* Manual Code Input & Fallback Box */}
+            <div className="bg-zinc-950 border border-zinc-800 p-6 md:p-8 rounded-lg shadow-xl relative">
+              <div className="max-w-2xl mx-auto space-y-6">
+                <div className="text-center space-y-2">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-mono text-xs font-bold uppercase rounded-full">
+                    <Scan className="w-4 h-4 animate-pulse" />
+                    <span>Pencarian Manual & Input Kode</span>
+                  </div>
+                  <h2 className="text-xl font-mono font-bold text-white uppercase">
+                    Cari Tiket Manual (Fallback)
+                  </h2>
+                  <p className="text-zinc-400 text-xs font-mono">
+                    Jika kamera tidak tersedia, ketik kode tiket (contoh: <code className="text-[#ccff00]">TKT-XXXXXX</code>) untuk memeriksa keabsahan & menyetujui izin masuk.
+                  </p>
+                </div>
+
+                <form onSubmit={handleVerifyTicket} className="flex flex-col sm:flex-row gap-3">
+                  <div className="relative flex-1">
+                    <QrCode className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-cyan-400" />
+                    <input
+                      type="text"
+                      placeholder="Ketik atau tempel Kode Tiket (TKT-XXXXXX)..."
+                      value={scannerInput}
+                      onChange={(e) => setScannerInput(e.target.value)}
+                      className="w-full bg-black border-2 border-zinc-800 pl-12 pr-4 py-4 font-mono text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-[#00f0ff] transition-all uppercase"
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={verifying}
+                    className="bg-[#00f0ff] hover:bg-[#00d0df] text-black font-mono font-bold text-xs uppercase tracking-widest px-8 py-4 flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(0,240,255,0.3)] transition-all cursor-pointer disabled:opacity-50"
+                  >
+                    {verifying ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <Search className="w-4 h-4" />
+                    )}
+                    <span>VERIFIKASI TIKET</span>
+                  </button>
+                </form>
+              </div>
+            </div>
+
+            {/* Verification Result Card */}
+            {ticketInfo && (
+              <motion.div
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                className={`border rounded-lg overflow-hidden bg-zinc-950 p-6 md:p-8 space-y-6 font-mono ${
+                  ticketInfo.isAlreadyScanned
+                    ? "border-red-500/50 shadow-[0_0_30px_rgba(239,68,68,0.2)]"
+                    : "border-[#ccff00]/50 shadow-[0_0_30px_rgba(204,255,0,0.15)]"
+                }`}
+              >
+                {/* Status Header Banner */}
+                <div
+                  className={`p-4 rounded flex flex-col md:flex-row md:items-center justify-between gap-4 ${
+                    ticketInfo.isAlreadyScanned
+                      ? "bg-red-950/80 border border-red-800 text-red-300"
+                      : "bg-emerald-950/80 border border-emerald-800 text-emerald-300"
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    {ticketInfo.isAlreadyScanned ? (
+                      <XCircle className="w-8 h-8 text-red-400 shrink-0" />
+                    ) : (
+                      <CheckCircle2 className="w-8 h-8 text-emerald-400 shrink-0" />
+                    )}
+                    <div>
+                      <h3 className="font-bold text-sm md:text-base uppercase tracking-wide">
+                        {ticketInfo.isAlreadyScanned
+                          ? "⛔ PERINGATAN: TIKET SUDAH DI-SCAN / TERVERIFIKASI!"
+                          : "🎉 TIKET VALID & SAH (MENUNGGU SCAN ENTRY)"}
+                      </h3>
+                      <p className="text-xs opacity-80 mt-0.5">
+                        {ticketInfo.isAlreadyScanned
+                          ? `Tiket ini telah di-scan masuk sebelumnya pada: ${new Date(ticketInfo.scannedAt).toLocaleString("id-ID")}`
+                          : "Identitas pengunjung cocok. Tekan tombol di bawah untuk menyetujui izin masuk."}
+                      </p>
+                    </div>
+                  </div>
+
+                  {!ticketInfo.isAlreadyScanned && (
+                    <button
+                      onClick={() => handleApproveTicket(ticketInfo.ticketCode)}
+                      disabled={approving}
+                      className="bg-[#ccff00] hover:bg-[#b8e600] text-black font-bold text-xs uppercase px-6 py-3 tracking-widest shadow-[0_0_15px_rgba(204,255,0,0.4)] transition-all cursor-pointer shrink-0 disabled:opacity-50"
+                    >
+                      {approving ? "MEMPROSES..." : "ACC & VERIFIKASI MASUK"}
+                    </button>
+                  )}
+                </div>
+
+                {/* Ticket & Attendee Details Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-zinc-900">
+                  <div className="space-y-4">
+                    <h4 className="text-xs text-zinc-500 uppercase tracking-widest font-bold border-b border-zinc-900 pb-2">
+                      INFORMASI PENGUNJUNG
+                    </h4>
+
+                    <div className="space-y-3 text-xs">
+                      <div>
+                        <span className="text-[10px] text-zinc-500 uppercase block">Nama Pemegang Tiket</span>
+                        <span className="text-white font-bold text-sm uppercase">{ticketInfo.attendeeName}</span>
+                      </div>
+
+                      <div>
+                        <span className="text-[10px] text-zinc-500 uppercase block">NIK / Nomor Identitas</span>
+                        <span className="text-cyan-400 font-bold">{ticketInfo.attendeeId}</span>
+                      </div>
+
+                      <div>
+                        <span className="text-[10px] text-zinc-500 uppercase block">Email Terdaftar</span>
+                        <span className="text-zinc-300">{ticketInfo.attendeeEmail}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <h4 className="text-xs text-zinc-500 uppercase tracking-widest font-bold border-b border-zinc-900 pb-2">
+                      DETAIL KONSER & PASS
+                    </h4>
+
+                    <div className="space-y-3 text-xs">
+                      <div>
+                        <span className="text-[10px] text-zinc-500 uppercase block">Event Konser</span>
+                        <span className="text-[#ccff00] font-bold text-sm uppercase">{ticketInfo.eventTitle}</span>
+                      </div>
+
+                      <div>
+                        <span className="text-[10px] text-zinc-500 uppercase block">Kategori Tiket</span>
+                        <span className="text-white font-bold uppercase">{ticketInfo.categoryName} ({ticketInfo.quantity} Tiket)</span>
+                      </div>
+
+                      {ticketInfo.seats && ticketInfo.seats.length > 0 && (
+                        <div>
+                          <span className="text-[10px] text-zinc-500 uppercase block mb-1">Nomor Kursi Allocated</span>
+                          <div className="flex gap-2">
+                            {ticketInfo.seats.map((s) => (
+                              <span key={s.id} className="bg-zinc-900 border border-zinc-800 px-2 py-1 text-white font-bold">
+                                {s.row}-{s.seatNum}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      <div>
+                        <span className="text-[10px] text-zinc-500 uppercase block">Lokasi & Tanggal</span>
+                        <span className="text-zinc-300">{ticketInfo.venueName} — {ticketInfo.eventDate} ({ticketInfo.eventTime})</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Big Action Footer Button */}
+                {!ticketInfo.isAlreadyScanned && (
+                  <div className="pt-4 border-t border-zinc-900">
+                    <button
+                      onClick={() => handleApproveTicket(ticketInfo.ticketCode)}
+                      disabled={approving}
+                      className="w-full bg-[#ccff00] hover:bg-[#b8e600] text-black font-mono font-black text-sm uppercase py-4 tracking-widest shadow-[0_0_25px_rgba(204,255,0,0.3)] transition-all cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2"
+                    >
+                      {approving ? (
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                      ) : (
+                        <ShieldCheck className="w-5 h-5" />
+                      )}
+                      <span>ACC / APPROVE IZIN MASUK SEKARANG</span>
+                    </button>
+                  </div>
+                )}
+              </motion.div>
+            )}
+          </div>
+        )}
+        
+        {/* TAB 1: MANAJEMEN EVENT */}
+        {activeTab === "events" && (
+          <>
+            {/* Header Section */}
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-zinc-900 pb-8 mb-8">
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 border border-cyan-500/30 bg-cyan-500/10 font-mono text-[10px] uppercase text-cyan-400 tracking-widest">
+                    <Shield className="w-3 h-3" />
+                    Admin Dashboard
+                  </span>
+                  <span className="font-mono text-xs text-zinc-500">
+                    {events.length} Total Events
+                  </span>
+                </div>
+                <h1 className="text-3xl md:text-4xl font-mono font-black text-white tracking-tight">
+                  MANAJEMEN EVENT KONSER
+                </h1>
+                <p className="text-zinc-400 text-sm mt-1">
+                  Tambah, perbarui detail, atur kategori tiket, atau hapus event konser platform EchoTic.
+                </p>
+              </div>
+
+              <button
+                onClick={handleOpenCreateModal}
+                className="flex items-center justify-center gap-2 bg-[#ccff00] text-black font-mono font-bold text-xs uppercase tracking-widest px-6 py-3.5 hover:bg-[#b8e600] hover:shadow-[0_0_20px_rgba(204,255,0,0.3)] transition-all cursor-pointer"
+              >
+                <Plus className="w-4 h-4" />
+                <span>Tambah Event Baru</span>
+              </button>
+            </div>
+
+            {/* Filter & Search Bar */}
+            <div className="flex flex-col sm:flex-row gap-4 mb-8">
           <div className="relative flex-1">
             <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" />
             <input
@@ -417,6 +767,8 @@ export default function AdminPage() {
               </tbody>
             </table>
           </div>
+        )}
+        </>
         )}
       </main>
 
