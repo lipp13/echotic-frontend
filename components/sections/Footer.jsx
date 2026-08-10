@@ -65,9 +65,9 @@ export default function Footer() {
             </h5>
             <ul className="space-y-2.5 text-xs font-medium text-zinc-400">
               <li>
-                <a href="/#how-it-works" className="hover:text-white transition-colors">
+                <Link href="/about" className="hover:text-white transition-colors">
                   About
-                </a>
+                </Link>
               </li>
               <li>
                 <a href="#" className="hover:text-white transition-colors">
