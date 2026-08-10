@@ -212,16 +212,23 @@ export default function About3D() {
   }, []);
 
   const modelsList = [
-    { id: "mic", name: "Mic", icon: Mic },
-    { id: "speaker", name: "Speaker", icon: Volume2 },
-    { id: "pass", name: "Pass", icon: Ticket },
-    { id: "vinyl", name: "Vinyl", icon: Disc },
+    { id: "mic", name: "Mic", title: "STAGE CONDENSER MIC", icon: Mic },
+    { id: "speaker", name: "Speaker", title: "CYBER SUBWOOFER STACK", icon: Volume2 },
+    { id: "pass", name: "Pass", title: "3D HOLOGRAPHIC PASS", icon: Ticket },
+    { id: "vinyl", name: "Vinyl", title: "NEON CONCERT VINYL", icon: Disc },
   ];
+
+  const activeModelObj = modelsList.find((m) => m.id === selectedModel) || modelsList[0];
 
   return (
     <div className="w-full flex flex-col items-center">
       {/* 3D Canvas Box */}
-      <div className="w-full h-72 relative rounded-2xl overflow-hidden bg-[#0a0a0c] border border-zinc-800/80 shadow-2xl">
+      <div className="w-full h-72 relative rounded-2xl overflow-hidden bg-[#0a0a0c] border border-zinc-800/80 shadow-2xl group">
+        {/* Active Model Overlay Badge */}
+        <div className="absolute top-3 left-3 z-10 px-3 py-1 rounded-full bg-black/60 border border-white/10 backdrop-blur-md text-[10px] font-bold tracking-widest text-[#b565f7] uppercase pointer-events-none">
+          {activeModelObj.title}
+        </div>
+
         {!mounted || hasWebGLError ? (
           <About3DFallback selectedModel={selectedModel} />
         ) : (
