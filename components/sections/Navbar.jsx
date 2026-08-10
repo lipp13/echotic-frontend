@@ -52,7 +52,6 @@ export default function Navbar() {
 
   const navLinks = [
     { name: "Events", href: "/events" },
-    { name: "Artists", href: "/#artists" },
     { name: "Genres", href: "/events?genre=all" },
     { name: "About", href: "/#how-it-works" },
     ...(user?.role === "admin" ? [{ name: "Gate Control", href: "/admin" }] : []),
