@@ -20,7 +20,7 @@ import {
 } from "lucide-react";
 import Button from "@/components/ui/Button";
 import Marquee from "@/components/ui/Marquee";
-import Decor3D from "@/components/ui/Decor3D";
+import About3D from "@/components/ui/About3D";
 
 export default function AboutPage() {
   const stats = [
@@ -155,19 +155,14 @@ export default function AboutPage() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.7, delay: 0.2 }}
-              className="w-full max-w-md bg-[#121212]/90 border border-zinc-800/80 rounded-3xl p-8 backdrop-blur-xl shadow-2xl relative group flex flex-col items-center text-center"
+              className="w-full max-w-md bg-[#121212]/90 border border-zinc-800/80 rounded-3xl p-6 md:p-8 backdrop-blur-xl shadow-2xl relative group flex flex-col items-center text-center"
             >
-              <div className="w-full h-64 relative mb-4">
-                <Decor3D type="mic" className="w-full h-full" />
-              </div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-700 text-[11px] font-semibold text-zinc-300">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-700 text-[11px] font-semibold text-zinc-300 mb-4">
                 <span className="w-2 h-2 rounded-full bg-[#9d4edd] animate-pulse" />
-                3D INTERACTIVE ENGINE
+                INTERACTIVE 3D ENGINE
               </div>
-              <h4 className="text-white font-bold text-lg mt-3">Next-Gen Stage Visualizer</h4>
-              <p className="text-zinc-400 text-xs mt-1 max-w-xs">
-                Real-time WebGL rendering bringing digital concert passes to life.
-              </p>
+
+              <About3D />
             </motion.div>
           </div>
         </div>
