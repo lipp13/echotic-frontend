@@ -73,9 +73,6 @@ export default function Navbar() {
             className="flex items-center gap-2.5 group cursor-pointer"
             data-cursor="pointer"
           >
-            <div className="w-8 h-8 rounded-full bg-[#9d4edd] flex items-center justify-center font-bold text-white text-base shadow-md group-hover:scale-105 transition-transform">
-              E
-            </div>
             <span className="text-xl font-bold tracking-tight text-white group-hover:text-zinc-300 transition-colors">
               ECHOTIC<span className="text-[#9d4edd]">.</span>
             </span>

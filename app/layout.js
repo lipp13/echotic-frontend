@@ -21,7 +21,7 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${geistMono.variable} h-full antialiased dark`}
     >
-      <body className="min-h-full flex flex-col bg-[#07070a] text-white font-mono selection:bg-[#ccff00] selection:text-black">
+      <body className="min-h-full flex flex-col bg-[#07070a] text-white font-mono selection:bg-[#9d4edd] selection:text-white">
         <ToastProvider>
           {/* Subtle overlay paper noise/grain */}
           <NoiseFilter />

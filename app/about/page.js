@@ -78,6 +78,7 @@ export default function AboutPage() {
       bio: "Crafting modern web architectures, Three.js 3D user experiences, and frontend systems.",
       avatarBg: "from-purple-600 to-indigo-600",
       initial: "A",
+      image: "/team/alif.jpg",
       github: "https://github.com/lipp13",
       skills: ["Next.js 16", "Three.js", "React 19", "Tailwind v4"],
     },
@@ -87,6 +88,7 @@ export default function AboutPage() {
       bio: "Architecting high-throughput REST APIs, database schemas, and ticket verification logic.",
       avatarBg: "from-fuchsia-600 to-purple-800",
       initial: "F",
+      image: "/team/farras.jpg",
       github: "https://github.com/FarrasKhairy",
       skills: ["Express.js", "Node.js", "MySQL", "JWT Auth"],
     },
@@ -389,11 +391,19 @@ export default function AboutPage() {
                 transition={{ duration: 0.5, delay: idx * 0.15 }}
                 className="bg-[#121212] border border-zinc-800/80 rounded-3xl p-8 flex flex-col items-center text-center shadow-card-subtle relative group hover:border-[#9d4edd]/50 transition-all"
               >
-                {/* Glowing Avatar */}
-                <div className={`w-20 h-20 rounded-full bg-gradient-to-tr ${member.avatarBg} p-1 shadow-lg shadow-purple-900/30 mb-6 group-hover:scale-105 transition-transform`}>
-                  <div className="w-full h-full bg-[#0d0d0d] rounded-full flex items-center justify-center font-black text-2xl text-white">
-                    {member.initial}
-                  </div>
+                {/* Glowing Avatar Photo */}
+                <div className={`w-24 h-24 rounded-full bg-gradient-to-tr ${member.avatarBg} p-1 shadow-xl shadow-purple-900/40 mb-6 group-hover:scale-105 transition-transform overflow-hidden`}>
+                  {member.image ? (
+                    <img
+                      src={member.image}
+                      alt={member.name}
+                      className="w-full h-full rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-[#0d0d0d] rounded-full flex items-center justify-center font-black text-2xl text-white">
+                      {member.initial}
+                    </div>
+                  )}
                 </div>
 
                 <h3 className="text-xl font-extrabold text-white tracking-tight">{member.name}</h3>
