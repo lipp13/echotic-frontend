@@ -51,11 +51,6 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <a href="/#artists" className="hover:text-white transition-colors">
-                  Artists
-                </a>
-              </li>
-              <li>
                 <Link href="/events?genre=all" className="hover:text-white transition-colors">
                   Genres
                 </Link>
@@ -149,7 +144,7 @@ export default function Footer() {
                 X
               </a>
             </div>
-            <span>© {new Date().getFullYear()} ECHOTIC. All rights reserved.</span>
+            <span>© {new Date().getFullYear()} ECHOTIC. All rights reserved. Developed by <strong className="text-zinc-300 font-semibold">Alif Alfathar & Farras Khairy</strong></span>
           </div>
         </div>
       </div>

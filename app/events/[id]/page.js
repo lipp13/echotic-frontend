@@ -196,33 +196,7 @@ export default function EventDetailPage() {
             </p>
           </div>
 
-          {/* Artist Bio */}
-          {artist && (
-            <div className="bg-[#121212] border border-zinc-800/80 rounded-3xl p-6 md:p-8 space-y-4 shadow-card-subtle">
-              <div className="flex items-center gap-2 pb-3 border-b border-zinc-800">
-                <Users className="w-4 h-4 text-[#9d4edd]" />
-                <h4 className="text-xs font-bold text-white uppercase tracking-wider">
-                  Featured Artist
-                </h4>
-              </div>
-              
-              <div className="flex flex-col md:flex-row gap-6 items-start">
-                {artist.image && (
-                  <img
-                    src={artist.image}
-                    alt={artist.name}
-                    className="w-24 h-24 md:w-32 md:h-32 object-cover rounded-2xl border border-zinc-700"
-                  />
-                )}
-                <div className="space-y-2">
-                  <h5 className="text-base font-bold text-white uppercase">{artist.name}</h5>
-                  <p className="text-xs text-zinc-400 leading-relaxed font-normal">
-                    {artist.bio}
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
+
 
           {/* Location Map Embed */}
           {venue && (

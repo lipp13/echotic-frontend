@@ -78,33 +78,7 @@ export default function Home() {
     },
   ];
 
-  const featuredArtists = [
-    {
-      name: "The Weeknd",
-      genre: "R&B / Pop",
-      image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80",
-    },
-    {
-      name: "Billie Eilish",
-      genre: "Alt Pop",
-      image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80",
-    },
-    {
-      name: "Bruno Mars",
-      genre: "Funk / Pop",
-      image: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800&q=80",
-    },
-    {
-      name: "Coldplay",
-      genre: "Alt Rock",
-      image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=800&q=80",
-    },
-    {
-      name: "Taylor Swift",
-      genre: "Pop / Country",
-      image: "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=800&q=80",
-    },
-  ];
+
 
   const editorialTestimonials = [
     {
@@ -159,11 +133,6 @@ export default function Home() {
                   EXPLORE EVENTS <ArrowRight className="ml-2.5 w-4 h-4" />
                 </Button>
               </Link>
-              <a href="#artists" data-cursor="pointer">
-                <Button variant="secondary" size="lg" className="w-full sm:w-auto">
-                  DISCOVER ARTISTS
-                </Button>
-              </a>
             </div>
           </div>
 
@@ -304,51 +273,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 6. DISCOVER THE ARTISTS (NEW SECTION) */}
-      <section id="artists" className="py-28 bg-[#0a0a0a] border-b border-white/5 relative">
-        <div className="max-w-7xl mx-auto px-6 md:px-10">
-          {/* Header */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
-            <div>
-              <span className="text-xs font-semibold text-[#9d4edd] tracking-wider uppercase block mb-2">
-                Performers & Acts
-              </span>
-              <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tight text-white">
-                DISCOVER THE ARTISTS.
-              </h2>
-            </div>
-            <p className="text-zinc-400 text-sm max-w-md">
-              Experience world-class performers live in concert across major international venues.
-            </p>
-          </div>
 
-          {/* Artist Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
-            {featuredArtists.map((artist, idx) => (
-              <Link
-                key={idx}
-                href="/events"
-                className="group flex flex-col items-center text-center cursor-pointer"
-              >
-                <div className="w-full aspect-square rounded-2xl overflow-hidden bg-zinc-900 mb-4 border border-zinc-800 group-hover:border-[#9d4edd] transition-all duration-300 relative">
-                  <img
-                    src={artist.image}
-                    alt={artist.name}
-                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity" />
-                </div>
-                <h4 className="text-lg font-bold text-white group-hover:text-[#9d4edd] transition-colors">
-                  {artist.name}
-                </h4>
-                <span className="text-xs text-zinc-500 font-medium">
-                  {artist.genre}
-                </span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* 7. TESTIMONIALS */}
       <section className="py-28 bg-[#080808] border-b border-white/5 relative overflow-hidden">

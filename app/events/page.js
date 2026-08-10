@@ -107,7 +107,7 @@ function EventsContent() {
           </span>
           <input
             type="text"
-            placeholder="Search artists, venues, concerts..."
+            placeholder="Search events, venues, concerts..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full bg-[#121212] border border-zinc-800 focus:border-[#9d4edd] rounded-2xl pl-11 pr-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none transition-colors"
