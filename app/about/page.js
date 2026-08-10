@@ -21,6 +21,7 @@ import {
 import Button from "@/components/ui/Button";
 import Marquee from "@/components/ui/Marquee";
 import About3D from "@/components/ui/About3D";
+import FAQAccordion from "@/components/sections/FAQAccordion";
 
 export default function AboutPage() {
   const stats = [
@@ -410,7 +411,10 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* 8. CALL TO ACTION BANNER */}
+      {/* 8. FAQ ACCORDION SECTION */}
+      <FAQAccordion />
+
+      {/* 9. CALL TO ACTION BANNER */}
       <section className="py-24 bg-[#080808] relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 md:px-10">
           <div className="bg-gradient-to-r from-purple-950/40 via-[#121212] to-purple-950/40 border border-[#9d4edd]/30 rounded-3xl p-10 md:p-16 text-center relative overflow-hidden shadow-2xl">
