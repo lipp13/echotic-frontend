@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: true,
+  transpilePackages: ["three", "@react-three/fiber", "@react-three/drei"],
   async rewrites() {
     let backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
     backendUrl = backendUrl.trim().replace(/\/+$/, "");
