@@ -78,6 +78,8 @@ export default function AboutPage() {
       bio: "Crafting modern web architectures, Three.js 3D user experiences, and frontend systems.",
       avatarBg: "from-purple-600 to-indigo-600",
       initial: "A",
+      github: "https://github.com/lipp13",
+      skills: ["Next.js 16", "Three.js", "React 19", "Tailwind v4"],
     },
     {
       name: "Farras Khairy",
@@ -85,6 +87,8 @@ export default function AboutPage() {
       bio: "Architecting high-throughput REST APIs, database schemas, and ticket verification logic.",
       avatarBg: "from-fuchsia-600 to-purple-800",
       initial: "F",
+      github: "https://github.com/FarrasKhairy",
+      skills: ["Express.js", "Node.js", "MySQL", "JWT Auth"],
     },
   ];
 
@@ -393,17 +397,35 @@ export default function AboutPage() {
                 </div>
 
                 <h3 className="text-xl font-extrabold text-white tracking-tight">{member.name}</h3>
-                <span className="text-xs font-semibold text-[#9d4edd] tracking-wide uppercase mt-1 mb-4">
+                <span className="text-xs font-semibold text-[#9d4edd] tracking-wide uppercase mt-1 mb-3">
                   {member.role}
                 </span>
-                <p className="text-xs text-zinc-400 leading-relaxed max-w-xs mb-6">
+                <p className="text-xs text-zinc-400 leading-relaxed max-w-xs mb-5">
                   {member.bio}
                 </p>
 
-                <div className="pt-4 border-t border-zinc-800/80 w-full flex justify-center gap-4 text-xs text-zinc-400 font-semibold">
-                  <span className="flex items-center gap-1 hover:text-white transition-colors cursor-pointer">
-                    <Users className="w-3.5 h-3.5" /> Contributor
-                  </span>
+                {/* Skill Badges */}
+                <div className="flex flex-wrap justify-center gap-1.5 mb-6">
+                  {member.skills?.map((skill, sIdx) => (
+                    <span
+                      key={sIdx}
+                      className="px-2.5 py-1 rounded-md bg-zinc-900 border border-zinc-800 text-[10px] font-semibold text-zinc-300"
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="pt-4 border-t border-zinc-800/80 w-full flex justify-center items-center gap-4 text-xs text-zinc-400 font-semibold">
+                  <a
+                    href={member.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 text-zinc-400 hover:text-white transition-colors"
+                  >
+                    <ExternalLink className="w-3.5 h-3.5 text-[#9d4edd]" />
+                    <span>GitHub Profile</span>
+                  </a>
                 </div>
               </motion.div>
             ))}
