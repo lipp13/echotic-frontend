@@ -18,7 +18,6 @@ export default function RegisterPage() {
   const { addToast } = useToast();
 
   useEffect(() => {
-    // Check if user is already logged in
     if (isAuthenticated()) {
       router.push("/dashboard");
     }
@@ -50,10 +49,7 @@ export default function RegisterPage() {
 
     try {
       const result = await apiRegister(username, email, password);
-
-      // Dispatch custom event to notify Navbar component
       window.dispatchEvent(new Event("authChange"));
-
       addToast(result.message || `Account created successfully! Welcome, ${username}!`, "success");
       router.push("/dashboard");
     } catch (error) {
@@ -67,12 +63,12 @@ export default function RegisterPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#07070a] text-white flex flex-col lg:flex-row relative">
+    <main className="min-h-screen bg-[#080808] text-white flex flex-col lg:flex-row relative">
       {/* Top Left Back Button */}
       <div className="absolute top-6 left-6 z-20">
         <Link
           href="/"
-          className="flex items-center gap-2 text-zinc-500 hover:text-white transition-colors font-mono text-xs uppercase"
+          className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors text-xs font-semibold uppercase"
           data-cursor="pointer"
         >
           <ArrowLeft className="w-4 h-4" />
@@ -80,96 +76,86 @@ export default function RegisterPage() {
         </Link>
       </div>
 
-      {/* Left Side: Bold Typography & Visuals */}
-      <div className="flex-1 bg-black border-r border-zinc-900 flex flex-col justify-between p-12 lg:p-24 relative overflow-hidden">
-        {/* Glow */}
-        <div className="absolute -top-40 -left-40 w-96 h-96 rounded-full bg-[#ff0055]/5 blur-3xl" />
-        
-        {/* Top brand */}
-        <div className="font-mono text-lg font-black tracking-widest text-[#ff0055] z-10">
-          ECHOTIC.
+      {/* Left Side: Editorial Visual */}
+      <div className="flex-1 bg-[#0a0a0a] border-r border-white/5 flex flex-col justify-between p-12 lg:p-20 relative overflow-hidden">
+        <div className="absolute inset-0 bg-cover bg-center opacity-30 mix-blend-luminosity pointer-events-none" style={{ backgroundImage: `url('https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=1200&q=80')` }} />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/70 to-transparent" />
+
+        <div className="text-xl font-black tracking-tight text-white z-10">
+          ECHOTIC<span className="text-[#9d4edd]">.</span>
         </div>
 
-        {/* Big Statement */}
         <div className="my-auto space-y-4 z-10">
-          <h1 className="text-5xl lg:text-7xl font-black tracking-tighter uppercase leading-none">
-            JOIN <br />
-            THE <span className="text-[#ccff00]">PIT.</span>
+          <h1 className="text-5xl lg:text-7xl font-black tracking-tight uppercase leading-none">
+            CREATE <br />
+            YOUR <span className="text-[#9d4edd]">PASS.</span>
           </h1>
-          <p className="font-mono text-xs text-zinc-500 uppercase tracking-widest max-w-sm">
-            Create an account to track tickets, secure early access pre-sales, and customize your festival alerts.
+          <p className="text-sm text-zinc-300 max-w-sm font-normal">
+            Create an account to track tickets, secure presale passes, and personalize your concert experience.
           </p>
         </div>
 
-        {/* Decorative footer */}
-        <div className="flex justify-between font-mono text-[9px] text-zinc-600 border-t border-zinc-900 pt-6 z-10">
-          <span>SECURE SYSTEM PROTOCOL</span>
-          <span>NO TEMPLATES ALLOWED</span>
+        <div className="flex justify-between text-xs text-zinc-500 font-medium border-t border-zinc-800 pt-6 z-10">
+          <span>FREE MEMBER ACCOUNT</span>
+          <span>ECHOTIC PLATFORM</span>
         </div>
       </div>
 
       {/* Right Side: Form */}
-      <div className="flex-1 flex items-center justify-center p-6 lg:p-24 bg-[#07070a]">
-        <div className="w-full max-w-md bg-zinc-950 border border-zinc-900 p-8 md:p-10 relative">
-          {/* Neon corner accents */}
-          <div className="absolute top-0 right-0 w-8 h-[1px] bg-[#ff0055]" />
-          <div className="absolute top-0 right-0 w-[1px] h-8 bg-[#ff0055]" />
-
-          <h2 className="text-2xl font-mono font-bold tracking-tight uppercase mb-2">
+      <div className="flex-1 flex items-center justify-center p-6 lg:p-20 bg-[#080808]">
+        <div className="w-full max-w-md bg-[#121212] border border-zinc-800 rounded-3xl p-8 md:p-10 relative shadow-2xl">
+          <h2 className="text-2xl font-bold tracking-tight uppercase mb-1">
             Create Account
           </h2>
-          <p className="font-mono text-xs text-zinc-500 uppercase tracking-wider mb-8">
-            Fill in details to register
+          <p className="text-xs text-zinc-400 mb-8">
+            Fill in your details to start booking passes
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Username */}
-            <div className="space-y-1">
-              <label className="block font-mono text-[10px] text-zinc-400 uppercase tracking-wider">
+            <div className="space-y-1.5">
+              <label className="block text-xs font-bold text-zinc-300 uppercase tracking-wider">
                 Username
               </label>
               <div className="relative">
-                <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-zinc-600">
+                <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-zinc-500">
                   <User className="w-4 h-4" />
                 </span>
                 <input
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  placeholder="musiclover101"
+                  placeholder="alexjohnson"
                   disabled={loading}
-                  className="w-full bg-black/60 border border-zinc-900 focus:border-[#ff0055] px-10 py-3 text-sm font-mono text-white placeholder-zinc-750 focus:outline-none transition-colors"
+                  className="w-full bg-zinc-900 border border-zinc-700 focus:border-[#9d4edd] rounded-2xl pl-11 pr-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none transition-colors"
                 />
               </div>
             </div>
 
-            {/* Email Address */}
-            <div className="space-y-1">
-              <label className="block font-mono text-[10px] text-zinc-400 uppercase tracking-wider">
+            <div className="space-y-1.5">
+              <label className="block text-xs font-bold text-zinc-300 uppercase tracking-wider">
                 Email Address
               </label>
               <div className="relative">
-                <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-zinc-600">
+                <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-zinc-500">
                   <Mail className="w-4 h-4" />
                 </span>
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="name@domain.com"
+                  placeholder="alex@domain.com"
                   disabled={loading}
-                  className="w-full bg-black/60 border border-zinc-900 focus:border-[#ff0055] px-10 py-3 text-sm font-mono text-white placeholder-zinc-700 focus:outline-none transition-colors"
+                  className="w-full bg-zinc-900 border border-zinc-700 focus:border-[#9d4edd] rounded-2xl pl-11 pr-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none transition-colors"
                 />
               </div>
             </div>
 
-            {/* Password */}
-            <div className="space-y-1">
-              <label className="block font-mono text-[10px] text-zinc-400 uppercase tracking-wider">
+            <div className="space-y-1.5">
+              <label className="block text-xs font-bold text-zinc-300 uppercase tracking-wider">
                 Password
               </label>
               <div className="relative">
-                <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-zinc-600">
+                <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-zinc-500">
                   <KeyRound className="w-4 h-4" />
                 </span>
                 <input
@@ -178,18 +164,17 @@ export default function RegisterPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
                   disabled={loading}
-                  className="w-full bg-black/60 border border-zinc-900 focus:border-[#ff0055] px-10 py-3 text-sm font-mono text-white placeholder-zinc-750 focus:outline-none transition-colors"
+                  className="w-full bg-zinc-900 border border-zinc-700 focus:border-[#9d4edd] rounded-2xl pl-11 pr-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none transition-colors"
                 />
               </div>
             </div>
 
-            {/* Confirm Password */}
-            <div className="space-y-1">
-              <label className="block font-mono text-[10px] text-zinc-400 uppercase tracking-wider">
+            <div className="space-y-1.5">
+              <label className="block text-xs font-bold text-zinc-300 uppercase tracking-wider">
                 Confirm Password
               </label>
               <div className="relative">
-                <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-zinc-600">
+                <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-zinc-500">
                   <KeyRound className="w-4 h-4" />
                 </span>
                 <input
@@ -198,23 +183,22 @@ export default function RegisterPage() {
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="••••••••"
                   disabled={loading}
-                  className="w-full bg-black/60 border border-zinc-900 focus:border-[#ff0055] px-10 py-3 text-sm font-mono text-white placeholder-zinc-750 focus:outline-none transition-colors"
+                  className="w-full bg-zinc-900 border border-zinc-700 focus:border-[#9d4edd] rounded-2xl pl-11 pr-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none transition-colors"
                 />
               </div>
             </div>
 
-            {/* Submit Button */}
             <Button
               type="submit"
-              variant="pink"
+              variant="accent"
               disabled={loading}
-              className="w-full py-4 text-center justify-center font-bold mt-4"
+              className="w-full py-4 text-center justify-center font-bold text-sm mt-4"
               data-cursor="pointer"
             >
               {loading ? (
                 <div className="flex items-center gap-2">
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  <span>Registering Account...</span>
+                  <span>Creating Account...</span>
                 </div>
               ) : (
                 "CREATE ACCOUNT"
@@ -222,12 +206,11 @@ export default function RegisterPage() {
             </Button>
           </form>
 
-          {/* Bottom links */}
-          <div className="mt-8 pt-6 border-t border-zinc-900 text-center">
-            <p className="font-mono text-xs text-zinc-500">
-              ALREADY REGISTERED?{" "}
-              <Link href="/login" className="text-[#ccff00] hover:underline" data-cursor="pointer">
-                SIGN IN NOW
+          <div className="mt-6 pt-6 border-t border-zinc-800 text-center">
+            <p className="text-xs text-zinc-400">
+              Already have an account?{" "}
+              <Link href="/login" className="text-[#9d4edd] font-semibold hover:underline" data-cursor="pointer">
+                Sign In
               </Link>
             </p>
           </div>

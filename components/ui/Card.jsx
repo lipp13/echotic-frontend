@@ -3,74 +3,91 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Calendar, MapPin, ArrowUpRight } from "lucide-react";
+import { ArrowRight, MapPin, Calendar } from "lucide-react";
 import { formatPrice, formatDate } from "@/lib/utils";
 
 export default function Card({ event }) {
-  const { id, title, subtitle, date, venueId, ticketCategories, image } = event;
+  const { id, title, subtitle, date, venueId, ticketCategories, image, artist_name } = event;
 
   // Get lowest price
-  const lowestPrice = Math.min(...ticketCategories.map((c) => c.price));
+  const lowestPrice = ticketCategories && ticketCategories.length > 0 
+    ? Math.min(...ticketCategories.map((c) => c.price))
+    : 0;
+
+  const displayArtist = artist_name || subtitle || "Featured Act";
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      whileHover={{ y: -8 }}
-      transition={{ duration: 0.3 }}
-      className="group relative flex flex-col bg-zinc-950/80 border border-zinc-800 hover:border-[#ccff00]/40 transition-colors duration-300 overflow-hidden"
+      whileHover={{ y: -6 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
+      className="group relative flex flex-col bg-[#121212] border border-zinc-800/80 hover:border-zinc-700 rounded-2xl overflow-hidden shadow-card-subtle transition-all duration-300"
     >
-      {/* Glitch Line on top of card */}
-      <div className="absolute top-0 left-0 w-0 h-[2px] bg-[#ccff00] group-hover:w-full transition-all duration-500 ease-out z-10" />
-
-      {/* Image Container */}
-      <div className="relative aspect-[4/3] overflow-hidden bg-zinc-900">
+      {/* Image Container — Large Artwork Priority */}
+      <div className="relative aspect-[16/10] overflow-hidden bg-zinc-900">
         <motion.img
           src={image}
           alt={title}
-          className="object-cover w-full h-full grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-out"
+          className="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-700 ease-out"
         />
-        {/* Date Stamp */}
-        <div className="absolute top-4 left-4 bg-black/80 backdrop-blur-sm border border-zinc-800 px-3 py-1 text-[10px] font-mono text-[#ccff00] tracking-widest uppercase">
-          {formatDate(date).split(",")[1]?.trim() || date}
+        
+        {/* Subtle Overlay gradient */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-transparent to-black/30 opacity-80" />
+
+        {/* Top Badges */}
+        <div className="absolute top-4 left-4 flex gap-2">
+          <span className="bg-black/60 backdrop-blur-md border border-white/10 px-3 py-1 rounded-full text-[11px] font-medium text-zinc-200 tracking-wide">
+            {formatDate(date).split(",")[1]?.trim() || date}
+          </span>
         </div>
       </div>
 
       {/* Content */}
-      <div className="p-6 flex flex-col flex-grow relative">
-        <span className="text-[10px] font-mono text-zinc-500 tracking-wider uppercase mb-1">
-          {subtitle}
+      <div className="p-6 flex flex-col flex-grow relative -mt-4 bg-gradient-to-b from-transparent via-[#121212] to-[#121212] rounded-t-2xl z-10">
+        {/* Artist / Subtitle */}
+        <span className="text-xs font-semibold text-[#9d4edd] uppercase tracking-wider mb-1">
+          {displayArtist}
         </span>
         
         {/* Heading Link */}
-        <Link href={`/events/${id}`} className="group-hover:text-[#ccff00] transition-colors">
-          <h3 className="text-xl font-black tracking-tight leading-tight uppercase mb-4 flex items-start justify-between gap-2">
-            <span className="line-clamp-2">{title}</span>
-            <ArrowUpRight className="w-5 h-5 text-zinc-600 group-hover:text-[#ccff00] group-hover:translate-x-1 group-hover:-translate-y-1 transition-all flex-shrink-0" />
+        <Link href={`/events/${id}`} className="group-hover:text-white transition-colors">
+          <h3 className="text-xl font-bold tracking-tight text-white line-clamp-1 mb-3">
+            {title}
           </h3>
         </Link>
 
-        {/* Details list */}
-        <div className="mt-auto space-y-2 border-t border-zinc-900 pt-4 text-xs font-mono text-zinc-400">
-          <div className="flex items-center gap-2">
-            <Calendar className="w-3.5 h-3.5 text-[#00f0ff]" />
-            <span>{date}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <MapPin className="w-3.5 h-3.5 text-[#ff0055]" />
+        {/* Meta Info */}
+        <div className="flex items-center gap-4 text-xs text-zinc-400 mb-6 font-normal">
+          <div className="flex items-center gap-1.5 truncate">
+            <MapPin className="w-3.5 h-3.5 text-zinc-500 flex-shrink-0" />
             <span className="truncate">{venueId.toUpperCase()}</span>
+          </div>
+          <span className="text-zinc-700">•</span>
+          <div className="flex items-center gap-1.5 flex-shrink-0">
+            <Calendar className="w-3.5 h-3.5 text-zinc-500" />
+            <span>{date}</span>
           </div>
         </div>
 
-        {/* Price tag */}
-        <div className="mt-4 flex items-center justify-between bg-black/40 border border-zinc-900 p-3">
-          <span className="text-[9px] font-mono text-zinc-500 uppercase tracking-widest">
-            Starting from
-          </span>
-          <span className="font-mono font-bold text-[#ccff00]">
-            {formatPrice(lowestPrice)}
-          </span>
+        {/* Footer Row: Pricing & Arrow CTA */}
+        <div className="mt-auto pt-4 border-t border-zinc-800/60 flex items-center justify-between">
+          <div>
+            <span className="text-[10px] text-zinc-500 uppercase tracking-wider block font-medium">
+              From
+            </span>
+            <span className="text-base font-bold text-white">
+              {formatPrice(lowestPrice)}
+            </span>
+          </div>
+
+          <Link
+            href={`/events/${id}`}
+            className="w-10 h-10 rounded-full bg-zinc-900 border border-zinc-700/80 group-hover:border-[#9d4edd] group-hover:bg-[#9d4edd] text-zinc-300 group-hover:text-white flex items-center justify-center transition-all duration-300 shadow-sm"
+          >
+            <ArrowRight className="w-4 h-4 transform group-hover:translate-x-0.5 transition-transform" />
+          </Link>
         </div>
       </div>
     </motion.div>

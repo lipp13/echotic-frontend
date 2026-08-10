@@ -4,13 +4,12 @@ import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Calendar, MapPin, Ticket, ShieldAlert, ArrowLeft, Users, ChevronRight, Share2, Loader2 } from "lucide-react";
+import { Calendar, MapPin, Ticket, ShieldAlert, ArrowLeft, Users, ChevronRight, Share2, Loader2, Check } from "lucide-react";
 import { apiGetEvent } from "@/lib/api";
 import { formatPrice, formatDate } from "@/lib/utils";
 import Button from "@/components/ui/Button";
 import SeatMap from "@/components/sections/SeatMap";
 import { useToast } from "@/components/ui/Toast";
-import Decor3D from "@/components/ui/Decor3D";
 
 export default function EventDetailPage() {
   const params = useParams();
@@ -50,7 +49,7 @@ export default function EventDetailPage() {
   if (loading) {
     return (
       <div className="flex justify-center items-center py-24 flex-grow">
-        <Loader2 className="w-8 h-8 text-[#ccff00] animate-spin" />
+        <Loader2 className="w-8 h-8 text-[#9d4edd] animate-spin" />
       </div>
     );
   }
@@ -58,13 +57,13 @@ export default function EventDetailPage() {
   if (notFound || !event) {
     return (
       <div className="max-w-7xl mx-auto px-6 py-24 text-center">
-        <ShieldAlert className="w-12 h-12 text-[#ff0055] mx-auto mb-4" />
-        <h2 className="font-mono text-xl font-bold uppercase mb-2">Show Not Found</h2>
-        <p className="font-mono text-zinc-500 text-xs mb-8">
-          The requested event key does not exist or has expired.
+        <ShieldAlert className="w-12 h-12 text-[#9d4edd] mx-auto mb-4" />
+        <h2 className="text-xl font-bold uppercase mb-2">Show Not Found</h2>
+        <p className="text-zinc-400 text-xs mb-8">
+          The requested concert could not be found or has expired.
         </p>
         <Link href="/events" data-cursor="pointer">
-          <Button variant="primary">Browse Events</Button>
+          <Button variant="accent">Browse Events</Button>
         </Link>
       </div>
     );
@@ -93,7 +92,6 @@ export default function EventDetailPage() {
         return;
       }
       
-      // Store details in localStorage to pass to checkout
       const checkoutDetails = {
         eventId: event.id,
         categoryName: selectedSeats[0].sectionName,
@@ -135,14 +133,14 @@ export default function EventDetailPage() {
     <motion.main
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4 }}
-      className="max-w-7xl mx-auto px-6 py-12 flex-grow"
+      transition={{ duration: 0.3 }}
+      className="max-w-7xl mx-auto px-6 md:px-10 py-12 flex-grow"
     >
       {/* Back button */}
       <div className="mb-8">
         <Link
           href="/events"
-          className="inline-flex items-center gap-2 text-zinc-500 hover:text-white transition-colors font-mono text-xs uppercase"
+          className="inline-flex items-center gap-2 text-zinc-400 hover:text-white transition-colors text-xs font-semibold uppercase"
           data-cursor="pointer"
         >
           <ArrowLeft className="w-4 h-4" />
@@ -155,60 +153,57 @@ export default function EventDetailPage() {
         <div className="lg:col-span-7 space-y-10">
           
           {/* Banner Graphic */}
-          <div className="border border-zinc-800 bg-zinc-950 p-2 overflow-hidden aspect-[16/9] relative group">
+          <div className="border border-zinc-800 bg-[#121212] rounded-3xl overflow-hidden aspect-[16/9] relative group shadow-card-subtle">
             <img
               src={event.image}
               alt={event.title}
-              className="object-cover w-full h-full grayscale group-hover:grayscale-0 transition-all duration-700"
+              className="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-700"
             />
-            {/* Stamp Overlay */}
-            <div className="absolute bottom-6 right-6 border border-[#ccff00]/60 bg-black/90 px-4 py-2 font-mono text-[9px] text-[#ccff00] uppercase tracking-widest">
-              OFFICIAL HOSTED PASS
+            {/* Tag Overlay */}
+            <div className="absolute bottom-6 right-6 border border-white/10 bg-black/80 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-semibold text-white uppercase tracking-wider">
+              OFFICIAL EVENT PASS
             </div>
           </div>
 
           {/* Titles & Meta */}
-          <div className="space-y-4">
-            <span className="text-xs font-mono text-[#00f0ff] tracking-widest uppercase block">
-              {event.subtitle}
+          <div className="space-y-3">
+            <span className="text-xs font-semibold text-[#9d4edd] tracking-wider uppercase block">
+              {event.subtitle || "LIVE IN CONCERT"}
             </span>
             <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tight text-white leading-none">
               {event.title}
             </h1>
             
-            <div className="flex flex-wrap gap-6 pt-4 border-t border-zinc-900 font-mono text-xs text-zinc-400">
+            <div className="flex flex-wrap gap-6 pt-4 border-t border-zinc-800/80 text-xs font-medium text-zinc-300">
               <div className="flex items-center gap-2">
-                <Calendar className="w-4 h-4 text-[#ccff00]" />
+                <Calendar className="w-4 h-4 text-[#9d4edd]" />
                 <span>{formatDate(event.date)} at {event.time}</span>
               </div>
               <div className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-[#ff0055]" />
+                <MapPin className="w-4 h-4 text-[#9d4edd]" />
                 <span>{venue?.name}, {venue?.city}</span>
               </div>
             </div>
           </div>
 
           {/* Description */}
-          <div className="space-y-4 border-t border-zinc-900 pt-8">
-            <h4 className="font-mono text-xs text-zinc-500 uppercase tracking-widest">
-              Event Abstract
+          <div className="space-y-3 border-t border-zinc-800/80 pt-8">
+            <h4 className="text-xs font-bold text-zinc-400 uppercase tracking-wider">
+              About The Show
             </h4>
-            <p className="font-mono text-sm leading-relaxed text-zinc-300">
+            <p className="text-sm leading-relaxed text-zinc-300 font-normal">
               {event.description}
             </p>
           </div>
 
           {/* Artist Bio */}
           {artist && (
-            <div className="border border-zinc-900 bg-zinc-950/40 p-6 space-y-4">
-              <div className="flex justify-between items-center pb-2 border-b border-zinc-900/60">
-                <div className="flex items-center gap-3">
-                  <Users className="w-4 h-4 text-[#00f0ff]" />
-                  <h4 className="font-mono text-xs text-white uppercase tracking-widest font-bold">
-                    Featured Artist / Lineup
-                  </h4>
-                </div>
-                <Decor3D type="mic" className="w-10 h-10" />
+            <div className="bg-[#121212] border border-zinc-800/80 rounded-3xl p-6 md:p-8 space-y-4 shadow-card-subtle">
+              <div className="flex items-center gap-2 pb-3 border-b border-zinc-800">
+                <Users className="w-4 h-4 text-[#9d4edd]" />
+                <h4 className="text-xs font-bold text-white uppercase tracking-wider">
+                  Featured Artist
+                </h4>
               </div>
               
               <div className="flex flex-col md:flex-row gap-6 items-start">
@@ -216,12 +211,12 @@ export default function EventDetailPage() {
                   <img
                     src={artist.image}
                     alt={artist.name}
-                    className="w-24 h-24 md:w-32 md:h-32 object-cover border border-zinc-800 grayscale"
+                    className="w-24 h-24 md:w-32 md:h-32 object-cover rounded-2xl border border-zinc-700"
                   />
                 )}
                 <div className="space-y-2">
-                  <h5 className="font-mono text-sm font-bold text-white uppercase">{artist.name}</h5>
-                  <p className="font-mono text-xs text-zinc-400 leading-relaxed">
+                  <h5 className="text-base font-bold text-white uppercase">{artist.name}</h5>
+                  <p className="text-xs text-zinc-400 leading-relaxed font-normal">
                     {artist.bio}
                   </p>
                 </div>
@@ -231,13 +226,13 @@ export default function EventDetailPage() {
 
           {/* Location Map Embed */}
           {venue && (
-            <div className="space-y-4 border-t border-zinc-900 pt-8">
-              <h4 className="font-mono text-xs text-zinc-500 uppercase tracking-widest">
-                Venue Location
+            <div className="space-y-4 border-t border-zinc-800/80 pt-8">
+              <h4 className="text-xs font-bold text-zinc-400 uppercase tracking-wider">
+                Venue & Address
               </h4>
-              <p className="font-mono text-xs text-zinc-400">{venue.address}</p>
+              <p className="text-xs text-zinc-300">{venue.address}</p>
               
-              <div className="border border-zinc-900 bg-zinc-950 p-1 aspect-[21/9] overflow-hidden">
+              <div className="border border-zinc-800 bg-zinc-950 rounded-2xl overflow-hidden aspect-[21/9]">
                 <iframe
                   src={venue.mapUrl}
                   width="100%"
@@ -256,20 +251,17 @@ export default function EventDetailPage() {
 
         {/* Right Column: Ticket Buying Interface */}
         <div className="lg:col-span-5 space-y-8">
-          <div className="bg-zinc-950 border border-zinc-800 p-6 md:p-8 relative">
-            {/* Corner visual accent */}
-            <div className="absolute top-0 right-0 w-8 h-[2px] bg-[#ccff00]" />
-            
-            <h3 className="text-xl font-mono font-bold uppercase text-white mb-6 flex items-center gap-2">
-              <Ticket className="w-5 h-5 text-[#ccff00]" />
-              <span>ACQUIRE GIG PASSES</span>
+          <div className="bg-[#121212] border border-zinc-800/80 rounded-3xl p-6 md:p-8 relative shadow-card-subtle">
+            <h3 className="text-xl font-bold uppercase text-white mb-6 flex items-center gap-2.5">
+              <Ticket className="w-5 h-5 text-[#9d4edd]" />
+              <span>Select Pass Category</span>
             </h3>
 
             {/* SEATED CONFIGURATION */}
             {event.seatingConfig?.hasSeatedMap ? (
               <div className="space-y-6">
-                <p className="font-mono text-xs text-zinc-400 leading-relaxed">
-                  This show features reserved seating. Review the stage chart below, click your preferred rows, and click seats to select.
+                <p className="text-xs text-zinc-400 leading-relaxed font-normal">
+                  This concert features reserved seating. Click desired seat dots on the interactive map below.
                 </p>
                 
                 {/* Seating Map selector */}
@@ -277,74 +269,80 @@ export default function EventDetailPage() {
 
                 {/* Subtotal buy widget */}
                 {selectedSeats.length > 0 ? (
-                  <div className="space-y-4 pt-4 border-t border-zinc-900">
+                  <div className="space-y-4 pt-4 border-t border-zinc-800">
                     <Button
-                      variant="primary"
+                      variant="accent"
                       onClick={handleCheckoutRedirect}
-                      className="w-full py-4 text-center justify-center"
+                      className="w-full py-4 text-center justify-center font-bold text-sm"
                       data-cursor="pointer"
                     >
-                      SECURE SELECTED SEATS ({selectedSeats.length}) <ChevronRight className="w-4 h-4 ml-1" />
+                      GET TICKETS ({selectedSeats.length}) <ChevronRight className="w-4 h-4 ml-1" />
                     </Button>
                   </div>
                 ) : (
-                  <div className="border border-zinc-900 p-4 text-center text-xs font-mono text-zinc-600 bg-black/40">
-                    Please select your seats above to checkout
+                  <div className="border border-zinc-800 rounded-2xl p-4 text-center text-xs text-zinc-500 bg-zinc-900/40">
+                    Select your seat from the chart above
                   </div>
                 )}
               </div>
             ) : (
-              /* GENERAL ADMISSION (Counter Selection) */
+              /* GENERAL ADMISSION */
               <div className="space-y-6">
                 <div className="space-y-3">
-                  <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest block">
-                    Choose Tier
+                  <span className="text-xs font-bold text-zinc-400 uppercase tracking-wider block">
+                    Choose Pass Category
                   </span>
                   
-                  <div className="space-y-2">
-                    {event.ticketCategories.map((cat) => (
-                      <button
-                        key={cat.id}
-                        onClick={() => setSelectedCategory(cat)}
-                        className={`w-full text-left p-4 border font-mono flex items-center justify-between transition-colors cursor-pointer ${
-                          selectedCategory?.id === cat.id
-                            ? "bg-[#ccff00]/5 border-[#ccff00] text-white"
-                            : "bg-black/60 border-zinc-900 text-zinc-400 hover:border-zinc-700"
-                        }`}
-                      >
-                        <div>
-                          <h5 className="text-xs font-bold uppercase">{cat.name}</h5>
-                          <span className="text-[9px] text-zinc-500">
-                            Available • {cat.capacity - cat.sold} passes left
+                  <div className="space-y-2.5">
+                    {event.ticketCategories.map((cat) => {
+                      const isSelected = selectedCategory?.id === cat.id;
+                      return (
+                        <button
+                          key={cat.id}
+                          onClick={() => setSelectedCategory(cat)}
+                          className={`w-full text-left p-4 rounded-2xl border flex items-center justify-between transition-all cursor-pointer ${
+                            isSelected
+                              ? "bg-[#9d4edd]/15 border-[#9d4edd] text-white shadow-md shadow-[#9d4edd]/10"
+                              : "bg-zinc-900/60 border-zinc-800 text-zinc-300 hover:border-zinc-700"
+                          }`}
+                        >
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <h5 className="text-sm font-bold uppercase">{cat.name}</h5>
+                              {isSelected && <Check className="w-4 h-4 text-[#9d4edd]" />}
+                            </div>
+                            <span className="text-xs text-zinc-400">
+                              Available • {cat.capacity - cat.sold} remaining
+                            </span>
+                          </div>
+                          <span className={`text-sm font-bold ${isSelected ? "text-[#9d4edd]" : "text-white"}`}>
+                            {formatPrice(cat.price)}
                           </span>
-                        </div>
-                        <span className={`text-xs font-bold ${selectedCategory?.id === cat.id ? "text-[#ccff00]" : "text-white"}`}>
-                          {formatPrice(cat.price)}
-                        </span>
-                      </button>
-                    ))}
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
 
                 {/* Quantity Counter */}
-                <div className="flex justify-between items-center border-t border-zinc-900 pt-6">
-                  <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest block">
+                <div className="flex justify-between items-center border-t border-zinc-800 pt-6">
+                  <span className="text-xs font-bold text-zinc-400 uppercase tracking-wider block">
                     Select Quantity
                   </span>
 
-                  <div className="flex items-center gap-4 bg-black border border-zinc-900 px-3 py-1.5">
+                  <div className="flex items-center gap-4 bg-zinc-900 border border-zinc-700 rounded-full px-4 py-1.5">
                     <button
                       onClick={() => setTicketQuantity(Math.max(1, ticketQuantity - 1))}
-                      className="w-6 text-zinc-500 hover:text-white font-black text-center cursor-pointer"
+                      className="w-6 text-zinc-400 hover:text-white font-bold text-base text-center cursor-pointer"
                     >
                       -
                     </button>
-                    <span className="font-mono font-bold text-sm w-6 text-center text-white">
+                    <span className="font-bold text-sm text-white w-6 text-center">
                       {ticketQuantity}
                     </span>
                     <button
                       onClick={() => setTicketQuantity(Math.min(5, ticketQuantity + 1))}
-                      className="w-6 text-zinc-500 hover:text-white font-black text-center cursor-pointer"
+                      className="w-6 text-zinc-400 hover:text-white font-bold text-base text-center cursor-pointer"
                     >
                       +
                     </button>
@@ -353,11 +351,11 @@ export default function EventDetailPage() {
 
                 {/* Pricing subtotal */}
                 {selectedCategory && (
-                  <div className="border-y border-zinc-900 py-4 flex justify-between items-center font-mono">
-                    <span className="text-[10px] text-zinc-500 uppercase tracking-widest">
+                  <div className="border-y border-zinc-800 py-4 flex justify-between items-center">
+                    <span className="text-xs font-bold text-zinc-400 uppercase tracking-wider">
                       Subtotal
                     </span>
-                    <span className="text-lg font-black text-[#ccff00]">
+                    <span className="text-xl font-bold text-white">
                       {formatPrice(selectedCategory.price * ticketQuantity)}
                     </span>
                   </div>
@@ -365,25 +363,25 @@ export default function EventDetailPage() {
 
                 {/* Buy Button */}
                 <Button
-                  variant="primary"
+                  variant="accent"
                   onClick={handleCheckoutRedirect}
-                  className="w-full py-4 text-center justify-center"
+                  className="w-full py-4 text-center justify-center font-bold text-sm"
                   data-cursor="pointer"
                 >
-                  SECURE PASSES ({ticketQuantity}) <ChevronRight className="w-4 h-4 ml-1" />
+                  GET TICKETS →
                 </Button>
               </div>
             )}
 
             {/* Guarantee and share */}
-            <div className="mt-6 pt-6 border-t border-zinc-900 flex justify-between items-center font-mono text-[9px] text-zinc-600">
-              <span>✓ ENCRYPTED GATEWAY</span>
+            <div className="mt-6 pt-6 border-t border-zinc-800/80 flex justify-between items-center text-xs text-zinc-500 font-medium">
+              <span>Official EchoTic Booking</span>
               <button
                 onClick={handleShare}
                 className="flex items-center gap-1.5 hover:text-white transition-colors cursor-pointer"
               >
                 <Share2 className="w-3.5 h-3.5" />
-                <span>SHARE SHOW</span>
+                <span>Share</span>
               </button>
             </div>
           </div>

@@ -5,7 +5,7 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls, Float, Sparkles, PerspectiveCamera } from "@react-three/drei";
 import * as THREE from "three";
 
-// Generates a crisp canvas texture for 3D ticket text (No SDF font errors)
+// Generates a crisp canvas texture for the 3D ticket pass
 function useTicketTexture() {
   const [texture, setTexture] = useState(null);
 
@@ -17,73 +17,96 @@ function useTicketTexture() {
     canvas.height = 512;
     const ctx = canvas.getContext("2d");
 
-    // Dark sleek ticket texture background
-    ctx.fillStyle = "#07070a";
+    // Pure sleek dark ticket background
+    ctx.fillStyle = "#0c0c0c";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Neon Accent Border
-    ctx.strokeStyle = "#ccff00";
-    ctx.lineWidth = 8;
-    ctx.strokeRect(16, 16, canvas.width - 32, canvas.height - 32);
-
-    // Divider Line (Tear-off stub)
-    ctx.setLineDash([12, 12]);
-    ctx.strokeStyle = "#27272a";
+    // Subtle dark border
+    ctx.strokeStyle = "#262626";
     ctx.lineWidth = 4;
+    ctx.strokeRect(12, 12, canvas.width - 24, canvas.height - 24);
+
+    // Tear-off stub divider line
+    ctx.setLineDash([8, 8]);
+    ctx.strokeStyle = "#2d2d2d";
+    ctx.lineWidth = 3;
     ctx.beginPath();
-    ctx.moveTo(760, 20);
-    ctx.lineTo(760, canvas.height - 20);
+    ctx.moveTo(740, 16);
+    ctx.lineTo(740, canvas.height - 16);
+    ctx.stroke();
+    ctx.setLineDash([]); // reset
+
+    // Electric Purple Accent line on left
+    ctx.fillStyle = "#9d4edd";
+    ctx.fillRect(20, 20, 8, canvas.height - 40);
+
+    // Brand Wordmark - ECHOTIC PASS
+    ctx.font = "bold 42px system-ui, sans-serif";
+    ctx.fillStyle = "#ffffff";
+    ctx.textAlign = "left";
+    ctx.fillText("ECHOTIC", 50, 85);
+
+    ctx.font = "600 18px system-ui, sans-serif";
+    ctx.fillStyle = "#9d4edd";
+    ctx.fillText("OFFICIAL ACCESS PASS", 230, 85);
+
+    // Main Artist Title
+    ctx.font = "bold 56px system-ui, sans-serif";
+    ctx.fillStyle = "#ffffff";
+    ctx.fillText("WORLD TOUR 2026", 50, 175);
+
+    // Category Badge
+    ctx.fillStyle = "#1a1a1a";
+    ctx.beginPath();
+    ctx.roundRect(50, 210, 240, 44, 8);
+    ctx.fill();
+    ctx.strokeStyle = "#333333";
+    ctx.lineWidth = 1;
     ctx.stroke();
 
-    // Brand Wordmark - ECHOTIC
-    ctx.font = "900 68px monospace";
-    ctx.fillStyle = "#ccff00";
-    ctx.textAlign = "left";
-    ctx.fillText("ECHOTIC", 60, 110);
-
-    // Subtitle - ALL-ACCESS CONCERT PASS
-    ctx.font = "700 24px monospace";
-    ctx.fillStyle = "#e4e4e7";
-    ctx.fillText("ALL-ACCESS CONCERT PASS", 60, 160);
-
-    // Tagline - GENERAL ADMISSION
-    ctx.font = "600 20px monospace";
-    ctx.fillStyle = "#00f0ff";
-    ctx.fillText("GENERAL ADMISSION • VALID ANY EVENT", 60, 220);
-
-    // Cyan accent bar
-    ctx.fillStyle = "#00f0ff";
-    ctx.fillRect(60, 250, 640, 4);
-
-    // Footnote
-    ctx.font = "500 18px monospace";
-    ctx.fillStyle = "#71717a";
-    ctx.fillText("@echoticsite — OFFICIAL PASS", 60, 310);
-
-    // Barcode Simulation
+    ctx.font = "bold 18px system-ui, sans-serif";
     ctx.fillStyle = "#ffffff";
-    for (let x = 60; x < 700; x += Math.random() * 12 + 4) {
-      const w = Math.random() * 6 + 2;
-      ctx.fillRect(x, 350, w, 90);
+    ctx.fillText("VIP ALL-ACCESS PASS", 70, 238);
+
+    // Venue & Date Info
+    ctx.font = "500 20px system-ui, sans-serif";
+    ctx.fillStyle = "#a1a1a1";
+    ctx.fillText("JAKARTA INTERNATIONAL STADIUM", 50, 305);
+    ctx.fillText("OCTOBER 24, 2026 • 20:00 WIB", 50, 335);
+
+    // Barcode / QR Graphic Simulation
+    ctx.fillStyle = "#ffffff";
+    for (let x = 50; x < 680; x += Math.random() * 10 + 6) {
+      const w = Math.random() * 5 + 2;
+      ctx.fillRect(x, 380, w, 70);
     }
 
-    // Stub Side Text
+    // Right Stub Content (Rotated)
     ctx.save();
     ctx.translate(880, 256);
     ctx.rotate(-Math.PI / 2);
 
-    ctx.font = "900 32px monospace";
-    ctx.fillStyle = "#ccff00";
-    ctx.textAlign = "center";
-    ctx.fillText("KODE TIKET", 0, -30);
-
-    ctx.font = "700 22px monospace";
+    ctx.font = "bold 28px system-ui, sans-serif";
     ctx.fillStyle = "#ffffff";
-    ctx.fillText("0000-0000", 0, 10);
+    ctx.textAlign = "center";
+    ctx.fillText("ECHOTIC", 0, -50);
 
-    ctx.font = "600 16px monospace";
-    ctx.fillStyle = "#00f0ff";
-    ctx.fillText("SCAN GATE ENTRY", 0, 50);
+    ctx.font = "bold 20px system-ui, sans-serif";
+    ctx.fillStyle = "#9d4edd";
+    ctx.fillText("PASS #9402", 0, -15);
+
+    ctx.font = "500 16px system-ui, sans-serif";
+    ctx.fillStyle = "#777777";
+    ctx.fillText("GATE A • SEAT V-12", 0, 20);
+
+    // Simulated QR Square in stub
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(-30, 40, 60, 60);
+    ctx.fillStyle = "#0c0c0c";
+    ctx.fillRect(-22, 48, 44, 44);
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(-14, 56, 28, 28);
+
     ctx.restore();
 
     const tex = new THREE.CanvasTexture(canvas);
@@ -102,99 +125,79 @@ function TicketMesh() {
   useFrame((state) => {
     if (!meshRef.current) return;
     const time = state.clock.elapsedTime || 0;
-    meshRef.current.rotation.y = time * 0.3;
-    const targetX = pointer.x * 0.3;
-    const targetY = pointer.y * 0.3;
-    meshRef.current.rotation.x = THREE.MathUtils.lerp(meshRef.current.rotation.x, targetY, 0.1);
-    meshRef.current.rotation.z = THREE.MathUtils.lerp(meshRef.current.rotation.z, -targetX * 0.4, 0.1);
+    meshRef.current.rotation.y = time * 0.25;
+    const targetX = pointer.x * 0.25;
+    const targetY = pointer.y * 0.25;
+    meshRef.current.rotation.x = THREE.MathUtils.lerp(meshRef.current.rotation.x, targetY, 0.08);
+    meshRef.current.rotation.z = THREE.MathUtils.lerp(meshRef.current.rotation.z, -targetX * 0.3, 0.08);
   });
 
   const outerW = 3.6;
-  const outerH = 1.6;
+  const outerH = 1.7;
 
   return (
     <group ref={meshRef}>
-      {/* Outer ticket card */}
+      {/* Base metallic ticket slab */}
       <mesh>
-        <boxGeometry args={[outerW, outerH, 0.08]} />
+        <boxGeometry args={[outerW, outerH, 0.06]} />
         <meshPhysicalMaterial
-          color="#0d0e15"
-          emissive="#1a1c29"
-          roughness={0.2}
-          metalness={0.8}
-          clearcoat={1.0}
+          color="#0f0f0f"
+          roughness={0.15}
+          metalness={0.85}
+          clearcoat={0.8}
           clearcoatRoughness={0.1}
           reflectivity={0.9}
         />
       </mesh>
 
-      {/* Textured Front Plane */}
+      {/* Front texture plane */}
       {ticketTexture && (
-        <mesh position={[0, 0, 0.042]}>
-          <planeGeometry args={[outerW - 0.1, outerH - 0.1]} />
+        <mesh position={[0, 0, 0.032]}>
+          <planeGeometry args={[outerW - 0.08, outerH - 0.08]} />
           <meshStandardMaterial
             map={ticketTexture}
             transparent={true}
             roughness={0.2}
-            metalness={0.5}
+            metalness={0.4}
           />
         </mesh>
       )}
-
-      {/* Glowing Neon Edges */}
-      <mesh position={[0, 0, 0]}>
-        <boxGeometry args={[outerW + 0.04, outerH + 0.04, 0.02]} />
-        <meshBasicMaterial color="#ccff00" wireframe />
-      </mesh>
     </group>
   );
 }
 
-// Minimalist Holographic Fallback for low-end / non-WebGL environments
-function HolographicFallback() {
+// Fallback component
+function TicketFallback() {
   return (
-    <div className="relative w-full h-[350px] md:h-[450px] flex items-center justify-center bg-zinc-950/40 border border-zinc-900 rounded-xl overflow-hidden group">
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#1f2937_1px,transparent_1px),linear-gradient(to_bottom,#1f2937_1px,transparent_1px)] bg-[size:30px_30px] opacity-15" />
-
-      {/* Glowing card container */}
-      <div className="w-[340px] h-[190px] bg-zinc-950 border border-zinc-800 rounded-xl p-5 flex justify-between shadow-2xl relative backdrop-blur-md transform group-hover:rotate-2 group-hover:scale-105 transition-all duration-500">
-        <div className="absolute inset-0 border border-[#ccff00]/40 rounded-xl pointer-events-none opacity-40 group-hover:opacity-100 transition-opacity" />
-
+    <div className="relative w-full h-[350px] md:h-[450px] flex items-center justify-center bg-[#121212]/60 border border-zinc-800 rounded-3xl overflow-hidden group shadow-2xl">
+      <div className="w-[340px] h-[190px] bg-[#0c0c0c] border border-zinc-700/80 rounded-2xl p-5 flex justify-between shadow-2xl relative backdrop-blur-md transform group-hover:scale-105 transition-all duration-500">
         <div className="flex flex-col justify-between flex-1 pr-4 border-r border-dashed border-zinc-800">
-          <div className="flex justify-between items-start">
-            <span className="font-mono text-xs font-black text-[#ccff00] uppercase tracking-widest">
-              ECHOTIC
+          <div>
+            <span className="text-xs font-bold text-[#9d4edd] uppercase tracking-wider block">
+              ECHOTIC PASS
             </span>
-            <div className="w-2.5 h-2.5 rounded-full bg-[#00f0ff] animate-ping" />
+            <h3 className="text-white text-base font-bold tracking-tight mt-1">
+              WORLD TOUR 2026
+            </h3>
           </div>
 
-          <div className="font-mono space-y-1 my-2">
-            <h3 className="text-white text-base font-black uppercase tracking-tight">
-              ALL-ACCESS PASS
-            </h3>
-            <p className="text-[10px] text-cyan-400 font-bold">
-              GENERAL ADMISSION • VALID ANY EVENT
+          <div>
+            <span className="inline-block bg-zinc-900 border border-zinc-800 text-[10px] font-semibold text-zinc-300 px-2.5 py-1 rounded-md mb-1">
+              VIP ALL-ACCESS PASS
+            </span>
+            <p className="text-[10px] text-zinc-400 font-medium truncate">
+              JAKARTA INT'L STADIUM • OCT 24
             </p>
           </div>
-
-          <div className="flex justify-between items-center border-t border-zinc-900 pt-2 font-mono text-[9px] text-zinc-500">
-            <span>@echoticsite</span>
-            <span className="text-[#ccff00] font-bold">SCAN GATE ENTRY</span>
-          </div>
         </div>
 
-        <div className="w-16 flex flex-col items-center justify-between pl-3 font-mono">
-          <span className="text-[9px] text-[#ccff00] font-bold uppercase tracking-widest rotate-90 transform origin-center whitespace-nowrap mt-4">
-            KODE TIKET
-          </span>
-          <div className="w-full h-8 bg-zinc-900 border border-zinc-800 flex items-center justify-center text-[8px] text-zinc-400">
-            ||||||||||
+        <div className="w-16 flex flex-col items-center justify-between pl-3">
+          <div className="w-8 h-8 bg-white rounded flex items-center justify-center">
+            <div className="w-4 h-4 bg-black" />
           </div>
+          <span className="text-[9px] text-[#9d4edd] font-bold">#9402</span>
         </div>
       </div>
-
-      <div className="absolute -top-12 -left-12 w-36 h-36 rounded-full bg-[#ccff00]/10 blur-3xl" />
-      <div className="absolute -bottom-12 -right-12 w-36 h-36 rounded-full bg-[#00f0ff]/10 blur-3xl" />
     </div>
   );
 }
@@ -205,7 +208,6 @@ export default function Hero3D() {
 
   useEffect(() => {
     setMounted(true);
-    // Check if WebGL is supported
     try {
       const canvas = document.createElement("canvas");
       const gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
@@ -215,10 +217,10 @@ export default function Hero3D() {
     }
   }, []);
 
-  if (!mounted || hasWebGLError) return <HolographicFallback />;
+  if (!mounted || hasWebGLError) return <TicketFallback />;
 
   return (
-    <div className="relative w-full h-[350px] md:h-[450px] overflow-hidden">
+    <div className="relative w-full h-[350px] md:h-[450px] overflow-hidden rounded-3xl">
       <Canvas
         gl={{ antialias: true, alpha: true }}
         onCreated={({ gl }) => {
@@ -227,16 +229,16 @@ export default function Hero3D() {
       >
         <PerspectiveCamera makeDefault position={[0, 0, 3.8]} fov={50} />
 
-        <ambientLight intensity={1.5} />
-        <directionalLight position={[5, 5, 5]} intensity={1.8} color="#ffffff" />
-        <spotLight position={[0, 5, 2]} angle={0.6} penumbra={0.8} intensity={8} color="#ccff00" />
-        <spotLight position={[-2, -2, 3]} angle={0.6} penumbra={0.8} intensity={5} color="#00f0ff" />
+        <ambientLight intensity={1.8} />
+        <directionalLight position={[5, 5, 5]} intensity={2.0} color="#ffffff" />
+        <spotLight position={[0, 5, 3]} angle={0.5} penumbra={0.8} intensity={6} color="#9d4edd" />
+        <spotLight position={[-3, -2, 3]} angle={0.6} penumbra={0.8} intensity={3} color="#ffffff" />
 
-        <Float speed={2} rotationIntensity={0.3} floatIntensity={0.4}>
+        <Float speed={2} rotationIntensity={0.2} floatIntensity={0.3}>
           <TicketMesh />
         </Float>
 
-        <Sparkles count={40} scale={5} size={1.5} speed={0.6} color="#ccff00" opacity={0.6} />
+        <Sparkles count={25} scale={4.5} size={1.2} speed={0.4} color="#9d4edd" opacity={0.4} />
         <OrbitControls enableZoom={false} enablePan={false} autoRotate={false} />
       </Canvas>
     </div>

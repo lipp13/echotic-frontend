@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, User, LogOut, Ticket } from "lucide-react";
+import { Menu, X, User, LogOut, Ticket, Search } from "lucide-react";
 import { useToast } from "@/components/ui/Toast";
 import { isAuthenticated, getUserData, apiLogout } from "@/lib/api";
 
@@ -16,7 +16,6 @@ export default function Navbar() {
   const { addToast } = useToast();
 
   useEffect(() => {
-    // Check scroll
     const handleScroll = () => {
       if (window.scrollY > 20) {
         setScrolled(true);
@@ -25,7 +24,6 @@ export default function Navbar() {
       }
     };
     
-    // Check user auth state
     const checkUser = () => {
       if (isAuthenticated()) {
         setUser(getUserData());
@@ -36,8 +34,6 @@ export default function Navbar() {
 
     window.addEventListener("scroll", handleScroll);
     checkUser();
-
-    // Custom event listener for simulated auth updates
     window.addEventListener("authChange", checkUser);
 
     return () => {
@@ -55,44 +51,47 @@ export default function Navbar() {
   };
 
   const navLinks = [
-    { name: "Jelajahi Events", href: "/events" },
+    { name: "Events", href: "/events" },
+    { name: "Artists", href: "/#artists" },
+    { name: "Genres", href: "/events?genre=all" },
+    { name: "About", href: "/#how-it-works" },
     ...(user?.role === "admin" ? [{ name: "Gate Control", href: "/admin" }] : []),
   ];
 
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled
-            ? "bg-black/90 border-b border-zinc-900/80 py-4 backdrop-blur-md"
-            : "bg-transparent py-6"
+            ? "bg-[#080808]/85 backdrop-blur-md py-4 border-b border-white/5 shadow-lg"
+            : "bg-gradient-to-b from-black/80 via-black/40 to-transparent py-6"
         }`}
       >
-        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-6 md:px-10 flex items-center justify-between">
           {/* Logo */}
           <Link
             href="/"
-            className="flex items-center gap-2 group cursor-pointer"
+            className="flex items-center gap-2.5 group cursor-pointer"
             data-cursor="pointer"
           >
-            <div className="w-8 h-8 bg-[#ccff00] rounded-sm flex items-center justify-center font-mono font-black text-black text-lg transition-transform duration-300 group-hover:rotate-12">
+            <div className="w-8 h-8 rounded-full bg-[#9d4edd] flex items-center justify-center font-bold text-white text-base shadow-md group-hover:scale-105 transition-transform">
               E
             </div>
-            <span className="font-mono text-xl font-black tracking-widest text-white group-hover:text-[#ccff00] transition-colors">
-              ECHOTIC.
+            <span className="text-xl font-bold tracking-tight text-white group-hover:text-zinc-300 transition-colors">
+              ECHOTIC<span className="text-[#9d4edd]">.</span>
             </span>
           </Link>
 
-          {/* Desktop NavLinks */}
-          <nav className="hidden md:flex items-center gap-8">
+          {/* Desktop Navigation Links */}
+          <nav className="hidden lg:flex items-center gap-9">
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
               return (
                 <Link
                   key={link.name}
                   href={link.href}
-                  className={`font-mono text-xs uppercase tracking-widest transition-colors hover:text-[#ccff00] ${
-                    isActive ? "text-[#ccff00] font-bold" : "text-zinc-400"
+                  className={`text-sm font-medium transition-colors hover:text-white ${
+                    isActive ? "text-white font-semibold" : "text-zinc-400"
                   }`}
                   data-cursor="pointer"
                 >
@@ -102,55 +101,72 @@ export default function Navbar() {
             })}
           </nav>
 
-          {/* Desktop Action/Auth */}
+          {/* Desktop Right Actions */}
           <div className="hidden md:flex items-center gap-4">
+            {/* Search link icon button */}
+            <Link
+              href="/events"
+              className="p-2.5 text-zinc-400 hover:text-white transition-colors"
+              title="Search Events"
+            >
+              <Search className="w-4 h-4" />
+            </Link>
+
             {user ? (
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3">
                 {user.role === "admin" && (
                   <Link
                     href="/admin"
-                    className="flex items-center gap-1.5 border border-cyan-500/40 bg-cyan-500/10 px-3 py-2 font-mono text-xs text-cyan-400 hover:bg-cyan-500 hover:text-black transition-all"
-                    data-cursor="pointer"
+                    className="px-3.5 py-2 rounded-full text-xs font-semibold bg-zinc-900 border border-zinc-700 text-zinc-300 hover:text-white hover:border-zinc-500 transition-all"
                   >
-                    <span>ADMIN PANEL</span>
+                    Admin
                   </Link>
                 )}
                 <Link
                   href="/dashboard"
-                  className="flex items-center gap-2 border border-[#ccff00]/20 bg-[#ccff00]/5 px-4 py-2 font-mono text-xs text-[#ccff00] hover:bg-[#ccff00] hover:text-black transition-all"
-                  data-cursor="pointer"
+                  className="flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-semibold text-white hover:bg-zinc-800 transition-all"
                 >
-                  <Ticket className="w-3.5 h-3.5" />
-                  <span>My Tickets ({user.username})</span>
+                  <Ticket className="w-3.5 h-3.5 text-[#9d4edd]" />
+                  <span>My Passes ({user.username})</span>
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className="flex items-center gap-1.5 border border-zinc-800 hover:border-red-500/40 hover:bg-red-500/5 px-4 py-2 font-mono text-xs text-zinc-400 hover:text-red-500 transition-all cursor-pointer"
-                  data-cursor="pointer"
+                  className="p-2 text-zinc-400 hover:text-red-400 transition-colors cursor-pointer"
+                  title="Logout"
                 >
-                  <LogOut className="w-3.5 h-3.5" />
-                  <span>Exit</span>
+                  <LogOut className="w-4 h-4" />
                 </button>
               </div>
             ) : (
-              <Link
-                href="/login"
-                className="flex items-center gap-2 border border-zinc-800 bg-zinc-950 px-5 py-2.5 font-mono text-xs text-white hover:border-[#ccff00] hover:shadow-[0_0_15px_rgba(204,255,0,0.15)] transition-all"
-                data-cursor="pointer"
-              >
-                <User className="w-3.5 h-3.5" />
-                <span>MASUK</span>
-              </Link>
+              <div className="flex items-center gap-3">
+                <Link
+                  href="/login"
+                  className="text-xs font-semibold text-zinc-300 hover:text-white px-3 py-2 transition-colors"
+                >
+                  Sign In
+                </Link>
+                <Link
+                  href="/events"
+                  className="px-5 py-2.5 rounded-full bg-white text-black font-semibold text-xs hover:bg-zinc-200 transition-all shadow-sm"
+                >
+                  Get Tickets
+                </Link>
+              </div>
             )}
           </div>
 
-          {/* Mobile Hamburger Toggle */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden text-white hover:text-[#ccff00] transition-colors cursor-pointer"
-          >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+          {/* Mobile Actions & Menu Trigger */}
+          <div className="flex items-center gap-2 md:hidden">
+            <Link href="/events" className="p-2 text-zinc-400 hover:text-white">
+              <Search className="w-5 h-5" />
+            </Link>
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 text-white hover:text-zinc-300 transition-colors cursor-pointer"
+            >
+              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
         </div>
       </header>
 
@@ -161,50 +177,58 @@ export default function Navbar() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.25 }}
-            className="fixed inset-x-0 top-0 pt-24 pb-8 bg-zinc-950/98 border-b border-zinc-900 z-30 flex flex-col px-6 md:hidden gap-6 backdrop-blur-lg"
+            transition={{ duration: 0.2 }}
+            className="fixed inset-x-0 top-0 pt-24 pb-8 bg-[#080808]/98 border-b border-zinc-800 z-40 flex flex-col px-6 md:hidden gap-6 backdrop-blur-xl"
           >
-            <nav className="flex flex-col gap-4">
+            <nav className="flex flex-col gap-3">
               {navLinks.map((link) => (
                 <Link
                   key={link.name}
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="font-mono text-sm uppercase tracking-widest text-zinc-400 hover:text-[#ccff00] transition-colors py-2 border-b border-zinc-900"
+                  className="text-base font-semibold text-zinc-300 hover:text-white transition-colors py-2.5 border-b border-zinc-900"
                 >
                   {link.name}
                 </Link>
               ))}
             </nav>
 
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-3 pt-2">
               {user ? (
                 <>
                   <Link
                     href="/dashboard"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center justify-center gap-2 border border-[#ccff00]/20 bg-[#ccff00]/5 py-3 font-mono text-xs text-[#ccff00]"
+                    className="flex items-center justify-center gap-2 py-3 rounded-xl bg-zinc-900 border border-zinc-800 text-sm font-semibold text-white"
                   >
-                    <Ticket className="w-4 h-4" />
-                    <span>Dashboardmu ({user.username})</span>
+                    <Ticket className="w-4 h-4 text-[#9d4edd]" />
+                    <span>My Dashboard ({user.username})</span>
                   </Link>
                   <button
                     onClick={handleLogout}
-                    className="flex items-center justify-center gap-2 border border-zinc-800 py-3 font-mono text-xs text-zinc-400 hover:text-red-500"
+                    className="flex items-center justify-center gap-2 py-3 rounded-xl bg-zinc-900/50 border border-zinc-800 text-sm font-semibold text-zinc-400 hover:text-red-400"
                   >
                     <LogOut className="w-4 h-4" />
-                    <span>KELUAR</span>
+                    <span>Sign Out</span>
                   </button>
                 </>
               ) : (
-                <Link
-                  href="/login"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center justify-center gap-2 border border-zinc-800 bg-zinc-950 py-3 font-mono text-xs text-white hover:border-[#ccff00]"
-                >
-                  <User className="w-4 h-4" />
-                  <span>SIGN IN</span>
-                </Link>
+                <div className="flex flex-col gap-2">
+                  <Link
+                    href="/events"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center justify-center py-3 rounded-full bg-[#9d4edd] text-white font-semibold text-sm shadow-md"
+                  >
+                    Get Tickets
+                  </Link>
+                  <Link
+                    href="/login"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center justify-center py-3 rounded-full bg-zinc-900 border border-zinc-800 text-white font-semibold text-sm"
+                  >
+                    Sign In
+                  </Link>
+                </div>
               )}
             </div>
           </motion.div>

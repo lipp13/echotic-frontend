@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 
-export default function Countdown({ targetDate, title = "TICKET SALES CLOSING IN" }) {
+export default function Countdown({ targetDate, title = "NEXT SHOW PRESALE CLOSES IN" }) {
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -37,43 +37,46 @@ export default function Countdown({ targetDate, title = "TICKET SALES CLOSING IN
 
   if (timeLeft.isExpired) {
     return (
-      <div className="border border-[#ff0055]/30 bg-black/60 backdrop-blur-sm p-4 text-center font-mono text-sm text-[#ff0055] tracking-widest uppercase">
-        ⚡ EVENT TICKETS ARE SOLD OUT / SALES CLOSED ⚡
+      <div className="border border-zinc-800 bg-[#121212] rounded-2xl p-6 text-center text-sm text-zinc-400 font-medium tracking-wide">
+        PRESALE HAS CONCLUDED — GENERAL ADMISSION OPEN
       </div>
     );
   }
 
   const timeBlocks = [
     { label: "DAYS", value: String(timeLeft.days).padStart(2, "0") },
-    { label: "HRS", value: String(timeLeft.hours).padStart(2, "0") },
-    { label: "MINS", value: String(timeLeft.minutes).padStart(2, "0") },
-    { label: "SECS", value: String(timeLeft.seconds).padStart(2, "0") }
+    { label: "HOURS", value: String(timeLeft.hours).padStart(2, "0") },
+    { label: "MINUTES", value: String(timeLeft.minutes).padStart(2, "0") },
+    { label: "SECONDS", value: String(timeLeft.seconds).padStart(2, "0") }
   ];
 
   return (
-    <div className="border border-zinc-800 bg-black/50 backdrop-blur-sm p-6 flex flex-col md:flex-row items-center justify-between gap-6">
-      <div className="font-mono text-center md:text-left">
-        <span className="text-[10px] text-zinc-500 tracking-widest uppercase block mb-1">
-          Urgency Notice
+    <div className="border border-zinc-800/80 bg-[#121212] rounded-3xl p-8 md:p-10 flex flex-col lg:flex-row items-center justify-between gap-8 shadow-card-subtle relative overflow-hidden">
+      {/* Background soft purple radial glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#9d4edd]/5 rounded-full blur-3xl pointer-events-none" />
+
+      <div className="text-center lg:text-left z-10">
+        <span className="text-xs font-semibold text-[#9d4edd] uppercase tracking-widest block mb-2">
+          Presale Countdown
         </span>
-        <h4 className="text-sm font-bold text-white tracking-wider uppercase">
+        <h3 className="text-2xl md:text-3xl font-black text-white tracking-tight uppercase">
           {title}
-        </h4>
+        </h3>
+        <p className="text-sm text-zinc-400 mt-2 max-w-sm">
+          Secure exclusive tier 1 passes before public allocation unlocks.
+        </p>
       </div>
 
-      <div className="flex gap-4">
+      <div className="grid grid-cols-4 gap-3 md:gap-6 z-10">
         {timeBlocks.map((block, idx) => (
           <div key={idx} className="flex flex-col items-center">
-            {/* Number Block */}
-            <div className="w-16 h-16 md:w-20 md:h-20 bg-zinc-950 border border-zinc-800 rounded-sm flex items-center justify-center font-mono text-2xl md:text-3xl font-black text-[#ccff00] shadow-[inset_0_0_10px_rgba(0,0,0,0.8)] relative">
+            {/* Number Card */}
+            <div className="w-16 h-20 md:w-24 md:h-28 bg-[#1a1a1a] border border-zinc-800 rounded-2xl flex items-center justify-center text-3xl md:text-5xl font-black text-white shadow-inner relative">
               {block.value}
-              
-              {/* Scanline overlay in digital block */}
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/5 to-transparent pointer-events-none" />
             </div>
             
             {/* Label */}
-            <span className="text-[9px] font-mono text-zinc-500 tracking-wider mt-1.5 uppercase">
+            <span className="text-[10px] font-bold text-zinc-400 tracking-widest mt-2 uppercase">
               {block.label}
             </span>
           </div>

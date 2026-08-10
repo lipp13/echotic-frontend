@@ -75,7 +75,7 @@ export default function AdminPage() {
 
   // Modal States
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalMode, setModalMode] = useState("create"); // 'create' or 'edit'
+  const [modalMode, setModalMode] = useState("create");
   const [saving, setSaving] = useState(false);
   const [deletingId, setDeletingId] = useState(null);
 
@@ -101,7 +101,7 @@ export default function AdminPage() {
     // Check Admin Privileges
     const user = getUserData();
     if (!isAuthenticated() || !user || user.role !== "admin") {
-      addToast("Akses ditolak. Perlu akun Administrator.", "error");
+      addToast("Access restricted. Admin credentials required.", "error");
       router.push("/login");
       return;
     }
@@ -122,7 +122,7 @@ export default function AdminPage() {
       if (venuesRes.success) setVenues(venuesRes.data);
       if (statsRes.success) setAdminStats(statsRes.data);
     } catch (err) {
-      addToast("Gagal memuat data awal admin.", "error");
+      addToast("Failed to load initial admin data.", "error");
     } finally {
       setLoading(false);
     }
@@ -142,7 +142,7 @@ export default function AdminPage() {
   const handleVerifyTicket = async (e) => {
     if (e) e.preventDefault();
     if (!scannerInput.trim()) {
-      addToast("Masukkan Kode Tiket (TKT-XXXXXX) atau scan QR terlebih dahulu.", "error");
+      addToast("Enter a ticket code or scan QR.", "error");
       return;
     }
 
@@ -155,14 +155,14 @@ export default function AdminPage() {
       if (res.success) {
         setTicketInfo(res.data);
         if (res.data.isAlreadyScanned) {
-          addToast("Peringatan: Tiket ini sudah pernah di-scan!", "info");
+          addToast("Warning: Ticket has already been scanned!", "info");
         } else {
-          addToast("Tiket ditemukan! Siap untuk verifikasi gate masuk.", "success");
+          addToast("Valid pass! Ready for gate entry authorization.", "success");
         }
       }
     } catch (err) {
-      setVerifyError(err.error || "Tiket tidak ditemukan / Kode salah.");
-      addToast(err.error || "Tiket tidak ditemukan.", "error");
+      setVerifyError(err.error || "Ticket code not found.");
+      addToast(err.error || "Ticket not found.", "error");
     } finally {
       setVerifying(false);
     }
@@ -176,7 +176,7 @@ export default function AdminPage() {
     try {
       const res = await apiApproveTicketEntry(code);
       if (res.success) {
-        addToast(res.message || "Entry Approved! Pengunjung dipersilakan masuk.", "success");
+        addToast(res.message || "Entry Approved!", "success");
         if (ticketInfo) {
           setTicketInfo({
             ...ticketInfo,
@@ -189,7 +189,7 @@ export default function AdminPage() {
         handleFetchStats();
       }
     } catch (err) {
-      addToast(err.error || "Gagal melakukan verifikasi gate entry.", "error");
+      addToast(err.error || "Gate entry authorization failed.", "error");
     } finally {
       setApproving(false);
     }
@@ -220,7 +220,6 @@ export default function AdminPage() {
 
   const handleOpenEditModal = (evt) => {
     setModalMode("edit");
-    // Format date string to YYYY-MM-DD
     const dateStr = evt.date ? new Date(evt.date).toISOString().split("T")[0] : "";
     setForm({
       id: evt.id,
@@ -257,7 +256,7 @@ export default function AdminPage() {
       ...form,
       categories: [
         ...form.categories,
-        { name: "Category Baru", price: 500000, capacity: 500 },
+        { name: "New Category", price: 500000, capacity: 500 },
       ],
     });
   };
@@ -272,7 +271,7 @@ export default function AdminPage() {
     e.preventDefault();
 
     if (!form.title || !form.date || !form.image_url) {
-      addToast("Harap isi Judul, Tanggal, dan URL Gambar.", "error");
+      addToast("Please fill in Title, Date, and Image URL.", "error");
       return;
     }
 
@@ -288,17 +287,17 @@ export default function AdminPage() {
       if (res.success) {
         addToast(
           modalMode === "create"
-            ? "Event baru berhasil ditambahkan!"
-            : "Event berhasil diperbarui!",
+            ? "New event created!"
+            : "Event updated successfully!",
           "success"
         );
         setIsModalOpen(false);
         fetchInitialData();
       } else {
-        addToast(res.error || "Gagal menyimpan event.", "error");
+        addToast(res.error || "Failed to save event.", "error");
       }
     } catch (err) {
-      addToast("Terjadi kesalahan saat menyimpan event.", "error");
+      addToast("An error occurred while saving.", "error");
     } finally {
       setSaving(false);
     }
@@ -308,14 +307,14 @@ export default function AdminPage() {
     try {
       const res = await apiDeleteEvent(id);
       if (res.success) {
-        addToast("Event berhasil dihapus.", "success");
+        addToast("Event deleted.", "success");
         setDeletingId(null);
         fetchInitialData();
       } else {
-        addToast(res.error || "Gagal menghapus event.", "error");
+        addToast(res.error || "Failed to delete event.", "error");
       }
     } catch (err) {
-      addToast("Terjadi kesalahan sistem.", "error");
+      addToast("System error occurred.", "error");
     }
   };
 
@@ -328,34 +327,34 @@ export default function AdminPage() {
   });
 
   return (
-    <div className="min-h-screen text-white relative flex flex-col font-sans">
-      <main className="flex-1 max-w-7xl mx-auto w-full px-6 pt-8 pb-20">
+    <div className="min-h-screen text-white relative flex flex-col font-sans bg-[#080808]">
+      <main className="flex-1 max-w-7xl mx-auto w-full px-6 md:px-10 pt-10 pb-20">
         {/* Main Tab Navigation */}
-        <div className="flex border-b border-zinc-800 mb-8 gap-4 overflow-x-auto">
+        <div className="flex border-b border-zinc-800 mb-10 gap-6 overflow-x-auto">
           <button
             onClick={() => setActiveTab("events")}
-            className={`flex items-center gap-2 pb-4 font-mono text-xs uppercase tracking-wider font-bold transition-all border-b-2 cursor-pointer whitespace-nowrap ${
+            className={`flex items-center gap-2 pb-4 text-xs font-bold uppercase tracking-wider transition-all border-b-2 cursor-pointer whitespace-nowrap ${
               activeTab === "events"
-                ? "border-[#ccff00] text-[#ccff00]"
+                ? "border-[#9d4edd] text-[#9d4edd]"
                 : "border-transparent text-zinc-500 hover:text-zinc-300"
             }`}
           >
             <Calendar className="w-4 h-4" />
-            <span>Manajemen Event ({events.length})</span>
+            <span>Event Management ({events.length})</span>
           </button>
 
           <button
             onClick={() => setActiveTab("scanner")}
-            className={`flex items-center gap-2 pb-4 font-mono text-xs uppercase tracking-wider font-bold transition-all border-b-2 cursor-pointer whitespace-nowrap ${
+            className={`flex items-center gap-2 pb-4 text-xs font-bold uppercase tracking-wider transition-all border-b-2 cursor-pointer whitespace-nowrap ${
               activeTab === "scanner"
-                ? "border-[#00f0ff] text-[#00f0ff]"
+                ? "border-[#9d4edd] text-[#9d4edd]"
                 : "border-transparent text-zinc-500 hover:text-zinc-300"
             }`}
           >
             <Scan className="w-4 h-4" />
-            <span>Gate Entry & Scanner QR</span>
-            <span className="bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 text-[9px] px-2 py-0.5 rounded-full font-bold ml-1">
-              LIVE GATE CONTROL
+            <span>Gate Entry & Scanner</span>
+            <span className="bg-[#9d4edd]/20 text-[#9d4edd] border border-[#9d4edd]/30 text-[10px] px-2.5 py-0.5 rounded-full font-bold ml-1">
+              LIVE CONTROL
             </span>
           </button>
         </div>
@@ -364,27 +363,27 @@ export default function AdminPage() {
         {activeTab === "scanner" && (
           <div className="space-y-8">
             {/* Top Metric Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 font-mono">
-              <div className="bg-zinc-950 border border-zinc-800 p-5 rounded-lg">
-                <span className="text-[10px] text-zinc-500 uppercase tracking-widest block mb-1">Total Tiket Terjual</span>
-                <div className="text-2xl font-bold text-white">{adminStats.totalTicketsSold || 0} Tiket</div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="bg-[#121212] border border-zinc-800 p-6 rounded-3xl shadow-card-subtle">
+                <span className="text-xs text-zinc-400 font-semibold uppercase tracking-wider block mb-1">Total Passes Sold</span>
+                <div className="text-3xl font-black text-white">{adminStats.totalTicketsSold || 0}</div>
               </div>
 
-              <div className="bg-zinc-950 border border-emerald-900/50 p-5 rounded-lg">
-                <span className="text-[10px] text-emerald-400 uppercase tracking-widest block mb-1">Sudah Di-Scan (Checked-In)</span>
-                <div className="text-2xl font-bold text-emerald-400">{adminStats.checkedInCount || 0} Pengunjung</div>
+              <div className="bg-[#121212] border border-emerald-500/30 p-6 rounded-3xl shadow-card-subtle">
+                <span className="text-xs text-emerald-400 font-semibold uppercase tracking-wider block mb-1">Gate Checked-In</span>
+                <div className="text-3xl font-black text-emerald-400">{adminStats.checkedInCount || 0}</div>
               </div>
 
-              <div className="bg-zinc-950 border border-amber-900/50 p-5 rounded-lg">
-                <span className="text-[10px] text-amber-400 uppercase tracking-widest block mb-1">Menunggu Scan Entry</span>
-                <div className="text-2xl font-bold text-amber-300">{adminStats.pendingCount || 0} Tiket</div>
+              <div className="bg-[#121212] border border-amber-500/30 p-6 rounded-3xl shadow-card-subtle">
+                <span className="text-xs text-amber-400 font-semibold uppercase tracking-wider block mb-1">Awaiting Gate Scan</span>
+                <div className="text-3xl font-black text-amber-300">{adminStats.pendingCount || 0}</div>
               </div>
 
-              <div className="bg-zinc-950 border border-zinc-800 p-5 rounded-lg flex flex-col justify-between">
-                <span className="text-[10px] text-zinc-500 uppercase tracking-widest block">Update Realtime</span>
+              <div className="bg-[#121212] border border-zinc-800 p-6 rounded-3xl flex flex-col justify-between shadow-card-subtle">
+                <span className="text-xs text-zinc-400 font-semibold uppercase tracking-wider block">Live Updates</span>
                 <button
                   onClick={handleFetchStats}
-                  className="mt-2 flex items-center justify-center gap-2 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-zinc-300 py-2 px-3 text-xs uppercase tracking-wider transition-all cursor-pointer"
+                  className="mt-3 flex items-center justify-center gap-2 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-zinc-300 py-2.5 px-4 rounded-full text-xs font-semibold uppercase tracking-wider transition-colors cursor-pointer"
                 >
                   <RefreshCw className="w-3.5 h-3.5" />
                   <span>Refresh Stats</span>
@@ -392,7 +391,7 @@ export default function AdminPage() {
               </div>
             </div>
 
-            {/* Live Camera Scanner Component */}
+            {/* Live Camera Scanner */}
             <CameraQrScanner
               onScanSuccess={(decodedText) => {
                 setScannerInput(decodedText);
@@ -401,44 +400,44 @@ export default function AdminPage() {
             />
 
             {/* Manual Code Input & Fallback Box */}
-            <div className="bg-zinc-950 border border-zinc-800 p-6 md:p-8 rounded-lg shadow-xl relative">
+            <div className="bg-[#121212] border border-zinc-800 p-8 rounded-3xl shadow-card-subtle">
               <div className="max-w-2xl mx-auto space-y-6">
                 <div className="text-center space-y-2">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-mono text-xs font-bold uppercase rounded-full">
-                    <Scan className="w-4 h-4 animate-pulse" />
-                    <span>Pencarian Manual & Input Kode</span>
+                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#9d4edd]/10 border border-[#9d4edd]/30 text-[#9d4edd] text-xs font-bold uppercase rounded-full">
+                    <Scan className="w-4 h-4" />
+                    <span>Manual Gate Lookup</span>
                   </div>
-                  <h2 className="text-xl font-mono font-bold text-white uppercase">
-                    Cari Tiket Manual (Fallback)
+                  <h2 className="text-xl font-bold text-white uppercase">
+                    Manual Ticket Code Entry
                   </h2>
-                  <p className="text-zinc-400 text-xs font-mono">
-                    Jika kamera tidak tersedia, ketik kode tiket (contoh: <code className="text-[#ccff00]">TKT-XXXXXX</code>) untuk memeriksa keabsahan & menyetujui izin masuk.
+                  <p className="text-zinc-400 text-xs font-normal">
+                    Enter ticket code (e.g. <code className="text-[#9d4edd] font-mono">TKT-XXXXXX</code>) to verify and authorize gate entry.
                   </p>
                 </div>
 
                 <form onSubmit={handleVerifyTicket} className="flex flex-col sm:flex-row gap-3">
                   <div className="relative flex-1">
-                    <QrCode className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-cyan-400" />
+                    <QrCode className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" />
                     <input
                       type="text"
-                      placeholder="Ketik atau tempel Kode Tiket (TKT-XXXXXX)..."
+                      placeholder="Enter ticket code (TKT-XXXXXX)..."
                       value={scannerInput}
                       onChange={(e) => setScannerInput(e.target.value)}
-                      className="w-full bg-black border-2 border-zinc-800 pl-12 pr-4 py-4 font-mono text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-[#00f0ff] transition-all uppercase"
+                      className="w-full bg-zinc-900 border border-zinc-700 rounded-2xl pl-12 pr-4 py-3.5 text-sm font-mono text-white placeholder-zinc-500 focus:outline-none focus:border-[#9d4edd] transition-colors uppercase"
                     />
                   </div>
 
                   <button
                     type="submit"
                     disabled={verifying}
-                    className="bg-[#00f0ff] hover:bg-[#00d0df] text-black font-mono font-bold text-xs uppercase tracking-widest px-8 py-4 flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(0,240,255,0.3)] transition-all cursor-pointer disabled:opacity-50"
+                    className="bg-[#9d4edd] hover:bg-[#b565f7] text-white font-bold text-xs uppercase tracking-wider px-8 py-3.5 rounded-2xl flex items-center justify-center gap-2 shadow-lg shadow-[#9d4edd]/20 transition-colors cursor-pointer disabled:opacity-50"
                   >
                     {verifying ? (
                       <Loader2 className="w-4 h-4 animate-spin" />
                     ) : (
                       <Search className="w-4 h-4" />
                     )}
-                    <span>VERIFIKASI TIKET</span>
+                    <span>VERIFY PASS</span>
                   </button>
                 </form>
               </div>
@@ -449,15 +448,15 @@ export default function AdminPage() {
               <motion.div
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
-                className={`border rounded-lg overflow-hidden bg-zinc-950 p-6 md:p-8 space-y-6 font-mono ${
+                className={`border rounded-3xl bg-[#121212] p-8 space-y-6 font-sans shadow-card-subtle ${
                   ticketInfo.isAlreadyScanned
-                    ? "border-red-500/50 shadow-[0_0_30px_rgba(239,68,68,0.2)]"
-                    : "border-[#ccff00]/50 shadow-[0_0_30px_rgba(204,255,0,0.15)]"
+                    ? "border-red-500/40"
+                    : "border-[#9d4edd]/50"
                 }`}
               >
-                {/* Status Header Banner */}
+                {/* Status Banner */}
                 <div
-                  className={`p-4 rounded flex flex-col md:flex-row md:items-center justify-between gap-4 ${
+                  className={`p-4 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4 ${
                     ticketInfo.isAlreadyScanned
                       ? "bg-red-950/80 border border-red-800 text-red-300"
                       : "bg-emerald-950/80 border border-emerald-800 text-emerald-300"
@@ -472,13 +471,13 @@ export default function AdminPage() {
                     <div>
                       <h3 className="font-bold text-sm md:text-base uppercase tracking-wide">
                         {ticketInfo.isAlreadyScanned
-                          ? "⛔ PERINGATAN: TIKET SUDAH DI-SCAN / TERVERIFIKASI!"
-                          : "🎉 TIKET VALID & SAH (MENUNGGU SCAN ENTRY)"}
+                          ? "ALREADY SCANNED / USED TICKET"
+                          : "VALID TICKET — READY FOR AUTHORIZATION"}
                       </h3>
                       <p className="text-xs opacity-80 mt-0.5">
                         {ticketInfo.isAlreadyScanned
-                          ? `Tiket ini telah di-scan masuk sebelumnya pada: ${new Date(ticketInfo.scannedAt).toLocaleString("id-ID")}`
-                          : "Identitas pengunjung cocok. Tekan tombol di bawah untuk menyetujui izin masuk."}
+                          ? `Scanned at: ${new Date(ticketInfo.scannedAt).toLocaleString()}`
+                          : "Attendee ID verified. Authorize gate entry below."}
                       </p>
                     </div>
                   </div>
@@ -487,288 +486,233 @@ export default function AdminPage() {
                     <button
                       onClick={() => handleApproveTicket(ticketInfo.ticketCode)}
                       disabled={approving}
-                      className="bg-[#ccff00] hover:bg-[#b8e600] text-black font-bold text-xs uppercase px-6 py-3 tracking-widest shadow-[0_0_15px_rgba(204,255,0,0.4)] transition-all cursor-pointer shrink-0 disabled:opacity-50"
+                      className="bg-[#9d4edd] hover:bg-[#b565f7] text-white font-bold text-xs uppercase px-6 py-3 rounded-full transition-colors cursor-pointer shrink-0 disabled:opacity-50"
                     >
-                      {approving ? "MEMPROSES..." : "ACC & VERIFIKASI MASUK"}
+                      {approving ? "PROCESSING..." : "AUTHORIZE ENTRY"}
                     </button>
                   )}
                 </div>
 
-                {/* Ticket & Attendee Details Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-zinc-900">
-                  <div className="space-y-4">
-                    <h4 className="text-xs text-zinc-500 uppercase tracking-widest font-bold border-b border-zinc-900 pb-2">
-                      INFORMASI PENGUNJUNG
+                {/* Details Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-zinc-800 text-xs font-medium">
+                  <div className="space-y-3">
+                    <h4 className="text-xs text-zinc-400 uppercase font-bold tracking-wider border-b border-zinc-800 pb-2">
+                      ATTENDEE DETAILS
                     </h4>
-
-                    <div className="space-y-3 text-xs">
-                      <div>
-                        <span className="text-[10px] text-zinc-500 uppercase block">Nama Pemegang Tiket</span>
-                        <span className="text-white font-bold text-sm uppercase">{ticketInfo.attendeeName}</span>
-                      </div>
-
-                      <div>
-                        <span className="text-[10px] text-zinc-500 uppercase block">NIK / Nomor Identitas</span>
-                        <span className="text-cyan-400 font-bold">{ticketInfo.attendeeId}</span>
-                      </div>
-
-                      <div>
-                        <span className="text-[10px] text-zinc-500 uppercase block">Email Terdaftar</span>
-                        <span className="text-zinc-300">{ticketInfo.attendeeEmail}</span>
-                      </div>
+                    <div>
+                      <span className="text-[10px] text-zinc-500 uppercase block">Name</span>
+                      <span className="text-white font-bold text-sm uppercase">{ticketInfo.attendeeName}</span>
+                    </div>
+                    <div>
+                      <span className="text-[10px] text-zinc-500 uppercase block">National ID</span>
+                      <span className="text-white font-mono">{ticketInfo.attendeeId}</span>
+                    </div>
+                    <div>
+                      <span className="text-[10px] text-zinc-500 uppercase block">Email</span>
+                      <span className="text-zinc-300">{ticketInfo.attendeeEmail}</span>
                     </div>
                   </div>
 
-                  <div className="space-y-4">
-                    <h4 className="text-xs text-zinc-500 uppercase tracking-widest font-bold border-b border-zinc-900 pb-2">
-                      DETAIL KONSER & PASS
+                  <div className="space-y-3">
+                    <h4 className="text-xs text-zinc-400 uppercase font-bold tracking-wider border-b border-zinc-800 pb-2">
+                      CONCERT PASS DETAILS
                     </h4>
-
-                    <div className="space-y-3 text-xs">
-                      <div>
-                        <span className="text-[10px] text-zinc-500 uppercase block">Event Konser</span>
-                        <span className="text-[#ccff00] font-bold text-sm uppercase">{ticketInfo.eventTitle}</span>
-                      </div>
-
-                      <div>
-                        <span className="text-[10px] text-zinc-500 uppercase block">Kategori Tiket</span>
-                        <span className="text-white font-bold uppercase">{ticketInfo.categoryName} ({ticketInfo.quantity} Tiket)</span>
-                      </div>
-
-                      {ticketInfo.seats && ticketInfo.seats.length > 0 && (
-                        <div>
-                          <span className="text-[10px] text-zinc-500 uppercase block mb-1">Nomor Kursi Allocated</span>
-                          <div className="flex gap-2">
-                            {ticketInfo.seats.map((s) => (
-                              <span key={s.id} className="bg-zinc-900 border border-zinc-800 px-2 py-1 text-white font-bold">
-                                {s.row}-{s.seatNum}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-
-                      <div>
-                        <span className="text-[10px] text-zinc-500 uppercase block">Lokasi & Tanggal</span>
-                        <span className="text-zinc-300">{ticketInfo.venueName} — {ticketInfo.eventDate} ({ticketInfo.eventTime})</span>
-                      </div>
+                    <div>
+                      <span className="text-[10px] text-zinc-500 uppercase block">Concert Title</span>
+                      <span className="text-[#9d4edd] font-bold text-sm uppercase">{ticketInfo.eventTitle}</span>
+                    </div>
+                    <div>
+                      <span className="text-[10px] text-zinc-500 uppercase block">Pass Category</span>
+                      <span className="text-white font-bold uppercase">{ticketInfo.categoryName} ({ticketInfo.quantity} Pass)</span>
+                    </div>
+                    <div>
+                      <span className="text-[10px] text-zinc-500 uppercase block">Venue & Date</span>
+                      <span className="text-zinc-300">{ticketInfo.venueName} — {ticketInfo.eventDate} ({ticketInfo.eventTime})</span>
                     </div>
                   </div>
                 </div>
-
-                {/* Big Action Footer Button */}
-                {!ticketInfo.isAlreadyScanned && (
-                  <div className="pt-4 border-t border-zinc-900">
-                    <button
-                      onClick={() => handleApproveTicket(ticketInfo.ticketCode)}
-                      disabled={approving}
-                      className="w-full bg-[#ccff00] hover:bg-[#b8e600] text-black font-mono font-black text-sm uppercase py-4 tracking-widest shadow-[0_0_25px_rgba(204,255,0,0.3)] transition-all cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2"
-                    >
-                      {approving ? (
-                        <Loader2 className="w-5 h-5 animate-spin" />
-                      ) : (
-                        <ShieldCheck className="w-5 h-5" />
-                      )}
-                      <span>ACC / APPROVE IZIN MASUK SEKARANG</span>
-                    </button>
-                  </div>
-                )}
               </motion.div>
             )}
           </div>
         )}
         
-        {/* TAB 1: MANAJEMEN EVENT */}
+        {/* TAB 1: EVENT MANAGEMENT */}
         {activeTab === "events" && (
           <>
-            {/* Header Section */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-zinc-900 pb-8 mb-8">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-zinc-800 pb-8 mb-8">
               <div>
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 border border-cyan-500/30 bg-cyan-500/10 font-mono text-[10px] uppercase text-cyan-400 tracking-widest">
-                    <Shield className="w-3 h-3" />
-                    Admin Dashboard
-                  </span>
-                  <span className="font-mono text-xs text-zinc-500">
-                    {events.length} Total Events
-                  </span>
-                </div>
-                <h1 className="text-3xl md:text-4xl font-mono font-black text-white tracking-tight">
-                  MANAJEMEN EVENT KONSER
+                <span className="text-xs font-semibold text-[#9d4edd] tracking-wider uppercase block mb-1">
+                  Management Console
+                </span>
+                <h1 className="text-3xl md:text-5xl font-black text-white tracking-tight uppercase">
+                  EVENT DIRECTORY.
                 </h1>
                 <p className="text-zinc-400 text-sm mt-1">
-                  Tambah, perbarui detail, atur kategori tiket, atau hapus event konser platform EchoTic.
+                  Create, edit, or manage concert offerings across EchoTic platform.
                 </p>
               </div>
 
               <button
                 onClick={handleOpenCreateModal}
-                className="flex items-center justify-center gap-2 bg-[#ccff00] text-black font-mono font-bold text-xs uppercase tracking-widest px-6 py-3.5 hover:bg-[#b8e600] hover:shadow-[0_0_20px_rgba(204,255,0,0.3)] transition-all cursor-pointer"
+                className="flex items-center justify-center gap-2 bg-[#9d4edd] text-white font-bold text-xs uppercase tracking-wider px-6 py-3.5 rounded-full hover:bg-[#b565f7] transition-all cursor-pointer shadow-lg shadow-[#9d4edd]/20"
               >
                 <Plus className="w-4 h-4" />
-                <span>Tambah Event Baru</span>
+                <span>Create New Event</span>
               </button>
             </div>
 
             {/* Filter & Search Bar */}
             <div className="flex flex-col sm:flex-row gap-4 mb-8">
-          <div className="relative flex-1">
-            <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" />
-            <input
-              type="text"
-              placeholder="Cari judul event atau artis..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-zinc-950 border border-zinc-800 pl-11 pr-4 py-3 font-mono text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-[#ccff00] transition-colors"
-            />
-          </div>
+              <div className="relative flex-1">
+                <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" />
+                <input
+                  type="text"
+                  placeholder="Search concert title or artist..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="w-full bg-[#121212] border border-zinc-800 rounded-2xl pl-11 pr-4 py-3 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#9d4edd] transition-colors"
+                />
+              </div>
 
-          <div className="flex gap-2 overflow-x-auto pb-1 sm:pb-0">
-            {["all", "rock", "edm", "pop", "jazz", "indie", "metal"].map((g) => (
-              <button
-                key={g}
-                onClick={() => setSelectedGenre(g)}
-                className={`px-4 py-2.5 font-mono text-xs uppercase tracking-wider transition-all whitespace-nowrap cursor-pointer ${
-                  selectedGenre === g
-                    ? "bg-zinc-800 text-[#ccff00] border border-[#ccff00]/40"
-                    : "bg-zinc-950 text-zinc-400 border border-zinc-900 hover:text-white"
-                }`}
-              >
-                {g}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Event List Table */}
-        {loading ? (
-          <div className="flex flex-col items-center justify-center py-20 gap-3 border border-zinc-900 bg-zinc-950">
-            <Loader2 className="w-8 h-8 text-[#ccff00] animate-spin" />
-            <span className="font-mono text-xs text-zinc-500">Memuat katalog event...</span>
-          </div>
-        ) : filteredEvents.length === 0 ? (
-          <div className="text-center py-20 border border-zinc-900 bg-zinc-950">
-            <p className="font-mono text-sm text-zinc-500 mb-4">
-              Tidak ada event yang cocok dengan pencarian "{search}".
-            </p>
-            <button
-              onClick={() => {
-                setSearch("");
-                setSelectedGenre("all");
-              }}
-              className="font-mono text-xs text-[#ccff00] border border-[#ccff00]/20 bg-[#ccff00]/5 px-4 py-2 hover:bg-[#ccff00] hover:text-black transition-all"
-            >
-              Reset Filter
-            </button>
-          </div>
-        ) : (
-          <div className="border border-zinc-900 bg-zinc-950 overflow-x-auto">
-            <table className="w-full text-left font-mono text-xs">
-              <thead className="bg-zinc-900/60 border-b border-zinc-900 text-zinc-400 uppercase tracking-wider">
-                <tr>
-                  <th className="py-4 px-6">Event</th>
-                  <th className="py-4 px-4">Genre</th>
-                  <th className="py-4 px-4">Tanggal & Waktu</th>
-                  <th className="py-4 px-4">Lokasi Venue</th>
-                  <th className="py-4 px-4">Status Tag</th>
-                  <th className="py-4 px-6 text-right">Aksi</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-zinc-900 text-zinc-300">
-                {filteredEvents.map((evt) => (
-                  <tr key={evt.id} className="hover:bg-zinc-900/40 transition-colors">
-                    {/* Event Detail */}
-                    <td className="py-4 px-6">
-                      <div className="flex items-center gap-3">
-                        <img
-                          src={evt.image_url}
-                          alt={evt.title}
-                          className="w-12 h-12 object-cover border border-zinc-800 shrink-0"
-                        />
-                        <div>
-                          <div className="font-bold text-white text-sm line-clamp-1">
-                            {evt.title}
-                          </div>
-                          <div className="text-zinc-500 text-[11px] line-clamp-1">
-                            {evt.subtitle}
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-
-                    {/* Genre */}
-                    <td className="py-4 px-4">
-                      <span className="uppercase px-2 py-1 bg-zinc-900 border border-zinc-800 text-[10px] text-zinc-300 font-bold">
-                        {evt.genre}
-                      </span>
-                    </td>
-
-                    {/* Date & Time */}
-                    <td className="py-4 px-4">
-                      <div className="flex items-center gap-1.5 text-zinc-300">
-                        <Calendar className="w-3.5 h-3.5 text-[#ccff00]" />
-                        <span>{evt.date ? new Date(evt.date).toLocaleDateString("id-ID") : "-"}</span>
-                      </div>
-                      <div className="text-zinc-500 text-[10px] mt-0.5">
-                        {evt.time}
-                      </div>
-                    </td>
-
-                    {/* Venue */}
-                    <td className="py-4 px-4">
-                      <div className="text-zinc-300 font-medium">
-                        {evt.venue_name || evt.venue_id}
-                      </div>
-                      <div className="text-zinc-500 text-[10px]">
-                        {evt.venue_city || "Indonesia"}
-                      </div>
-                    </td>
-
-                    {/* Badges */}
-                    <td className="py-4 px-4">
-                      <div className="flex gap-1.5">
-                        {Boolean(evt.featured) && (
-                          <span className="flex items-center gap-1 text-[10px] text-[#ccff00] bg-[#ccff00]/10 border border-[#ccff00]/30 px-2 py-0.5">
-                            <Sparkles className="w-3 h-3" /> Featured
-                          </span>
-                        )}
-                        {Boolean(evt.trending) && (
-                          <span className="flex items-center gap-1 text-[10px] text-orange-400 bg-orange-500/10 border border-orange-500/30 px-2 py-0.5">
-                            <Flame className="w-3 h-3" /> Trending
-                          </span>
-                        )}
-                        {!evt.featured && !evt.trending && (
-                          <span className="text-zinc-600 text-[10px]">Standard</span>
-                        )}
-                      </div>
-                    </td>
-
-                    {/* Actions */}
-                    <td className="py-4 px-6 text-right">
-                      <div className="flex items-center justify-end gap-2">
-                        <button
-                          onClick={() => handleOpenEditModal(evt)}
-                          className="p-2 border border-zinc-800 hover:border-cyan-500 hover:bg-cyan-500/10 text-cyan-400 transition-all cursor-pointer"
-                          title="Edit Event"
-                        >
-                          <Pencil className="w-4 h-4" />
-                        </button>
-                        <button
-                          onClick={() => setDeletingId(evt.id)}
-                          className="p-2 border border-zinc-800 hover:border-red-500 hover:bg-red-500/10 text-red-400 transition-all cursor-pointer"
-                          title="Hapus Event"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
+              <div className="flex gap-2 overflow-x-auto pb-1 sm:pb-0">
+                {["all", "rock", "edm", "pop", "jazz", "indie", "metal"].map((g) => (
+                  <button
+                    key={g}
+                    onClick={() => setSelectedGenre(g)}
+                    className={`px-4 py-2.5 text-xs font-semibold uppercase tracking-wider transition-all whitespace-nowrap rounded-full cursor-pointer ${
+                      selectedGenre === g
+                        ? "bg-[#9d4edd] text-white"
+                        : "bg-[#121212] text-zinc-400 border border-zinc-800 hover:text-white"
+                    }`}
+                  >
+                    {g}
+                  </button>
                 ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-        </>
+              </div>
+            </div>
+
+            {/* Event List Table */}
+            {loading ? (
+              <div className="flex flex-col items-center justify-center py-20 gap-3 border border-zinc-800 bg-[#121212] rounded-3xl">
+                <Loader2 className="w-8 h-8 text-[#9d4edd] animate-spin" />
+                <span className="text-xs text-zinc-400 font-medium">Loading events...</span>
+              </div>
+            ) : filteredEvents.length === 0 ? (
+              <div className="text-center py-20 border border-zinc-800 bg-[#121212] rounded-3xl">
+                <p className="text-sm text-zinc-400 mb-4">
+                  No events found matching "{search}".
+                </p>
+                <button
+                  onClick={() => {
+                    setSearch("");
+                    setSelectedGenre("all");
+                  }}
+                  className="text-xs font-semibold text-[#9d4edd] underline cursor-pointer"
+                >
+                  Reset Filters
+                </button>
+              </div>
+            ) : (
+              <div className="border border-zinc-800 bg-[#121212] rounded-3xl overflow-hidden shadow-card-subtle">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-xs">
+                    <thead className="bg-zinc-900/80 border-b border-zinc-800 text-zinc-400 font-semibold uppercase tracking-wider">
+                      <tr>
+                        <th className="py-4 px-6">Event</th>
+                        <th className="py-4 px-4">Genre</th>
+                        <th className="py-4 px-4">Date & Time</th>
+                        <th className="py-4 px-4">Venue</th>
+                        <th className="py-4 px-4">Tags</th>
+                        <th className="py-4 px-6 text-right">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-zinc-800 text-zinc-300 font-medium">
+                      {filteredEvents.map((evt) => (
+                        <tr key={evt.id} className="hover:bg-zinc-900/50 transition-colors">
+                          <td className="py-4 px-6">
+                            <div className="flex items-center gap-3">
+                              <img
+                                src={evt.image_url}
+                                alt={evt.title}
+                                className="w-12 h-12 object-cover rounded-xl border border-zinc-700 shrink-0"
+                              />
+                              <div>
+                                <div className="font-bold text-white text-sm line-clamp-1">
+                                  {evt.title}
+                                </div>
+                                <div className="text-zinc-400 text-xs line-clamp-1">
+                                  {evt.subtitle}
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+
+                          <td className="py-4 px-4">
+                            <span className="uppercase px-2.5 py-1 bg-zinc-900 border border-zinc-700 rounded-full text-[10px] text-zinc-300 font-bold">
+                              {evt.genre}
+                            </span>
+                          </td>
+
+                          <td className="py-4 px-4">
+                            <div className="flex items-center gap-1.5 text-zinc-300">
+                              <Calendar className="w-3.5 h-3.5 text-[#9d4edd]" />
+                              <span>{evt.date ? new Date(evt.date).toLocaleDateString("en-US") : "-"}</span>
+                            </div>
+                            <div className="text-zinc-500 text-[10px] mt-0.5">
+                              {evt.time}
+                            </div>
+                          </td>
+
+                          <td className="py-4 px-4">
+                            <div className="text-white font-semibold">
+                              {evt.venue_name || evt.venue_id}
+                            </div>
+                            <div className="text-zinc-400 text-[10px]">
+                              {evt.venue_city || "Indonesia"}
+                            </div>
+                          </td>
+
+                          <td className="py-4 px-4">
+                            <div className="flex gap-1.5">
+                              {Boolean(evt.featured) && (
+                                <span className="flex items-center gap-1 text-[10px] font-bold text-[#9d4edd] bg-[#9d4edd]/10 border border-[#9d4edd]/30 px-2 py-0.5 rounded-full">
+                                  Featured
+                                </span>
+                              )}
+                              {Boolean(evt.trending) && (
+                                <span className="flex items-center gap-1 text-[10px] font-bold text-orange-400 bg-orange-500/10 border border-orange-500/30 px-2 py-0.5 rounded-full">
+                                  Trending
+                                </span>
+                              )}
+                            </div>
+                          </td>
+
+                          <td className="py-4 px-6 text-right">
+                            <div className="flex items-center justify-end gap-2">
+                              <button
+                                onClick={() => handleOpenEditModal(evt)}
+                                className="p-2 border border-zinc-700 hover:border-[#9d4edd] hover:text-[#9d4edd] text-zinc-400 rounded-xl transition-all cursor-pointer"
+                                title="Edit Event"
+                              >
+                                <Pencil className="w-4 h-4" />
+                              </button>
+                              <button
+                                onClick={() => setDeletingId(evt.id)}
+                                className="p-2 border border-zinc-700 hover:border-red-500 hover:text-red-400 text-zinc-400 rounded-xl transition-all cursor-pointer"
+                                title="Delete Event"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+          </>
         )}
       </main>
 
@@ -780,254 +724,135 @@ export default function AdminPage() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-zinc-950 border border-zinc-800 w-full max-w-2xl my-8 p-6 md:p-8 relative shadow-2xl"
+              className="bg-[#121212] border border-zinc-800 rounded-3xl w-full max-w-2xl my-8 p-6 md:p-8 relative shadow-2xl"
             >
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="absolute top-6 right-6 text-zinc-500 hover:text-white transition-colors cursor-pointer"
+                className="absolute top-6 right-6 text-zinc-400 hover:text-white transition-colors cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
 
-              <h2 className="text-xl font-mono font-bold text-white mb-1 uppercase tracking-tight">
-                {modalMode === "create" ? "➕ Tambah Event Konser" : "✏️ Edit Event Konser"}
+              <h2 className="text-xl font-bold text-white mb-1 uppercase tracking-tight">
+                {modalMode === "create" ? "Create New Concert" : "Edit Concert Details"}
               </h2>
-              <p className="text-xs font-mono text-zinc-400 mb-6">
-                Isi rincian informasi konser dan kategori harga tiket di bawah ini.
+              <p className="text-xs text-zinc-400 mb-6 font-normal">
+                Fill in the event information and ticket pricing categories below.
               </p>
 
-              <form onSubmit={handleSubmitForm} className="space-y-4 font-mono text-xs">
-                {/* Title & Genre */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="md:col-span-2">
-                    <label className="block text-zinc-400 mb-1">Judul Event *</label>
+              <form onSubmit={handleSubmitForm} className="space-y-4 text-xs font-medium">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-1.5">
+                    <label className="block text-zinc-300 uppercase font-semibold">Title</label>
                     <input
                       type="text"
                       required
-                      placeholder="e.g. NEON FUTURE MASSIVE 2026"
                       value={form.title}
                       onChange={(e) => setForm({ ...form, title: e.target.value })}
-                      className="w-full bg-zinc-900 border border-zinc-800 px-3 py-2.5 text-white focus:border-[#ccff00] outline-none"
+                      placeholder="E.g. World Tour 2026"
+                      className="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-[#9d4edd]"
                     />
                   </div>
 
-                  <div>
-                    <label className="block text-zinc-400 mb-1">Genre *</label>
+                  <div className="space-y-1.5">
+                    <label className="block text-zinc-300 uppercase font-semibold">Genre</label>
                     <select
                       value={form.genre}
                       onChange={(e) => setForm({ ...form, genre: e.target.value })}
-                      className="w-full bg-zinc-900 border border-zinc-800 px-3 py-2.5 text-white focus:border-[#ccff00] outline-none uppercase"
+                      className="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-[#9d4edd]"
                     >
-                      <option value="rock">Rock</option>
-                      <option value="edm">EDM</option>
-                      <option value="pop">Pop</option>
-                      <option value="jazz">Jazz</option>
-                      <option value="indie">Indie</option>
-                      <option value="metal">Metal</option>
-                    </select>
-                  </div>
-                </div>
-
-                {/* Subtitle */}
-                <div>
-                  <label className="block text-zinc-400 mb-1">Subtitle / Lineup Highlights</label>
-                  <input
-                    type="text"
-                    placeholder="e.g. Steve Aoki & Alesso Live in Jakarta"
-                    value={form.subtitle}
-                    onChange={(e) => setForm({ ...form, subtitle: e.target.value })}
-                    className="w-full bg-zinc-900 border border-zinc-800 px-3 py-2.5 text-white focus:border-[#ccff00] outline-none"
-                  />
-                </div>
-
-                {/* Date, Time, Venue */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div>
-                    <label className="block text-zinc-400 mb-1">Tanggal *</label>
-                    <input
-                      type="date"
-                      required
-                      value={form.date}
-                      onChange={(e) => setForm({ ...form, date: e.target.value })}
-                      className="w-full bg-zinc-900 border border-zinc-800 px-3 py-2.5 text-white focus:border-[#ccff00] outline-none"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-zinc-400 mb-1">Waktu *</label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="e.g. 20:00 WIB"
-                      value={form.time}
-                      onChange={(e) => setForm({ ...form, time: e.target.value })}
-                      className="w-full bg-zinc-900 border border-zinc-800 px-3 py-2.5 text-white focus:border-[#ccff00] outline-none"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-zinc-400 mb-1">Lokasi Venue *</label>
-                    <select
-                      value={form.venue_id}
-                      onChange={(e) => setForm({ ...form, venue_id: e.target.value })}
-                      className="w-full bg-zinc-900 border border-zinc-800 px-3 py-2.5 text-white focus:border-[#ccff00] outline-none"
-                    >
-                      {venues.map((v) => (
-                        <option key={v.id} value={v.id}>
-                          {v.name} ({v.city})
-                        </option>
+                      {["rock", "edm", "pop", "jazz", "indie", "metal"].map((g) => (
+                        <option key={g} value={g}>{g.toUpperCase()}</option>
                       ))}
                     </select>
                   </div>
                 </div>
 
-                {/* Poster Image URL */}
-                <div>
-                  <label className="block text-zinc-400 mb-1">URL Gambar Poster *</label>
+                <div className="space-y-1.5">
+                  <label className="block text-zinc-300 uppercase font-semibold">Subtitle / Artist</label>
+                  <input
+                    type="text"
+                    value={form.subtitle}
+                    onChange={(e) => setForm({ ...form, subtitle: e.target.value })}
+                    placeholder="E.g. Live in Jakarta"
+                    className="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-[#9d4edd]"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-1.5">
+                    <label className="block text-zinc-300 uppercase font-semibold">Date</label>
+                    <input
+                      type="date"
+                      required
+                      value={form.date}
+                      onChange={(e) => setForm({ ...form, date: e.target.value })}
+                      className="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-[#9d4edd]"
+                    />
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="block text-zinc-300 uppercase font-semibold">Time</label>
+                    <input
+                      type="text"
+                      value={form.time}
+                      onChange={(e) => setForm({ ...form, time: e.target.value })}
+                      placeholder="20:00 WIB"
+                      className="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-[#9d4edd]"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="block text-zinc-300 uppercase font-semibold">Venue</label>
+                  <select
+                    value={form.venue_id}
+                    onChange={(e) => setForm({ ...form, venue_id: e.target.value })}
+                    className="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-[#9d4edd]"
+                  >
+                    {venues.map((v) => (
+                      <option key={v.id} value={v.id}>{v.name} ({v.city})</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="block text-zinc-300 uppercase font-semibold">Artwork Image URL</label>
                   <input
                     type="url"
                     required
-                    placeholder="https://images.unsplash.com/photo-..."
                     value={form.image_url}
                     onChange={(e) => setForm({ ...form, image_url: e.target.value })}
-                    className="w-full bg-zinc-900 border border-zinc-800 px-3 py-2.5 text-white focus:border-[#ccff00] outline-none"
+                    placeholder="https://..."
+                    className="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-[#9d4edd]"
                   />
-                  {form.image_url && (
-                    <div className="mt-2 flex items-center gap-3">
-                      <img
-                        src={form.image_url}
-                        alt="Preview"
-                        className="w-20 h-12 object-cover border border-zinc-800"
-                        onError={(e) => (e.target.style.display = "none")}
-                      />
-                      <span className="text-[10px] text-zinc-500">Preview poster</span>
-                    </div>
-                  )}
                 </div>
 
-                {/* Description */}
-                <div>
-                  <label className="block text-zinc-400 mb-1">Deskripsi Lengkap</label>
+                <div className="space-y-1.5">
+                  <label className="block text-zinc-300 uppercase font-semibold">Description</label>
                   <textarea
                     rows={3}
-                    placeholder="Tuliskan detail acara konser..."
                     value={form.description}
                     onChange={(e) => setForm({ ...form, description: e.target.value })}
-                    className="w-full bg-zinc-900 border border-zinc-800 px-3 py-2.5 text-white focus:border-[#ccff00] outline-none"
+                    className="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-[#9d4edd]"
                   />
                 </div>
 
-                {/* Checkboxes */}
-                <div className="flex gap-6 py-2 border-y border-zinc-900">
-                  <label className="flex items-center gap-2 text-zinc-300 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={form.featured}
-                      onChange={(e) => setForm({ ...form, featured: e.target.checked })}
-                      className="accent-[#ccff00] w-4 h-4"
-                    />
-                    <span>⭐ Featured Banner</span>
-                  </label>
-
-                  <label className="flex items-center gap-2 text-zinc-300 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={form.trending}
-                      onChange={(e) => setForm({ ...form, trending: e.target.checked })}
-                      className="accent-orange-500 w-4 h-4"
-                    />
-                    <span>🔥 Trending Tag</span>
-                  </label>
-                </div>
-
-                {/* Ticket Categories Section */}
-                <div className="pt-2">
-                  <div className="flex items-center justify-between mb-3">
-                    <label className="text-zinc-300 font-bold uppercase tracking-wider">
-                      Kategori Tiket & Harga
-                    </label>
-                    <button
-                      type="button"
-                      onClick={handleAddCategory}
-                      className="text-[#ccff00] border border-[#ccff00]/30 bg-[#ccff00]/10 px-2.5 py-1 text-[11px] hover:bg-[#ccff00] hover:text-black transition-all cursor-pointer"
-                    >
-                      + Tambah Kategori
-                    </button>
-                  </div>
-
-                  <div className="space-y-2">
-                    {form.categories.map((cat, idx) => (
-                      <div
-                        key={idx}
-                        className="grid grid-cols-12 gap-2 items-center bg-zinc-900/60 p-2 border border-zinc-800"
-                      >
-                        <div className="col-span-5">
-                          <input
-                            type="text"
-                            placeholder="Nama Kategori (VIP / Presale)"
-                            value={cat.name}
-                            onChange={(e) =>
-                              handleCategoryChange(idx, "name", e.target.value)
-                            }
-                            className="w-full bg-zinc-950 border border-zinc-800 px-2 py-1.5 text-white"
-                          />
-                        </div>
-
-                        <div className="col-span-4">
-                          <input
-                            type="number"
-                            placeholder="Harga (Rp)"
-                            value={cat.price}
-                            onChange={(e) =>
-                              handleCategoryChange(idx, "price", e.target.value)
-                            }
-                            className="w-full bg-zinc-950 border border-zinc-800 px-2 py-1.5 text-white"
-                          />
-                        </div>
-
-                        <div className="col-span-2">
-                          <input
-                            type="number"
-                            placeholder="Kapasitas"
-                            value={cat.capacity}
-                            onChange={(e) =>
-                              handleCategoryChange(idx, "capacity", e.target.value)
-                            }
-                            className="w-full bg-zinc-950 border border-zinc-800 px-2 py-1.5 text-white"
-                          />
-                        </div>
-
-                        <div className="col-span-1 text-center">
-                          <button
-                            type="button"
-                            onClick={() => handleRemoveCategory(idx)}
-                            disabled={form.categories.length <= 1}
-                            className="text-zinc-500 hover:text-red-400 disabled:opacity-30 cursor-pointer"
-                          >
-                            <Trash2 className="w-4 h-4 mx-auto" />
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Submit Action */}
-                <div className="flex items-center justify-end gap-3 pt-4 border-t border-zinc-900">
+                {/* Submit button */}
+                <div className="pt-4 flex justify-end gap-3 border-t border-zinc-800">
                   <button
                     type="button"
                     onClick={() => setIsModalOpen(false)}
-                    className="px-5 py-2.5 border border-zinc-800 text-zinc-400 hover:text-white"
+                    className="px-5 py-2.5 rounded-full border border-zinc-700 text-zinc-300 hover:text-white"
                   >
-                    Batal
+                    Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={saving}
-                    className="px-6 py-2.5 bg-[#ccff00] text-black font-bold uppercase hover:bg-[#b8e600] disabled:opacity-50 cursor-pointer flex items-center gap-2"
+                    className="px-6 py-2.5 rounded-full bg-[#9d4edd] text-white font-bold hover:bg-[#b565f7] transition-colors"
                   >
-                    {saving && <Loader2 className="w-4 h-4 animate-spin" />}
-                    <span>{saving ? "Menyimpan..." : "Simpan Event"}</span>
+                    {saving ? "Saving..." : "Save Event"}
                   </button>
                 </div>
               </form>
@@ -1044,29 +869,23 @@ export default function AdminPage() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-zinc-950 border border-red-500/40 p-6 md:p-8 max-w-md w-full relative shadow-2xl text-center font-mono"
+              className="bg-[#121212] border border-zinc-800 rounded-3xl w-full max-w-md p-6 text-center space-y-4 shadow-2xl"
             >
-              <div className="w-12 h-12 bg-red-500/10 border border-red-500/30 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                <AlertTriangle className="w-6 h-6" />
-              </div>
-
-              <h3 className="text-lg font-bold text-white mb-2">HAPUS EVENT INI?</h3>
-              <p className="text-xs text-zinc-400 mb-6">
-                Tindakan ini tidak dapat dibatalkan. Seluruh data event dan kategori tiket terkait akan terhapus secara permanen.
-              </p>
-
-              <div className="flex items-center justify-center gap-3">
+              <AlertTriangle className="w-10 h-10 text-red-400 mx-auto" />
+              <h3 className="text-base font-bold text-white uppercase">Confirm Delete</h3>
+              <p className="text-xs text-zinc-400">Are you sure you want to remove this concert from the directory?</p>
+              <div className="flex justify-center gap-3 pt-2">
                 <button
                   onClick={() => setDeletingId(null)}
-                  className="px-5 py-2.5 border border-zinc-800 text-zinc-400 hover:text-white text-xs"
+                  className="px-5 py-2 rounded-full border border-zinc-700 text-zinc-300 text-xs"
                 >
-                  Batal
+                  Cancel
                 </button>
                 <button
                   onClick={() => handleDeleteEvent(deletingId)}
-                  className="px-6 py-2.5 bg-red-600 text-white font-bold text-xs uppercase hover:bg-red-700 transition-colors cursor-pointer"
+                  className="px-5 py-2 rounded-full bg-red-600 text-white font-bold text-xs hover:bg-red-500"
                 >
-                  Ya, Hapus Sekarang
+                  Delete
                 </button>
               </div>
             </motion.div>

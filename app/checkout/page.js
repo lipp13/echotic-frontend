@@ -9,7 +9,6 @@ import { apiGetEvent, apiCreateOrder, isAuthenticated } from "@/lib/api";
 import { formatPrice, formatDate } from "@/lib/utils";
 import Button from "@/components/ui/Button";
 import { useToast } from "@/components/ui/Toast";
-import Decor3D from "@/components/ui/Decor3D";
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -79,7 +78,7 @@ export default function CheckoutPage() {
     }
 
     setStep(2);
-    addToast("Attendee information verified", "info");
+    addToast("Attendee information saved", "info");
   };
 
   // Submit order to API
@@ -105,13 +104,11 @@ export default function CheckoutPage() {
       const result = await apiCreateOrder(orderData);
 
       if (result.success) {
-        // Clean checkout cache
         localStorage.removeItem("echotic_checkout_pending");
 
-        addToast("Transaction Approved! Generating tickets...", "success");
+        addToast("Payment successful! Issuing digital pass...", "success");
         setIsProcessing(false);
         
-        // Forward to confirmation
         router.push(`/ticket/${result.data.orderId}`);
       }
     } catch (error) {
@@ -124,7 +121,7 @@ export default function CheckoutPage() {
   if (!booking || !event) {
     return (
       <div className="flex justify-center items-center py-24 flex-grow">
-        <Loader2 className="w-8 h-8 text-[#ccff00] animate-spin" />
+        <Loader2 className="w-8 h-8 text-[#9d4edd] animate-spin" />
       </div>
     );
   }
@@ -138,117 +135,115 @@ export default function CheckoutPage() {
   const finalTotal = subtotal + adminFee + governmentTax;
 
   return (
-    <main className="max-w-7xl mx-auto px-6 py-12 flex-grow">
-      {/* Back button / header */}
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-12 border-b border-zinc-900 pb-8">
+    <main className="max-w-7xl mx-auto px-6 md:px-10 py-12 flex-grow">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-12 border-b border-zinc-800 pb-8">
         <div>
           <Link
             href={`/events/${event.id}`}
-            className="inline-flex items-center gap-2 text-zinc-500 hover:text-white transition-colors font-mono text-xs uppercase mb-3"
+            className="inline-flex items-center gap-2 text-zinc-400 hover:text-white transition-colors text-xs font-semibold uppercase mb-2"
             data-cursor="pointer"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>Abandon Checkout</span>
+            <span>Return to Event</span>
           </Link>
           <h1 className="text-3xl font-black uppercase text-white tracking-tight">
-            Checkout Protocol
+            CHECKOUT.
           </h1>
         </div>
 
-        {/* Dynamic Progress Indicator */}
-        <div className="flex items-center gap-4 font-mono text-xs">
-          <div className={`flex items-center gap-2 ${step >= 1 ? "text-[#ccff00]" : "text-zinc-600"}`}>
-            <span className="w-5 h-5 border border-current rounded-full flex items-center justify-center text-[10px]">1</span>
-            <span className="font-bold">ATTENDEE</span>
+        {/* Wizard Steps */}
+        <div className="flex items-center gap-4 text-xs font-semibold">
+          <div className={`flex items-center gap-2 ${step >= 1 ? "text-[#9d4edd]" : "text-zinc-600"}`}>
+            <span className="w-6 h-6 rounded-full border border-current flex items-center justify-center text-xs font-bold">1</span>
+            <span>ATTENDEE</span>
           </div>
-          <ChevronRight className="w-4 h-4 text-zinc-800" />
-          <div className={`flex items-center gap-2 ${step >= 2 ? "text-[#00f0ff]" : "text-zinc-600"}`}>
-            <span className="w-5 h-5 border border-current rounded-full flex items-center justify-center text-[10px]">2</span>
-            <span className="font-bold">PAYMENT</span>
+          <ChevronRight className="w-4 h-4 text-zinc-700" />
+          <div className={`flex items-center gap-2 ${step >= 2 ? "text-[#9d4edd]" : "text-zinc-600"}`}>
+            <span className="w-6 h-6 rounded-full border border-current flex items-center justify-center text-xs font-bold">2</span>
+            <span>PAYMENT</span>
           </div>
-          <ChevronRight className="w-4 h-4 text-zinc-800" />
-          <div className={`flex items-center gap-2 ${step >= 3 ? "text-zinc-400" : "text-zinc-650"}`}>
-            <span className="w-5 h-5 border border-current rounded-full flex items-center justify-center text-[10px]">3</span>
-            <span className="font-bold">GENERATE</span>
+          <ChevronRight className="w-4 h-4 text-zinc-700" />
+          <div className={`flex items-center gap-2 ${step >= 3 ? "text-white" : "text-zinc-600"}`}>
+            <span className="w-6 h-6 rounded-full border border-current flex items-center justify-center text-xs font-bold">3</span>
+            <span>CONFIRMATION</span>
           </div>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
         
-        {/* Left Side: Forms based on current step */}
+        {/* Left Side: Forms */}
         <div className="lg:col-span-7">
           {step === 1 && (
             <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 30 }}
-              transition={{ duration: 0.3, type: "spring", stiffness: 120 }}
-              className="bg-zinc-950 border border-zinc-800 p-6 md:p-8 space-y-6"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-[#121212] border border-zinc-800 rounded-3xl p-6 md:p-8 space-y-6 shadow-card-subtle"
             >
-              <div className="flex items-center gap-3 pb-4 border-b border-zinc-900">
-                <UserCheck className="w-5 h-5 text-[#ccff00]" />
-                <h3 className="text-sm font-mono font-bold uppercase text-white tracking-wider">
-                  Holder Identification Details
+              <div className="flex items-center gap-3 pb-4 border-b border-zinc-800">
+                <UserCheck className="w-5 h-5 text-[#9d4edd]" />
+                <h3 className="text-base font-bold uppercase text-white tracking-wide">
+                  Attendee Information
                 </h3>
               </div>
 
               <form onSubmit={handleProceedToPayment} className="space-y-5">
-                <div className="space-y-1.5">
-                  <label className="block font-mono text-xs text-zinc-400 uppercase">
-                    Full Name (As in ID Card)
+                <div className="space-y-2">
+                  <label className="block text-xs font-bold text-zinc-300 uppercase tracking-wider">
+                    Full Name (As shown on ID)
                   </label>
                   <input
                     type="text"
                     required
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
-                    placeholder="E.g. Alif Alfathar"
-                    className="w-full bg-black/60 border border-zinc-900 focus:border-[#ccff00] px-4 py-3 text-xs font-mono text-white placeholder-zinc-700 focus:outline-none"
+                    placeholder="E.g. Alex Johnson"
+                    className="w-full bg-zinc-900 border border-zinc-700 focus:border-[#9d4edd] rounded-2xl px-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none transition-colors"
                   />
                 </div>
 
-                <div className="space-y-1.5">
-                  <label className="block font-mono text-xs text-zinc-400 uppercase">
-                    Email Address (Ticket Delivery)
+                <div className="space-y-2">
+                  <label className="block text-xs font-bold text-zinc-300 uppercase tracking-wider">
+                    Email Address (For Pass Delivery)
                   </label>
                   <input
                     type="email"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="alif@domain.com"
-                    className="w-full bg-black/60 border border-zinc-900 focus:border-[#ccff00] px-4 py-3 text-xs font-mono text-white placeholder-zinc-700 focus:outline-none"
+                    placeholder="alex@domain.com"
+                    className="w-full bg-zinc-900 border border-zinc-700 focus:border-[#9d4edd] rounded-2xl px-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none transition-colors"
                   />
-                  <span className="text-[10px] text-zinc-500 font-mono">
-                    Ensure email is correct; your digital QR pass will be issued here.
+                  <span className="text-xs text-zinc-500">
+                    Your digital pass and entry QR code will be delivered here.
                   </span>
                 </div>
 
-                <div className="space-y-1.5">
-                  <label className="block font-mono text-xs text-zinc-400 uppercase">
-                    National ID Card Number (NIK / Passport)
+                <div className="space-y-2">
+                  <label className="block text-xs font-bold text-zinc-300 uppercase tracking-wider">
+                    National ID / Passport Number
                   </label>
                   <input
                     type="text"
                     required
                     value={idNumber}
                     onChange={(e) => setIdNumber(e.target.value)}
-                    placeholder="327xxxxxxxxxxxxx"
-                    className="w-full bg-black/60 border border-zinc-900 focus:border-[#ccff00] px-4 py-3 text-xs font-mono text-white placeholder-zinc-700 focus:outline-none"
+                    placeholder="3271029302910002"
+                    className="w-full bg-zinc-900 border border-zinc-700 focus:border-[#9d4edd] rounded-2xl px-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none transition-colors"
                   />
-                  <span className="text-[10px] text-zinc-500 font-mono">
-                    Required for identity verification at the concert gates.
+                  <span className="text-xs text-zinc-500">
+                    Used for venue security verification upon entry.
                   </span>
                 </div>
 
                 <Button
                   type="submit"
-                  variant="primary"
-                  className="w-full py-4 text-center justify-center mt-6"
+                  variant="accent"
+                  className="w-full py-4 text-center justify-center font-bold text-sm mt-4"
                   data-cursor="pointer"
                 >
-                  Verify & Proceed <ChevronRight className="w-4 h-4 ml-1" />
+                  PROCEED TO PAYMENT →
                 </Button>
               </form>
             </motion.div>
@@ -256,121 +251,108 @@ export default function CheckoutPage() {
 
           {step === 2 && (
             <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -30 }}
-              transition={{ duration: 0.3, type: "spring", stiffness: 120 }}
-              className="bg-zinc-950 border border-zinc-800 p-6 md:p-8 space-y-6"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-[#121212] border border-zinc-800 rounded-3xl p-6 md:p-8 space-y-6 shadow-card-subtle"
             >
-              <div className="flex items-center gap-3 pb-4 border-b border-zinc-900 justify-between">
+              <div className="flex items-center gap-3 pb-4 border-b border-zinc-800 justify-between">
                 <div className="flex items-center gap-3">
-                  <CreditCard className="w-5 h-5 text-[#00f0ff]" />
-                  <h3 className="text-sm font-mono font-bold uppercase text-white tracking-wider">
-                    Secured Payment Gateway
+                  <CreditCard className="w-5 h-5 text-[#9d4edd]" />
+                  <h3 className="text-base font-bold uppercase text-white tracking-wide">
+                    Select Payment Method
                   </h3>
                 </div>
-                <div className="flex items-center gap-4">
-                  <Decor3D type="shield" className="w-10 h-10" />
-                  <button
-                    onClick={() => setStep(1)}
-                    className="text-xs font-mono text-zinc-500 hover:text-white cursor-pointer"
-                  >
-                    Edit Info
-                  </button>
-                </div>
+                <button
+                  onClick={() => setStep(1)}
+                  className="text-xs font-semibold text-zinc-400 hover:text-white cursor-pointer"
+                >
+                  Edit Info
+                </button>
               </div>
 
               {/* Payment selection list */}
               <div className="grid grid-cols-2 gap-4">
                 <button
                   onClick={() => setPaymentMethod("qris")}
-                  className={`p-4 border font-mono text-left flex flex-col justify-between aspect-[16/10] transition-colors cursor-pointer ${
+                  className={`p-5 rounded-2xl border text-left flex flex-col justify-between aspect-[16/10] transition-all cursor-pointer ${
                     paymentMethod === "qris"
-                      ? "bg-[#00f0ff]/5 border-[#00f0ff] text-white"
-                      : "bg-black/60 border-zinc-900 text-zinc-500"
+                      ? "bg-[#9d4edd]/15 border-[#9d4edd] text-white"
+                      : "bg-zinc-900/60 border-zinc-800 text-zinc-400 hover:border-zinc-700"
                   }`}
                 >
-                  <QrCode className="w-5 h-5 text-[#00f0ff]" />
-                  <div className="text-xs font-bold">QRIS INSTANT</div>
+                  <QrCode className="w-6 h-6 text-[#9d4edd]" />
+                  <div className="text-sm font-bold">QRIS Instant</div>
                 </button>
                 
                 <button
                   onClick={() => setPaymentMethod("va")}
-                  className={`p-4 border font-mono text-left flex flex-col justify-between aspect-[16/10] transition-colors cursor-pointer ${
+                  className={`p-5 rounded-2xl border text-left flex flex-col justify-between aspect-[16/10] transition-all cursor-pointer ${
                     paymentMethod === "va"
-                      ? "bg-[#00f0ff]/5 border-[#00f0ff] text-white"
-                      : "bg-black/60 border-zinc-900 text-zinc-500"
+                      ? "bg-[#9d4edd]/15 border-[#9d4edd] text-white"
+                      : "bg-zinc-900/60 border-zinc-800 text-zinc-400 hover:border-zinc-700"
                   }`}
                 >
-                  <CreditCard className="w-5 h-5 text-white" />
-                  <div className="text-xs font-bold">VIRTUAL ACCOUNT</div>
+                  <CreditCard className="w-6 h-6 text-white" />
+                  <div className="text-sm font-bold">Virtual Account</div>
                 </button>
               </div>
 
-              {/* Dynamic Payment Method View */}
+              {/* Payment Method Details */}
               {paymentMethod === "qris" ? (
-                <div className="border border-zinc-900 bg-black/40 p-6 flex flex-col items-center text-center space-y-4">
-                  <div className="w-40 h-40 bg-white p-3 border border-zinc-800 flex items-center justify-center relative shadow-lg">
-                    <div className="w-full h-full bg-slate-100 flex items-center justify-center text-slate-700">
-                      <span className="font-mono text-xs font-black tracking-tighter text-black">
-                        MOCK QRIS BARCODE
+                <div className="border border-zinc-800 bg-zinc-900/40 rounded-2xl p-6 flex flex-col items-center text-center space-y-4">
+                  <div className="w-44 h-44 bg-white p-3 rounded-2xl border border-zinc-300 flex items-center justify-center shadow-lg">
+                    <div className="w-full h-full bg-zinc-100 rounded-xl flex flex-col items-center justify-center p-2 text-center">
+                      <QrCode className="w-16 h-16 text-zinc-800" />
+                      <span className="text-[10px] font-bold tracking-widest text-zinc-800 mt-2">
+                        SCAN QRIS CODE
                       </span>
                     </div>
                   </div>
-                  <div className="font-mono text-[10px] text-zinc-500 uppercase tracking-widest">
-                    Scan via any banking app (Gopay, OVO, ShopeePay, BCA)
-                  </div>
+                  <span className="text-xs text-zinc-400">
+                    Compatible with GoPay, OVO, ShopeePay, BCA, Mandiri mobile apps.
+                  </span>
                 </div>
               ) : (
-                <div className="border border-zinc-900 bg-black/40 p-6 space-y-3 font-mono text-xs">
-                  <div className="flex justify-between border-b border-zinc-900 pb-2">
-                    <span className="text-zinc-500">BANK PARTNER</span>
-                    <span className="text-white font-bold">BCA MANDIRI OR BNI</span>
+                <div className="border border-zinc-800 bg-zinc-900/40 rounded-2xl p-6 space-y-3 text-xs">
+                  <div className="flex justify-between border-b border-zinc-800 pb-2">
+                    <span className="text-zinc-400">Bank Partners</span>
+                    <span className="text-white font-semibold">BCA / Mandiri / BNI</span>
                   </div>
-                  <div className="flex justify-between border-b border-zinc-900 pb-2">
-                    <span className="text-zinc-500">MOCK ACCOUNT NO</span>
-                    <span className="text-[#00f0ff] font-bold">8930 2003 1204 9011</span>
+                  <div className="flex justify-between border-b border-zinc-800 pb-2">
+                    <span className="text-zinc-400">Virtual Account Number</span>
+                    <span className="text-[#9d4edd] font-bold">8930 2003 1204 9011</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-zinc-500">RECEIPT NAME</span>
-                    <span className="text-white">ECHOTIC TICKET INTL</span>
+                    <span className="text-zinc-400">Account Owner</span>
+                    <span className="text-white">EchoTic Live Entertainment</span>
                   </div>
                 </div>
               )}
 
-              {/* Guarantee */}
-              <div className="border border-zinc-900 bg-zinc-900/10 p-4 flex gap-3 text-zinc-400 font-mono text-[10px] leading-relaxed">
-                <AlertCircle className="w-5 h-5 text-[#00f0ff] flex-shrink-0" />
-                <span>
-                  Please complete the payment inside 10 minutes. The tickets will be automatically released back to the general pool if the payment is not received.
-                </span>
-              </div>
-
               <Button
-                variant="primary"
+                variant="accent"
                 onClick={handleCompletePayment}
-                className="w-full py-4 text-center justify-center"
+                className="w-full py-4 text-center justify-center font-bold text-sm"
                 data-cursor="pointer"
               >
-                CONFIRM & PAY {formatPrice(finalTotal)}
+                PROCEED TO PAYMENT {formatPrice(finalTotal)}
               </Button>
             </motion.div>
           )}
 
           {step === 3 && (
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.4 }}
-              className="bg-zinc-950 border border-zinc-800 p-12 text-center space-y-6 flex flex-col items-center"
+              className="bg-[#121212] border border-zinc-800 rounded-3xl p-12 text-center space-y-6 flex flex-col items-center shadow-card-subtle"
             >
-              <Loader2 className="w-12 h-12 text-[#ccff00] animate-spin" />
+              <Loader2 className="w-10 h-10 text-[#9d4edd] animate-spin" />
               <div className="space-y-2">
-                <h3 className="font-mono text-sm font-bold uppercase tracking-widest text-white">
-                  CRYPTOGRAPHIC GENERATION IN PROGRESS
+                <h3 className="text-base font-bold uppercase text-white tracking-wide">
+                  Processing Your Payment
                 </h3>
-                <p className="font-mono text-xs text-zinc-500 max-w-sm mx-auto leading-relaxed">
-                  We are validating the payment receipt, issuing your seat allocations, and embedding the ticket keys into your digital pass. Do not reload.
+                <p className="text-xs text-zinc-400 max-w-sm mx-auto leading-relaxed">
+                  We are confirming your transaction and issuing your digital concert pass. Please do not close or refresh this browser window.
                 </p>
               </div>
             </motion.div>
@@ -378,77 +360,77 @@ export default function CheckoutPage() {
         </div>
 
         {/* Right Side: Order Summary Panel */}
-        <div className="lg:col-span-5 bg-zinc-950 border border-zinc-800 p-6 md:p-8 space-y-6">
-          <div className="flex items-center gap-2 pb-4 border-b border-zinc-900">
-            <ShieldCheck className="w-4 h-4 text-[#ccff00]" />
-            <h4 className="font-mono text-xs font-bold text-white uppercase tracking-widest">
-              Pass Purchase Summary
+        <div className="lg:col-span-5 bg-[#121212] border border-zinc-800 rounded-3xl p-6 md:p-8 space-y-6 shadow-card-subtle">
+          <div className="flex items-center gap-2 pb-4 border-b border-zinc-800">
+            <ShieldCheck className="w-5 h-5 text-[#9d4edd]" />
+            <h4 className="text-sm font-bold text-white uppercase tracking-wider">
+              Order Summary
             </h4>
           </div>
 
           {/* Show info */}
-          <div className="flex gap-4">
+          <div className="flex gap-4 items-center">
             <img
               src={event.image}
               alt={event.title}
-              className="w-16 h-16 object-cover border border-zinc-800 grayscale"
+              className="w-16 h-16 object-cover rounded-2xl border border-zinc-700"
             />
-            <div className="font-mono">
-              <h5 className="text-xs font-bold text-white uppercase line-clamp-1">{event.title}</h5>
-              <span className="text-[10px] text-zinc-500 block mb-1">{event.subtitle}</span>
-              <span className="text-[9px] bg-zinc-900 text-[#ccff00] px-2 py-0.5 uppercase tracking-wider">
+            <div>
+              <h5 className="text-sm font-bold text-white uppercase line-clamp-1">{event.title}</h5>
+              <span className="text-xs text-zinc-400 block">{event.subtitle}</span>
+              <span className="text-xs font-semibold text-[#9d4edd] block mt-1">
                 {booking.categoryName}
               </span>
             </div>
           </div>
 
           {/* Venue Detail */}
-          <div className="border-t border-zinc-900 pt-4 space-y-2 text-xs font-mono">
+          <div className="border-t border-zinc-800 pt-4 space-y-2.5 text-xs font-medium">
             <div className="flex justify-between">
-              <span className="text-zinc-500">Date</span>
+              <span className="text-zinc-400">Date</span>
               <span className="text-white">{formatDate(event.date)}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-zinc-500">Venue</span>
+              <span className="text-zinc-400">Venue</span>
               <span className="text-white">{venue?.name}</span>
             </div>
             {booking.isSeated ? (
               <div className="flex justify-between">
-                <span className="text-zinc-500">Seat Allocations</span>
+                <span className="text-zinc-400">Seats</span>
                 <span className="text-white font-bold">
                   {booking.seats.map((s) => `${s.row}-${s.seatNum}`).join(", ")}
                 </span>
               </div>
             ) : (
               <div className="flex justify-between">
-                <span className="text-zinc-500">Quantity</span>
-                <span className="text-white font-bold">{booking.quantity} passes</span>
+                <span className="text-zinc-400">Quantity</span>
+                <span className="text-white font-bold">{booking.quantity} tickets</span>
               </div>
             )}
           </div>
 
           {/* Pricing Breakdowns */}
-          <div className="border-t border-zinc-900 pt-4 space-y-2 text-xs font-mono">
+          <div className="border-t border-zinc-800 pt-4 space-y-2.5 text-xs font-medium">
             <div className="flex justify-between">
-              <span className="text-zinc-500">Passes Subtotal</span>
+              <span className="text-zinc-400">Subtotal</span>
               <span className="text-white">{formatPrice(subtotal)}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-zinc-500">System Booking Fee</span>
+              <span className="text-zinc-400">Service Fee</span>
               <span className="text-white">{formatPrice(adminFee)}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-zinc-500">Government Tax (10%)</span>
+              <span className="text-zinc-400">Tax (10%)</span>
               <span className="text-white">{formatPrice(governmentTax)}</span>
             </div>
           </div>
 
           {/* Final Total */}
-          <div className="border-t border-zinc-900 pt-4 flex justify-between items-center font-mono">
-            <span className="text-xs font-bold text-white uppercase tracking-wider">
-              Total Charge
+          <div className="border-t border-zinc-800 pt-4 flex justify-between items-center">
+            <span className="text-sm font-bold text-white uppercase tracking-wider">
+              Total Amount
             </span>
-            <span className="text-xl font-black text-[#ccff00]">
+            <span className="text-2xl font-bold text-white">
               {formatPrice(finalTotal)}
             </span>
           </div>

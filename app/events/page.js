@@ -2,12 +2,11 @@
 
 import React, { useState, useEffect, Suspense, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
-import { Search, SlidersHorizontal, ArrowUpDown, X, Loader2 } from "lucide-react";
+import { Search, SlidersHorizontal, ArrowUpDown, X, Loader2, Compass } from "lucide-react";
 import { motion } from "framer-motion";
 import { apiGetEvents, apiGetGenres } from "@/lib/api";
 import Card from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
-import Decor3D from "@/components/ui/Decor3D";
 
 function EventsContent() {
   const searchParams = useSearchParams();
@@ -85,26 +84,25 @@ function EventsContent() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-12 flex-grow">
+    <div className="max-w-7xl mx-auto px-6 md:px-10 py-16 flex-grow">
       {/* Header Statement */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center border-l-2 border-[#ccff00] pl-6 mb-12 gap-4">
-        <div>
-          <span className="text-[10px] font-mono text-zinc-500 tracking-widest uppercase block mb-1">
-            Catalog Feed
-          </span>
-          <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-white">
-            THE LIVE SPECTRUM
-          </h1>
-        </div>
-        {/* Floating 3D Speaker */}
-        <Decor3D type="speaker" className="w-16 h-16 md:w-20 md:h-20" />
+      <div className="mb-12">
+        <span className="text-xs font-semibold text-[#9d4edd] tracking-wider uppercase block mb-2">
+          Concert Directory
+        </span>
+        <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tight text-white">
+          EXPLORE ALL EVENTS.
+        </h1>
+        <p className="text-zinc-400 text-sm mt-2 max-w-xl">
+          Discover live music performances from legendary world tours to intimate live acoustic sessions.
+        </p>
       </div>
 
       {/* Control Panel: Search & Filters */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-12">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mb-10">
         {/* Search Input */}
         <div className="lg:col-span-4 relative">
-          <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-zinc-500">
+          <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-zinc-500">
             <Search className="w-4 h-4" />
           </span>
           <input
@@ -112,20 +110,20 @@ function EventsContent() {
             placeholder="Search artists, venues, concerts..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full bg-zinc-950 border border-zinc-900 focus:border-[#ccff00] pl-10 pr-4 py-3 text-xs font-mono text-white placeholder-zinc-700 focus:outline-none transition-colors"
+            className="w-full bg-[#121212] border border-zinc-800 focus:border-[#9d4edd] rounded-2xl pl-11 pr-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none transition-colors"
           />
         </div>
 
         {/* Genre Selector */}
-        <div className="lg:col-span-3 flex items-center bg-zinc-950 border border-zinc-900 px-3">
-          <SlidersHorizontal className="w-3.5 h-3.5 text-zinc-500 mr-2 flex-shrink-0" />
+        <div className="lg:col-span-3 flex items-center bg-[#121212] border border-zinc-800 rounded-2xl px-4">
+          <SlidersHorizontal className="w-4 h-4 text-zinc-500 mr-2.5 flex-shrink-0" />
           <select
             value={selectedGenre}
             onChange={(e) => setSelectedGenre(e.target.value)}
-            className="bg-transparent border-0 text-xs font-mono text-white focus:outline-none w-full py-3 cursor-pointer uppercase tracking-wider"
+            className="bg-transparent border-0 text-xs font-semibold text-white focus:outline-none w-full py-3 cursor-pointer uppercase tracking-wider"
           >
             {genres.map((g) => (
-              <option key={g.id} value={g.id} className="bg-zinc-950 text-white">
+              <option key={g.id} value={g.id} className="bg-[#121212] text-white">
                 {g.name}
               </option>
             ))}
@@ -133,15 +131,15 @@ function EventsContent() {
         </div>
 
         {/* City Selector */}
-        <div className="lg:col-span-3 flex items-center bg-zinc-950 border border-zinc-900 px-3">
-          <SlidersHorizontal className="w-3.5 h-3.5 text-zinc-500 mr-2 flex-shrink-0" />
+        <div className="lg:col-span-3 flex items-center bg-[#121212] border border-zinc-800 rounded-2xl px-4">
+          <SlidersHorizontal className="w-4 h-4 text-zinc-500 mr-2.5 flex-shrink-0" />
           <select
             value={selectedCity}
             onChange={(e) => setSelectedCity(e.target.value)}
-            className="bg-transparent border-0 text-xs font-mono text-white focus:outline-none w-full py-3 cursor-pointer uppercase tracking-wider"
+            className="bg-transparent border-0 text-xs font-semibold text-white focus:outline-none w-full py-3 cursor-pointer uppercase tracking-wider"
           >
             {cities.map((city) => (
-              <option key={city} value={city} className="bg-zinc-950 text-white">
+              <option key={city} value={city} className="bg-[#121212] text-white">
                 {city === "all" ? "All Locations" : city.toUpperCase()}
               </option>
             ))}
@@ -149,52 +147,46 @@ function EventsContent() {
         </div>
 
         {/* Sorting Selector */}
-        <div className="lg:col-span-2 flex items-center bg-zinc-950 border border-zinc-900 px-3">
-          <ArrowUpDown className="w-3.5 h-3.5 text-zinc-500 mr-2 flex-shrink-0" />
+        <div className="lg:col-span-2 flex items-center bg-[#121212] border border-zinc-800 rounded-2xl px-4">
+          <ArrowUpDown className="w-4 h-4 text-zinc-500 mr-2.5 flex-shrink-0" />
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="bg-transparent border-0 text-xs font-mono text-white focus:outline-none w-full py-3 cursor-pointer uppercase tracking-wider"
+            className="bg-transparent border-0 text-xs font-semibold text-white focus:outline-none w-full py-3 cursor-pointer uppercase tracking-wider"
           >
-            <option value="default" className="bg-zinc-950 text-white">SORT BY</option>
-            <option value="price-low" className="bg-zinc-950 text-white">PRICE: LOW TO HIGH</option>
-            <option value="price-high" className="bg-zinc-950 text-white">PRICE: HIGH TO LOW</option>
-            <option value="date-new" className="bg-zinc-950 text-white">DATE: SOONEST</option>
+            <option value="default" className="bg-[#121212] text-white">DEFAULT SORT</option>
+            <option value="price-low" className="bg-[#121212] text-white">PRICE: LOW - HIGH</option>
+            <option value="price-high" className="bg-[#121212] text-white">PRICE: HIGH - LOW</option>
+            <option value="date-new" className="bg-[#121212] text-white">DATE: SOONEST</option>
           </select>
         </div>
       </div>
 
       {/* Active Filter Badges */}
       {(searchTerm || selectedGenre !== "all" || selectedCity !== "all" || sortBy !== "default") && (
-        <div className="flex flex-wrap items-center gap-3 mb-8 font-mono text-[10px]">
-          <span className="text-zinc-500 uppercase tracking-widest">Active Filters:</span>
+        <div className="flex flex-wrap items-center gap-2.5 mb-10 text-xs font-medium">
+          <span className="text-zinc-500">Active Filters:</span>
           {searchTerm && (
-            <span className="bg-zinc-950 border border-zinc-900 px-2 py-1 flex items-center gap-1.5 text-white">
-              Search: &quot;{searchTerm}&quot;
-              <X className="w-3 h-3 text-[#ff0055] cursor-pointer" onClick={() => setSearchTerm("")} />
+            <span className="bg-zinc-900 border border-zinc-700/80 px-3 py-1 rounded-full flex items-center gap-2 text-white">
+              Query: &quot;{searchTerm}&quot;
+              <X className="w-3.5 h-3.5 text-zinc-400 hover:text-white cursor-pointer" onClick={() => setSearchTerm("")} />
             </span>
           )}
           {selectedGenre !== "all" && (
-            <span className="bg-zinc-950 border border-zinc-900 px-2 py-1 flex items-center gap-1.5 text-[#ccff00]">
+            <span className="bg-[#9d4edd]/20 border border-[#9d4edd]/50 px-3 py-1 rounded-full flex items-center gap-2 text-white">
               Genre: {selectedGenre.toUpperCase()}
-              <X className="w-3 h-3 text-[#ff0055] cursor-pointer" onClick={() => setSelectedGenre("all")} />
+              <X className="w-3.5 h-3.5 text-zinc-300 hover:text-white cursor-pointer" onClick={() => setSelectedGenre("all")} />
             </span>
           )}
           {selectedCity !== "all" && (
-            <span className="bg-zinc-950 border border-zinc-900 px-2 py-1 flex items-center gap-1.5 text-[#00f0ff]">
+            <span className="bg-zinc-900 border border-zinc-700/80 px-3 py-1 rounded-full flex items-center gap-2 text-white">
               City: {selectedCity.toUpperCase()}
-              <X className="w-3 h-3 text-[#ff0055] cursor-pointer" onClick={() => setSelectedCity("all")} />
-            </span>
-          )}
-          {sortBy !== "default" && (
-            <span className="bg-zinc-950 border border-zinc-900 px-2 py-1 flex items-center gap-1.5 text-[#ff0055]">
-              Sorted
-              <X className="w-3 h-3 text-[#ff0055] cursor-pointer" onClick={() => setSortBy("default")} />
+              <X className="w-3.5 h-3.5 text-zinc-400 hover:text-white cursor-pointer" onClick={() => setSelectedCity("all")} />
             </span>
           )}
           <button
             onClick={handleClearFilters}
-            className="text-zinc-400 hover:text-white underline cursor-pointer"
+            className="text-zinc-400 hover:text-white underline cursor-pointer ml-2"
           >
             Clear All
           </button>
@@ -204,7 +196,7 @@ function EventsContent() {
       {/* Events Grid */}
       {loading ? (
         <div className="flex justify-center items-center py-24">
-          <Loader2 className="w-8 h-8 text-[#ccff00] animate-spin" />
+          <Loader2 className="w-8 h-8 text-[#9d4edd] animate-spin" />
         </div>
       ) : events.length > 0 ? (
         <motion.div
@@ -213,7 +205,7 @@ function EventsContent() {
             show: {
               opacity: 1,
               transition: {
-                staggerChildren: 0.08
+                staggerChildren: 0.06
               }
             }
           }}
@@ -225,8 +217,8 @@ function EventsContent() {
             <motion.div
               key={event.id}
               variants={{
-                hidden: { opacity: 0, y: 25 },
-                show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 120 } }
+                hidden: { opacity: 0, y: 20 },
+                show: { opacity: 1, y: 0, transition: { duration: 0.3 } }
               }}
             >
               <Card event={event} />
@@ -234,16 +226,13 @@ function EventsContent() {
           ))}
         </motion.div>
       ) : (
-        /* Styled Custom Empty State */
-        <div className="border border-zinc-900 bg-zinc-950/40 p-16 flex flex-col items-center justify-center text-center space-y-4">
-          <div className="w-12 h-12 bg-zinc-900 border border-zinc-800 flex items-center justify-center rounded-sm font-black text-zinc-600 text-lg">
-            ?
-          </div>
-          <h3 className="font-mono text-sm font-bold text-white uppercase tracking-wider">
-            No Concerts Match Criteria
+        <div className="bg-[#121212] border border-zinc-800 rounded-3xl p-16 flex flex-col items-center justify-center text-center space-y-4">
+          <Compass className="w-10 h-10 text-zinc-600 mb-2" />
+          <h3 className="text-base font-bold text-white uppercase tracking-wide">
+            No Concerts Found
           </h3>
-          <p className="font-mono text-xs text-zinc-500 max-w-sm leading-relaxed">
-            We couldn&apos;t find any upcoming shows matching your current query. Try adjusting your location, genre, or keywords.
+          <p className="text-xs text-zinc-400 max-w-sm leading-relaxed">
+            We couldn&apos;t find any upcoming shows matching your search filters. Try adjusting your query or resetting filters.
           </p>
           <Button variant="outline" size="sm" onClick={handleClearFilters} className="mt-2">
             Reset Filters
@@ -258,7 +247,7 @@ export default function EventsPage() {
   return (
     <Suspense fallback={
       <div className="flex justify-center items-center py-24">
-        <Loader2 className="w-8 h-8 text-[#ccff00] animate-spin" />
+        <Loader2 className="w-8 h-8 text-[#9d4edd] animate-spin" />
       </div>
     }>
       <EventsContent />

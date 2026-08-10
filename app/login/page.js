@@ -16,7 +16,6 @@ export default function LoginPage() {
   const { addToast } = useToast();
 
   useEffect(() => {
-    // Check if user is already logged in
     if (isAuthenticated()) {
       router.push("/dashboard");
     }
@@ -38,10 +37,7 @@ export default function LoginPage() {
 
     try {
       const result = await apiLogin(email, password);
-
-      // Dispatch custom event to notify Navbar component
       window.dispatchEvent(new Event("authChange"));
-
       addToast(result.message || `Welcome back, ${result.data.user.username}!`, "success");
       router.push("/dashboard");
     } catch (error) {
@@ -52,12 +48,12 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#07070a] text-white flex flex-col lg:flex-row relative">
+    <main className="min-h-screen bg-[#080808] text-white flex flex-col lg:flex-row relative">
       {/* Top Left Back Button */}
       <div className="absolute top-6 left-6 z-20">
         <Link
           href="/"
-          className="flex items-center gap-2 text-zinc-500 hover:text-white transition-colors font-mono text-xs uppercase"
+          className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors text-xs font-semibold uppercase"
           data-cursor="pointer"
         >
           <ArrowLeft className="w-4 h-4" />
@@ -65,81 +61,69 @@ export default function LoginPage() {
         </Link>
       </div>
 
-      {/* Left Side: Bold Typography & Visuals */}
-      <div className="flex-1 bg-black border-r border-zinc-900 flex flex-col justify-between p-12 lg:p-24 relative overflow-hidden">
-        {/* Glow */}
-        <div className="absolute -top-40 -left-40 w-96 h-96 rounded-full bg-[#ccff00]/5 blur-3xl" />
-        
-        {/* Top brand */}
-        <div className="font-mono text-lg font-black tracking-widest text-[#ccff00] z-10">
-          ECHOTIC.
+      {/* Left Side: Editorial Banner */}
+      <div className="flex-1 bg-[#0a0a0a] border-r border-white/5 flex flex-col justify-between p-12 lg:p-20 relative overflow-hidden">
+        <div className="absolute inset-0 bg-cover bg-center opacity-30 mix-blend-luminosity pointer-events-none" style={{ backgroundImage: `url('https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1200&q=80')` }} />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/70 to-transparent" />
+
+        <div className="text-xl font-black tracking-tight text-white z-10">
+          ECHOTIC<span className="text-[#9d4edd]">.</span>
         </div>
 
-        {/* Big Statement */}
         <div className="my-auto space-y-4 z-10">
-          <h1 className="text-5xl lg:text-7xl font-black tracking-tighter uppercase leading-none">
+          <h1 className="text-5xl lg:text-7xl font-black tracking-tight uppercase leading-none">
             ENTER <br />
-            THE <span className="text-[#00f0ff]">STAGE.</span>
+            THE <span className="text-[#9d4edd]">STAGE.</span>
           </h1>
-          <p className="font-mono text-xs text-zinc-500 uppercase tracking-widest max-w-sm">
+          <p className="text-sm text-zinc-300 max-w-sm font-normal">
             Access your gig passes, purchase history, and personalized concert preferences in one sleek hub.
           </p>
         </div>
 
-        {/* Decorative concert details footer */}
-        <div className="flex justify-between font-mono text-[9px] text-zinc-600 border-t border-zinc-900 pt-6 z-10">
-          <span>SECURE PROTOCOL v2.0</span>
-          <span>LIVE IS LIFE</span>
+        <div className="flex justify-between text-xs text-zinc-500 font-medium border-t border-zinc-800 pt-6 z-10">
+          <span>SECURE AUTHENTICATION</span>
+          <span>LIVE MUSIC PLATFORM</span>
         </div>
       </div>
 
       {/* Right Side: Form */}
-      <div className="flex-1 flex items-center justify-center p-6 lg:p-24 bg-[#07070a]">
-        <div className="w-full max-w-md bg-zinc-950 border border-zinc-900 p-8 md:p-10 relative">
-          {/* Neon corner accents */}
-          <div className="absolute top-0 right-0 w-8 h-[1px] bg-[#ccff00]" />
-          <div className="absolute top-0 right-0 w-[1px] h-8 bg-[#ccff00]" />
-
-          <h2 className="text-2xl font-mono font-bold tracking-tight uppercase mb-2">
+      <div className="flex-1 flex items-center justify-center p-6 lg:p-20 bg-[#080808]">
+        <div className="w-full max-w-md bg-[#121212] border border-zinc-800 rounded-3xl p-8 md:p-10 relative shadow-2xl">
+          <h2 className="text-2xl font-bold tracking-tight uppercase mb-1">
             Sign In
           </h2>
-          <p className="font-mono text-xs text-zinc-500 uppercase tracking-wider mb-8">
-            Enter your credentials to continue
+          <p className="text-xs text-zinc-400 mb-8">
+            Enter your credentials to manage your passes
           </p>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Email Field */}
+          <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-2">
-              <label className="block font-mono text-xs text-zinc-400 uppercase tracking-wider">
+              <label className="block text-xs font-bold text-zinc-300 uppercase tracking-wider">
                 Email Address
               </label>
               <div className="relative">
-                <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-zinc-600">
+                <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-zinc-500">
                   <Mail className="w-4 h-4" />
                 </span>
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="name@domain.com"
+                  placeholder="alex@domain.com"
                   disabled={loading}
-                  className="w-full bg-black/60 border border-zinc-900 focus:border-[#ccff00] px-10 py-3.5 text-sm font-mono text-white placeholder-zinc-700 focus:outline-none transition-colors"
+                  className="w-full bg-zinc-900 border border-zinc-700 focus:border-[#9d4edd] rounded-2xl pl-11 pr-4 py-3.5 text-sm text-white placeholder-zinc-500 focus:outline-none transition-colors"
                 />
               </div>
             </div>
 
-            {/* Password Field */}
             <div className="space-y-2">
               <div className="flex justify-between items-center">
-                <label className="block font-mono text-xs text-zinc-400 uppercase tracking-wider">
+                <label className="block text-xs font-bold text-zinc-300 uppercase tracking-wider">
                   Password
                 </label>
-                <a href="#" className="font-mono text-[10px] text-zinc-500 hover:text-white uppercase">
-                  Forgot?
-                </a>
               </div>
               <div className="relative">
-                <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-zinc-600">
+                <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-zinc-500">
                   <KeyRound className="w-4 h-4" />
                 </span>
                 <input
@@ -148,36 +132,34 @@ export default function LoginPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
                   disabled={loading}
-                  className="w-full bg-black/60 border border-zinc-900 focus:border-[#ccff00] px-10 py-3.5 text-sm font-mono text-white placeholder-zinc-700 focus:outline-none transition-colors"
+                  className="w-full bg-zinc-900 border border-zinc-700 focus:border-[#9d4edd] rounded-2xl pl-11 pr-4 py-3.5 text-sm text-white placeholder-zinc-500 focus:outline-none transition-colors"
                 />
               </div>
             </div>
 
-            {/* Submit Button */}
             <Button
               type="submit"
-              variant="primary"
+              variant="accent"
               disabled={loading}
-              className="w-full py-4 text-center justify-center font-bold"
+              className="w-full py-4 text-center justify-center font-bold text-sm mt-2"
               data-cursor="pointer"
             >
               {loading ? (
                 <div className="flex items-center gap-2">
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  <span>Verifying Credentials...</span>
+                  <span>Verifying...</span>
                 </div>
               ) : (
-                "AUTHENTICATE"
+                "SIGN IN"
               )}
             </Button>
           </form>
 
-          {/* Bottom links */}
-          <div className="mt-8 pt-6 border-t border-zinc-900 text-center">
-            <p className="font-mono text-xs text-zinc-500">
-              NEW TO ECHOTIC?{" "}
-              <Link href="/register" className="text-[#00f0ff] hover:underline" data-cursor="pointer">
-                CREATE ACCOUNT
+          <div className="mt-8 pt-6 border-t border-zinc-800 text-center">
+            <p className="text-xs text-zinc-400">
+              New to EchoTic?{" "}
+              <Link href="/register" className="text-[#9d4edd] font-semibold hover:underline" data-cursor="pointer">
+                Create Account
               </Link>
             </p>
           </div>

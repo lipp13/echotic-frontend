@@ -15,23 +15,27 @@ export default function Button({
   ...props
 }) {
   const baseStyles =
-    "inline-flex items-center justify-center font-mono font-bold uppercase tracking-wider transition-all focus:outline-none select-none cursor-pointer border";
+    "inline-flex items-center justify-center font-medium tracking-wide transition-all focus:outline-none select-none cursor-pointer rounded-full border text-center";
 
   const variants = {
     primary:
-      "bg-[#ccff00] text-black border-[#ccff00] hover:bg-black hover:text-[#ccff00] shadow-[0_0_15px_rgba(204,255,0,0.15)] hover:shadow-[0_0_25px_rgba(204,255,0,0.4)]",
+      "bg-white text-black border-white hover:bg-zinc-200 shadow-md hover:shadow-lg",
+    accent:
+      "bg-[#9d4edd] text-white border-[#9d4edd] hover:bg-[#b565f7] hover:border-[#b565f7] shadow-lg shadow-[#9d4edd]/20",
     secondary:
-      "bg-transparent text-white border-white/30 hover:border-[#00f0ff] hover:text-[#00f0ff] hover:shadow-[0_0_20px_rgba(0,240,255,0.25)]",
+      "bg-zinc-900/80 text-white border-zinc-700/80 hover:bg-zinc-800 hover:border-zinc-500 backdrop-blur-sm",
     pink:
-      "bg-[#ff0055] text-white border-[#ff0055] hover:bg-black hover:text-[#ff0055] shadow-[0_0_15px_rgba(255,0,85,0.15)] hover:shadow-[0_0_25px_rgba(255,0,85,0.4)]",
+      "bg-[#9d4edd] text-white border-[#9d4edd] hover:bg-[#b565f7]",
     outline:
-      "bg-transparent text-zinc-400 border-zinc-800 hover:border-white hover:text-white",
+      "bg-transparent text-zinc-300 border-zinc-800 hover:border-zinc-500 hover:text-white hover:bg-zinc-900/50",
+    ghost:
+      "bg-transparent text-zinc-400 border-transparent hover:text-white hover:bg-zinc-900/50",
   };
 
   const sizes = {
-    sm: "px-4 py-2 text-xs",
-    md: "px-6 py-3 text-sm",
-    lg: "px-8 py-4 text-base",
+    sm: "px-4 py-2 text-xs font-semibold",
+    md: "px-6 py-3 text-sm font-semibold",
+    lg: "px-8 py-4 text-base font-bold",
   };
 
   return (
@@ -43,8 +47,8 @@ export default function Button({
       whileTap={disabled ? {} : { scale: 0.98 }}
       className={cn(
         baseStyles,
-        variants[variant],
-        sizes[size],
+        variants[variant] || variants.primary,
+        sizes[size] || sizes.md,
         disabled && "opacity-50 cursor-not-allowed hover:bg-transparent hover:text-inherit shadow-none",
         className
       )}

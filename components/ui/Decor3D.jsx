@@ -20,7 +20,7 @@ function MicModel() {
       <mesh position={[0, 0.4, 0]}>
         <sphereGeometry args={[0.3, 16, 16]} />
         <meshPhysicalMaterial
-          color="#aaaaaa"
+          color="#cccccc"
           roughness={0.2}
           metalness={0.9}
           wireframe={true}
@@ -30,13 +30,13 @@ function MicModel() {
       {/* Mic Handle */}
       <mesh position={[0, -0.2, 0]}>
         <cylinderGeometry args={[0.1, 0.08, 0.9, 16]} />
-        <meshStandardMaterial color="#1f1f2e" roughness={0.5} metalness={0.8} />
+        <meshStandardMaterial color="#1a1a1a" roughness={0.3} metalness={0.8} />
       </mesh>
 
-      {/* Mic Gold Ring */}
+      {/* Mic Ring */}
       <mesh position={[0, 0.22, 0]}>
         <torusGeometry args={[0.11, 0.02, 8, 24]} />
-        <meshStandardMaterial color="#ccff00" roughness={0.1} metalness={0.9} />
+        <meshStandardMaterial color="#9d4edd" roughness={0.2} metalness={0.8} />
       </mesh>
     </group>
   );
@@ -58,19 +58,19 @@ function SpeakerModel() {
       {/* Speaker Box */}
       <mesh>
         <boxGeometry args={[0.6, 0.9, 0.5]} />
-        <meshStandardMaterial color="#0f0f15" roughness={0.6} metalness={0.2} />
+        <meshStandardMaterial color="#151515" roughness={0.5} metalness={0.3} />
       </mesh>
       
       {/* Subwoofer Ring (Big) */}
       <mesh position={[0, -0.2, 0.26]}>
         <cylinderGeometry args={[0.2, 0.2, 0.05, 24]} />
-        <meshStandardMaterial color="#ccff00" roughness={0.2} metalness={0.5} />
+        <meshStandardMaterial color="#9d4edd" roughness={0.2} metalness={0.6} />
       </mesh>
 
       {/* Tweeter Ring (Small) */}
       <mesh position={[0, 0.2, 0.26]}>
         <cylinderGeometry args={[0.1, 0.1, 0.05, 24]} />
-        <meshStandardMaterial color="#00f0ff" roughness={0.2} metalness={0.5} />
+        <meshStandardMaterial color="#ffffff" roughness={0.1} metalness={0.9} />
       </mesh>
     </group>
   );
@@ -88,20 +88,20 @@ function ShieldModel() {
 
   return (
     <group ref={meshRef}>
-      {/* Outer Coin Ring */}
+      {/* Outer Ring */}
       <mesh>
         <cylinderGeometry args={[0.4, 0.4, 0.1, 32]} />
-        <meshStandardMaterial color="#00f0ff" roughness={0.1} metalness={0.9} />
+        <meshStandardMaterial color="#9d4edd" roughness={0.2} metalness={0.8} />
       </mesh>
       {/* Core */}
       <mesh position={[0, 0, 0.02]}>
         <cylinderGeometry args={[0.32, 0.32, 0.08, 32]} />
-        <meshStandardMaterial color="#09090d" roughness={0.4} metalness={0.5} />
+        <meshStandardMaterial color="#121212" roughness={0.4} metalness={0.5} />
       </mesh>
       {/* Center Star shape */}
       <mesh position={[0, 0, 0.08]} rotation={[Math.PI / 2, 0, 0]}>
         <octahedronGeometry args={[0.15]} />
-        <meshStandardMaterial color="#ccff00" roughness={0.1} metalness={0.8} />
+        <meshStandardMaterial color="#ffffff" roughness={0.1} metalness={0.9} />
       </mesh>
     </group>
   );
@@ -124,8 +124,8 @@ export default function Decor3D({ type = "mic", className = "" }) {
 
   if (!mounted || hasWebGLError) {
     return (
-      <div className={`flex items-center justify-center border border-zinc-900 bg-zinc-950/40 rounded-full p-2 ${className}`}>
-        <div className="w-6 h-6 rounded-full border-2 border-[#ccff00]/60 animate-pulse bg-[#00f0ff]/10" />
+      <div className={`flex items-center justify-center border border-zinc-800 bg-zinc-900/40 rounded-full p-2 ${className}`}>
+        <div className="w-6 h-6 rounded-full border-2 border-[#9d4edd]/60 animate-pulse bg-zinc-800" />
       </div>
     );
   }
@@ -135,7 +135,7 @@ export default function Decor3D({ type = "mic", className = "" }) {
       <Canvas gl={{ alpha: true, antialias: true }}>
         <ambientLight intensity={1.5} />
         <directionalLight position={[2, 2, 2]} intensity={1.8} />
-        <pointLight position={[-2, -2, -2]} intensity={0.5} color="#00f0ff" />
+        <pointLight position={[-2, -2, -2]} intensity={0.5} color="#9d4edd" />
         
         <Float speed={3} rotationIntensity={0.2} floatIntensity={0.3}>
           {type === "mic" && <MicModel />}

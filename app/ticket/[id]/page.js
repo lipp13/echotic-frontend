@@ -4,12 +4,11 @@ import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Calendar, MapPin, Download, Share2, ShieldCheck, Ticket, User, ArrowLeft, Loader2 } from "lucide-react";
+import { Calendar, MapPin, Download, Share2, ShieldCheck, Ticket, User, ArrowLeft, Loader2, CheckCircle2 } from "lucide-react";
 import { formatPrice } from "@/lib/utils";
 import { apiGetOrder, isAuthenticated } from "@/lib/api";
 import Button from "@/components/ui/Button";
 import { useToast } from "@/components/ui/Toast";
-import Decor3D from "@/components/ui/Decor3D";
 import QrCodeGenerator from "@/components/ui/QrCodeGenerator";
 
 export default function TicketConfirmationPage() {
@@ -43,7 +42,7 @@ export default function TicketConfirmationPage() {
   }, [params.id, router, addToast]);
 
   const handleDownload = () => {
-    addToast("Generating premium ticket card PDF... Saved to Downloads!", "success");
+    addToast("Saved Digital Pass to your Downloads!", "success");
   };
 
   const handleShare = () => {
@@ -56,7 +55,7 @@ export default function TicketConfirmationPage() {
   if (loading) {
     return (
       <div className="flex justify-center items-center py-24 flex-grow">
-        <Loader2 className="w-8 h-8 text-[#ccff00] animate-spin" />
+        <Loader2 className="w-8 h-8 text-[#9d4edd] animate-spin" />
       </div>
     );
   }
@@ -64,13 +63,13 @@ export default function TicketConfirmationPage() {
   if (!order) {
     return (
       <div className="max-w-7xl mx-auto px-6 py-24 text-center">
-        <ShieldCheck className="w-12 h-12 text-[#ff0055] mx-auto mb-4" />
-        <h2 className="font-mono text-xl font-bold uppercase mb-2">Ticket Not Found</h2>
-        <p className="font-mono text-zinc-500 text-xs mb-8">
-          The booking confirmation ID could not be retrieved from the server.
+        <ShieldCheck className="w-12 h-12 text-[#9d4edd] mx-auto mb-4" />
+        <h2 className="text-xl font-bold uppercase mb-2">Ticket Not Found</h2>
+        <p className="text-zinc-400 text-xs mb-8">
+          The booking confirmation ID could not be retrieved.
         </p>
         <Link href="/events" data-cursor="pointer">
-          <Button variant="primary">Browse Events</Button>
+          <Button variant="accent">Browse Events</Button>
         </Link>
       </div>
     );
@@ -78,101 +77,100 @@ export default function TicketConfirmationPage() {
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
+      initial={{ opacity: 0, scale: 0.98 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.4 }}
-      className="max-w-4xl mx-auto px-6 py-12 flex-grow"
+      className="max-w-4xl mx-auto px-6 md:px-10 py-12 flex-grow"
     >
-      {/* Back button */}
+      {/* Back button & status banner */}
       <div className="mb-8 flex justify-between items-center">
         <Link
           href="/dashboard"
-          className="inline-flex items-center gap-2 text-zinc-500 hover:text-white transition-colors font-mono text-xs uppercase"
+          className="inline-flex items-center gap-2 text-zinc-400 hover:text-white transition-colors text-xs font-semibold uppercase"
           data-cursor="pointer"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>My Purchased Tickets</span>
+          <span>My Purchased Passes</span>
         </Link>
         
-        <span className="font-mono text-xs text-[#ccff00] font-bold flex items-center gap-1.5">
-          <ShieldCheck className="w-4 h-4" />
-          <span>ORDER COMPLETED</span>
+        <span className="text-xs text-[#9d4edd] font-bold flex items-center gap-1.5 bg-[#9d4edd]/10 border border-[#9d4edd]/30 px-3 py-1 rounded-full">
+          <CheckCircle2 className="w-4 h-4" />
+          <span>CONFIRMED PASS</span>
         </span>
       </div>
 
       {/* Main Container */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
         
-        {/* Left Column: Interactive Digital Ticket Card */}
+        {/* Left Column: Digital Pass Graphic */}
         <div className="md:col-span-7 flex flex-col items-center">
-          {/* Rotating Hologram Ticket Container */}
           <motion.div
-            whileHover={{ rotateY: 5, rotateX: 2, scale: 1.01 }}
+            whileHover={{ rotateY: 3, rotateX: 2, scale: 1.01 }}
             transition={{ type: "spring", stiffness: 200, damping: 20 }}
             style={{ transformStyle: "preserve-3d", perspective: 1000 }}
-            className="w-full bg-zinc-950 border border-zinc-800 rounded-lg overflow-hidden shadow-2xl relative"
+            className="w-full bg-[#121212] border border-zinc-800 rounded-3xl overflow-hidden shadow-2xl relative"
           >
-            {/* Top aesthetic glow line */}
-            <div className="h-[3px] bg-gradient-to-r from-[#ccff00] to-[#00f0ff]" />
+            {/* Top Purple Accent line */}
+            <div className="h-1.5 bg-gradient-to-r from-[#9d4edd] via-purple-400 to-white" />
 
             {/* Ticket Header */}
-            <div className="p-6 border-b border-zinc-900 flex justify-between items-center bg-black/40">
-              <div className="font-mono">
-                <span className="text-[9px] text-[#ccff00] uppercase tracking-widest block font-bold">
-                  Official Pass
+            <div className="p-6 border-b border-zinc-800/80 flex justify-between items-center bg-black/40">
+              <div>
+                <span className="text-[10px] text-[#9d4edd] uppercase tracking-widest block font-bold">
+                  Concert Pass
                 </span>
-                <span className="text-white font-bold text-xs uppercase">ECHOTIC TICKETS</span>
+                <span className="text-white font-bold text-sm">ECHOTIC TICKETS</span>
               </div>
-              <div className="text-right font-mono text-[9px] text-zinc-500">
-                NO: {order.orderId}
+              <div className="text-right text-xs text-zinc-500 font-mono">
+                #{order.orderId}
               </div>
             </div>
 
-            {/* Ticket Image & Headline Overlay */}
-            <div className="relative aspect-[21/9] overflow-hidden border-b border-zinc-900 bg-zinc-900">
+            {/* Ticket Image */}
+            <div className="relative aspect-[21/9] overflow-hidden border-b border-zinc-800 bg-zinc-900">
               <img
                 src={order.eventImage}
                 alt={order.eventTitle}
-                className="object-cover w-full h-full grayscale opacity-60"
+                className="object-cover w-full h-full"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#121212] to-transparent opacity-80" />
               <div className="absolute bottom-4 left-6">
-                <h3 className="text-lg md:text-xl font-black uppercase text-white tracking-tight">
+                <h3 className="text-lg md:text-xl font-bold uppercase text-white tracking-tight">
                   {order.eventTitle}
                 </h3>
               </div>
             </div>
 
             {/* Ticket Body Content */}
-            <div className="p-6 space-y-6 font-mono">
+            <div className="p-6 space-y-6">
               <div className="grid grid-cols-2 gap-4 text-xs">
                 <div className="space-y-1">
-                  <span className="text-[9px] text-zinc-500 uppercase tracking-wider block">Attendee</span>
-                  <span className="text-white font-bold uppercase truncate block">{order.attendeeName}</span>
+                  <span className="text-[10px] text-zinc-500 uppercase tracking-wider block font-medium">Attendee</span>
+                  <span className="text-white font-bold truncate block">{order.attendeeName}</span>
                 </div>
                 <div className="space-y-1">
-                  <span className="text-[9px] text-zinc-500 uppercase tracking-wider block">Gate Code</span>
-                  <span className="text-[#00f0ff] font-bold block">{order.ticketCode}</span>
+                  <span className="text-[10px] text-zinc-500 uppercase tracking-wider block font-medium font-mono">Pass Code</span>
+                  <span className="text-[#9d4edd] font-mono font-bold block">{order.ticketCode}</span>
                 </div>
                 <div className="space-y-1">
-                  <span className="text-[9px] text-zinc-500 uppercase tracking-wider block">Date & Time</span>
+                  <span className="text-[10px] text-zinc-500 uppercase tracking-wider block font-medium">Date & Time</span>
                   <span className="text-white block">{order.eventDate} @ {order.eventTime}</span>
                 </div>
                 <div className="space-y-1">
-                  <span className="text-[9px] text-zinc-500 uppercase tracking-wider block">Pass Category</span>
-                  <span className="text-[#ccff00] font-bold block uppercase">{order.categoryName}</span>
+                  <span className="text-[10px] text-zinc-500 uppercase tracking-wider block font-medium">Pass Tier</span>
+                  <span className="text-[#9d4edd] font-bold block uppercase">{order.categoryName}</span>
                 </div>
               </div>
 
               {/* Seating detailed items */}
               {order.isSeated && (
-                <div className="border-t border-zinc-900 pt-4 flex justify-between items-center text-xs">
-                  <span className="text-[9px] text-zinc-500 uppercase">Allocated Seats</span>
+                <div className="border-t border-zinc-800/80 pt-4 flex justify-between items-center text-xs">
+                  <span className="text-[10px] text-zinc-500 uppercase font-medium">Seats</span>
                   <div className="flex gap-2">
                     {order.seats.map((s) => (
                       <span
                         key={s.id}
-                        className="bg-zinc-900 border border-zinc-800 px-2 py-0.5 text-white font-bold"
+                        className="bg-zinc-800 border border-zinc-700 px-2.5 py-0.5 rounded-full text-white font-bold"
                       >
                         {s.row}-{s.seatNum}
                       </span>
@@ -182,14 +180,14 @@ export default function TicketConfirmationPage() {
               )}
             </div>
 
-            {/* Ticket Footer / Barcode rip-off */}
+            {/* Barcode Tear-off */}
             <div className="border-t border-dashed border-zinc-800 p-6 flex flex-col items-center bg-black/60 relative">
-              {/* Circular cut notches on ticket sides */}
-              <div className="absolute w-6 h-6 rounded-full bg-[#07070a] -left-3 top-[-12px] border-r border-zinc-800" />
-              <div className="absolute w-6 h-6 rounded-full bg-[#07070a] -right-3 top-[-12px] border-l border-zinc-800" />
+              {/* Notches */}
+              <div className="absolute w-6 h-6 rounded-full bg-[#080808] -left-3 top-[-12px] border-r border-zinc-800" />
+              <div className="absolute w-6 h-6 rounded-full bg-[#080808] -right-3 top-[-12px] border-l border-zinc-800" />
 
-              {/* Barcode representation */}
-              <div className="w-full flex items-center justify-center gap-1.5 h-10 mb-2 opacity-70">
+              {/* Barcode */}
+              <div className="w-full flex items-center justify-center gap-1.5 h-10 mb-2 opacity-80">
                 {Array.from({ length: 35 }).map((_, idx) => {
                   const width = [1, 2, 3, 4][(idx * 7) % 4];
                   return (
@@ -201,77 +199,76 @@ export default function TicketConfirmationPage() {
                   );
                 })}
               </div>
-              <span className="text-[9px] text-zinc-500 tracking-widest">{order.ticketCode}</span>
+              <span className="text-[10px] font-mono text-zinc-400 tracking-widest">{order.ticketCode}</span>
             </div>
           </motion.div>
         </div>
 
-        {/* Right Column: QR Gate scanning info */}
-        <div className="md:col-span-5 bg-zinc-950 border border-zinc-800 p-6 md:p-8 space-y-6">
-          <div className="text-center pb-4 border-b border-zinc-900">
-            <Decor3D type="shield" className="w-10 h-10 mx-auto mb-2" />
-            <h4 className="font-mono text-xs font-bold text-white uppercase tracking-widest mb-1">
-              GATE ADMISSION PASS
+        {/* Right Column: QR Code & Gate Info */}
+        <div className="md:col-span-5 bg-[#121212] border border-zinc-800 rounded-3xl p-6 md:p-8 space-y-6 shadow-card-subtle">
+          <div className="text-center pb-4 border-b border-zinc-800">
+            <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-1">
+              Venue Admission QR
             </h4>
-            <span className="text-[9px] text-zinc-500 uppercase font-mono">
-              Scan this code at gates to enter venue
+            <span className="text-xs text-zinc-400">
+              Present at gate for scanning
             </span>
           </div>
 
           {/* Status Badge */}
           <div className="flex justify-center my-2">
             {order.status === "approved" || order.status === "used" ? (
-              <div className="bg-emerald-950/80 border border-emerald-500/50 text-emerald-400 font-mono text-[10px] font-bold px-3 py-1.5 rounded flex items-center gap-1.5 shadow-[0_0_15px_rgba(16,185,129,0.3)]">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                <span>TERVERIFIKASI / DIPERSILAKAN MASUK</span>
+              <div className="bg-emerald-950/80 border border-emerald-500/40 text-emerald-400 text-xs font-semibold px-4 py-1.5 rounded-full flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                <span>ADMISSION VERIFIED</span>
               </div>
             ) : (
-              <div className="bg-amber-950/80 border border-amber-500/50 text-amber-300 font-mono text-[10px] font-bold px-3 py-1.5 rounded flex items-center gap-1.5 shadow-[0_0_15px_rgba(245,158,11,0.2)]">
-                <Ticket className="w-3.5 h-3.5 text-amber-400" />
-                <span>MENUNGGU SCAN GATE ENTRY</span>
+              <div className="bg-zinc-900 border border-zinc-700 text-zinc-300 text-xs font-semibold px-4 py-1.5 rounded-full flex items-center gap-2">
+                <Ticket className="w-4 h-4 text-[#9d4edd]" />
+                <span>READY FOR GATE SCAN</span>
               </div>
             )}
           </div>
 
-          {/* Glowing QR Code */}
-          <div className="flex justify-center py-2">
+          {/* QR Code */}
+          <div className="flex justify-center py-3 bg-white p-4 rounded-2xl border border-zinc-700 w-fit mx-auto shadow-md">
             <QrCodeGenerator value={order.ticketCode} size={180} />
           </div>
 
-          <div className="space-y-4 font-mono text-xs pt-4 border-t border-zinc-900">
-            <div className="flex gap-2.5 text-zinc-400 leading-relaxed">
-              <User className="w-4 h-4 text-[#ccff00] flex-shrink-0 mt-0.5" />
+          <div className="space-y-3 text-xs pt-4 border-t border-zinc-800 font-medium">
+            <div className="flex gap-2.5 text-zinc-300">
+              <User className="w-4 h-4 text-[#9d4edd] flex-shrink-0 mt-0.5" />
               <div>
-                <span className="text-[9px] text-zinc-500 block uppercase">Gate Holder</span>
+                <span className="text-[10px] text-zinc-500 uppercase block">Ticket Holder</span>
                 <span className="text-white font-bold">{order.attendeeName} ({order.attendeeId})</span>
               </div>
             </div>
-            <div className="flex gap-2.5 text-zinc-400 leading-relaxed">
-              <MapPin className="w-4 h-4 text-[#ff0055] flex-shrink-0 mt-0.5" />
+            <div className="flex gap-2.5 text-zinc-300">
+              <MapPin className="w-4 h-4 text-[#9d4edd] flex-shrink-0 mt-0.5" />
               <div>
-                <span className="text-[9px] text-zinc-500 block uppercase">Location</span>
+                <span className="text-[10px] text-zinc-500 uppercase block">Venue</span>
                 <span className="text-white">{order.venueName}</span>
               </div>
             </div>
           </div>
 
           {/* Action buttons */}
-          <div className="space-y-3 pt-6 border-t border-zinc-900">
+          <div className="space-y-3 pt-6 border-t border-zinc-800">
             <Button
-              variant="primary"
+              variant="accent"
               onClick={handleDownload}
-              className="w-full py-3.5 text-center justify-center font-mono text-xs"
+              className="w-full py-3.5 text-center justify-center font-semibold text-xs"
               data-cursor="pointer"
             >
-              <Download className="w-4 h-4 mr-2" /> DOWNLOAD PDF PASS
+              <Download className="w-4 h-4 mr-2" /> SAVE DIGITAL PASS
             </Button>
             <Button
               variant="secondary"
               onClick={handleShare}
-              className="w-full py-3.5 text-center justify-center font-mono text-xs"
+              className="w-full py-3.5 text-center justify-center font-semibold text-xs"
               data-cursor="pointer"
             >
-              <Share2 className="w-4 h-4 mr-2" /> SHARE SECURED PASS
+              <Share2 className="w-4 h-4 mr-2" /> SHARE PASS
             </Button>
           </div>
         </div>

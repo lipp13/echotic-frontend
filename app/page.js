@@ -4,13 +4,14 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
-  Sparkles,
   ArrowRight,
+  Sparkles,
   Music,
-  Zap,
-  Shield,
-  HelpCircle,
-  Loader2,
+  Ticket,
+  Star,
+  ShieldCheck,
+  ChevronRight,
+  Compass,
 } from "lucide-react";
 import { apiGetEvents, apiGetTestimonials } from "@/lib/api";
 import Card from "@/components/ui/Card";
@@ -44,99 +45,134 @@ export default function Home() {
     fetchData();
   }, []);
 
-  // Get trending/featured events
-  const featuredEvents = events.filter((e) => e.featured);
-
   // Filter events based on genre
   const filteredEvents =
     selectedGenre === "all"
       ? events
-      : events.filter((e) => e.genre === selectedGenre);
+      : events.filter((e) => e.genre?.toLowerCase() === selectedGenre.toLowerCase());
+
+  const genresList = [
+    { id: "all", name: "All" },
+    { id: "pop", name: "Pop" },
+    { id: "rock", name: "Rock" },
+    { id: "edm", name: "EDM" },
+    { id: "hip-hop", name: "Hip-Hop" },
+    { id: "jazz", name: "Jazz" },
+  ];
 
   const steps = [
     {
       num: "01",
-      title: "SELECT SHOW",
-      desc: "Explore trending acts, underground sets, or legendary global rock tours.",
-      icon: <Music className="w-5 h-5 text-[#ccff00]" />,
+      title: "FIND YOUR SHOW",
+      desc: "Discover concerts from your favorite artists and explore upcoming global tours.",
     },
     {
       num: "02",
-      title: "CHOOSE SEATING",
-      desc: "Use our interactive visual seat map grid to pick your exact vantage point.",
-      icon: <Zap className="w-5 h-5 text-[#00f0ff]" />,
+      title: "CHOOSE YOUR TICKET",
+      desc: "Select your preferred ticket category or pick your vantage point on our seat map.",
     },
     {
       num: "03",
-      title: "SECURE PASS",
-      desc: "Instant encrypted transactions with virtual mock confirmations & QR codes.",
-      icon: <Shield className="w-5 h-5 text-[#ff0055]" />,
+      title: "ENJOY THE SHOW",
+      desc: "Get your digital pass instant confirmation and experience an unforgettable night.",
+    },
+  ];
+
+  const featuredArtists = [
+    {
+      name: "The Weeknd",
+      genre: "R&B / Pop",
+      image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80",
+    },
+    {
+      name: "Billie Eilish",
+      genre: "Alt Pop",
+      image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80",
+    },
+    {
+      name: "Bruno Mars",
+      genre: "Funk / Pop",
+      image: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800&q=80",
+    },
+    {
+      name: "Coldplay",
+      genre: "Alt Rock",
+      image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=800&q=80",
+    },
+    {
+      name: "Taylor Swift",
+      genre: "Pop / Country",
+      image: "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=800&q=80",
+    },
+  ];
+
+  const editorialTestimonials = [
+    {
+      quote: "EchoTic made getting tickets ridiculously simple.",
+      author: "Alex",
+      location: "Jakarta",
+    },
+    {
+      quote: "The cleanest ticket booking experience I have ever used for a stadium tour.",
+      author: "Sarah",
+      location: "Bandung",
+    },
+    {
+      quote: "Instant digital passes with zero hassle. Beautiful visual design.",
+      author: "Michael",
+      location: "Surabaya",
     },
   ];
 
   return (
-    <main className="flex-grow">
+    <main className="flex-grow bg-[#080808]">
       {/* 1. HERO SECTION */}
-      <section className="relative pt-8 pb-16 md:py-24 border-b border-zinc-900 overflow-hidden hero-grid">
-        {/* Glow backdrop circles */}
-        <div className="absolute top-20 left-10 w-72 h-72 rounded-full bg-[#ccff00]/5 blur-3xl pointer-events-none" />
-        <div className="absolute top-1/2 right-10 w-96 h-96 rounded-full bg-[#ff0055]/5 blur-3xl pointer-events-none" />
+      <section className="relative pt-32 pb-20 md:pt-44 md:pb-32 overflow-hidden hero-grid border-b border-white/5">
+        {/* Background Visual Overlay */}
+        <div className="absolute inset-0 bg-cover bg-center opacity-20 pointer-events-none mix-blend-luminosity" style={{ backgroundImage: `url('https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=2000&q=80')` }} />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-[#080808]/80 to-transparent" />
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-[#9d4edd]/10 rounded-full blur-[140px] pointer-events-none" />
 
-        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
-          {/* Left Column: Asymmetric Big Headline */}
+        <div className="max-w-7xl mx-auto px-6 md:px-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
+          {/* Left Column: Bold Editorial Headline */}
           <div className="lg:col-span-7 space-y-8 text-left">
-            <div className="inline-flex items-center gap-2 border border-zinc-800 bg-zinc-950 px-3 py-1 font-mono text-xs uppercase tracking-widest text-[#ccff00]">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>MASA DEPAN TIKET KONSER DIMULAI DI SINI</span>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-xs font-semibold text-zinc-300">
+              <span className="w-2 h-2 rounded-full bg-[#9d4edd] animate-pulse" />
+              <span>LIVE MUSIC / 2026</span>
             </div>
 
-            <h1 className="text-6xl md:text-8xl font-black tracking-tighter uppercase leading-[0.9] text-white">
-              MUSIK <br />
-              MENJADI <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ccff00] via-[#00f0ff] to-[#ff0055]">
-                KENYATAAN.
+            <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tight uppercase leading-[0.88] text-white">
+              MUSIC <br />
+              BECOMES <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-200 to-[#9d4edd]">
+                MEMORY.
               </span>
             </h1>
 
-            <p className="text-zinc-400 font-mono text-sm max-w-lg leading-relaxed">
-              Lupakan pengalaman membeli tiket yang membosankan. EchoTic
-              menghadirkan suasana konser langsung melalui tiket interaktif 3D,
-              denah kursi visual, dan desain yang modern serta imersif.
+            <p className="text-zinc-400 text-base md:text-lg max-w-xl font-normal leading-relaxed">
+              Discover unforgettable live experiences from the artists you love. Simple, elegant, and built for true music fans.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row gap-4 pt-2">
               <Link href="/events" data-cursor="pointer">
-                <Button
-                  variant="primary"
-                  size="lg"
-                  className="w-full sm:w-auto"
-                >
-                  JELAJAHI EVENTS <ArrowRight className="ml-2 w-4 h-4" />
+                <Button variant="primary" size="lg" className="w-full sm:w-auto">
+                  EXPLORE EVENTS <ArrowRight className="ml-2.5 w-4 h-4" />
                 </Button>
               </Link>
-              <Link href="/register" data-cursor="pointer">
-                <Button
-                  variant="secondary"
-                  size="lg"
-                  className="w-full sm:w-auto"
-                >
-                  Buat Akun
+              <a href="#artists" data-cursor="pointer">
+                <Button variant="secondary" size="lg" className="w-full sm:w-auto">
+                  DISCOVER ARTISTS
                 </Button>
-              </Link>
+              </a>
             </div>
           </div>
 
-          {/* Right Column: 3D Interactive Canvas */}
-          <div className="lg:col-span-5 flex justify-center">
-            <div className="w-full max-w-md border border-zinc-800 bg-zinc-950/40 p-4 backdrop-blur-sm relative shadow-2xl">
-              {/* Corner industrial notches */}
-              <div className="absolute -top-[1px] -left-[1px] w-6 h-6 border-t-2 border-l-2 border-[#00f0ff]" />
-              <div className="absolute -bottom-[1px] -right-[1px] w-6 h-6 border-b-2 border-r-2 border-[#ff0055]" />
-
+          {/* Right Column: 3D Interactive Ticket Canvas */}
+          <div className="lg:col-span-5 flex flex-col items-center">
+            <div className="w-full max-w-md bg-[#121212]/80 border border-zinc-800/80 rounded-3xl p-4 backdrop-blur-md shadow-2xl relative group">
               <Hero3D />
-
-              <div className="text-center font-mono text-[9.5px] text-zinc-500 uppercase tracking-widest mt-4">
-                RENDER 3D • GESER UNTUK MEMUTAR
+              <div className="text-center text-xs font-medium text-zinc-500 tracking-wider uppercase mt-3">
+                INTERACTIVE PASS • DRAG TO ROTATE
               </div>
             </div>
           </div>
@@ -145,253 +181,122 @@ export default function Home() {
 
       {/* 2. INFINITE SCROLL BANNER */}
       <Marquee
-        text="MUSIK TANPA BATAS • PESAN TIKETMU SEKARANG • JANGAN SAMPAI KEHABISAN • ECHOTIC"
-        speed={30}
+        text="LIVE MUSIC • BETTER EXPERIENCED • ECHOTIC PRESALE • UNFORGETTABLE EXPERIENCES • STADIUM TOURS • TICKET DISCOVERY"
+        speed={25}
       />
 
       {/* 3. URGENCY COUNTDOWN TIMER SECTION */}
-      <section className="bg-black py-8 border-b border-zinc-900">
-        <div className="max-w-7xl mx-auto px-6">
+      <section className="py-16 bg-[#080808] border-b border-white/5">
+        <div className="max-w-7xl mx-auto px-6 md:px-10">
           <Countdown
-            targetDate="2026-08-24T20:00:00"
-            title="NEON FUTURE MASSIVE TICKETS CLOSE IN:"
+            targetDate="2026-09-15T20:00:00"
+            title="NEXT SHOW PRESALE CLOSES IN"
           />
         </div>
       </section>
 
-      {/* 4. GENRE FILTER & HOT SHOWS LISTINGS */}
-      <section className="py-20 bg-[#07070a] border-b border-zinc-900 relative">
-        <div className="max-w-7xl mx-auto px-6">
+      {/* 4. FEATURED EVENTS & GENRE FILTERS */}
+      <section className="py-24 bg-[#0a0a0a] border-b border-white/5 relative">
+        <div className="max-w-7xl mx-auto px-6 md:px-10">
           {/* Header */}
-          <div className="flex flex-col md:flex-row items-end justify-between gap-6 mb-12">
-            <div className="text-left">
-              <span className="text-[10px] font-mono text-zinc-500 tracking-widest uppercase block mb-1">
-                Hot Curated Events
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
+            <div>
+              <span className="text-xs font-semibold text-[#9d4edd] tracking-wider uppercase block mb-2">
+                Live Experiences
               </span>
               <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-white">
-                LIVE EXPERIENCE DIRECTORY.
+                FEATURED EVENTS.
               </h2>
+              <p className="text-sm text-zinc-400 mt-2">
+                The shows everyone's talking about.
+              </p>
             </div>
 
-            {/* Asymmetric Filters */}
+            {/* Minimal Pill Filters */}
             <div className="flex flex-wrap gap-2">
-              {["all", "edm", "rock", "pop"].map((g) => (
+              {genresList.map((g) => (
                 <button
-                  key={g}
-                  onClick={() => setSelectedGenre(g)}
-                  className={`px-4 py-2 font-mono text-xs uppercase tracking-wider border cursor-pointer transition-all ${
-                    selectedGenre === g
-                      ? "bg-white text-black border-white font-bold"
-                      : "bg-transparent text-zinc-400 border-zinc-800 hover:text-white hover:border-zinc-500"
+                  key={g.id}
+                  onClick={() => setSelectedGenre(g.id)}
+                  className={`px-5 py-2.5 rounded-full text-xs font-semibold tracking-wide transition-all cursor-pointer ${
+                    selectedGenre.toLowerCase() === g.id.toLowerCase()
+                      ? "bg-[#9d4edd] text-white shadow-lg shadow-[#9d4edd]/20"
+                      : "bg-[#151515] text-zinc-400 hover:text-white hover:bg-zinc-800 border border-zinc-800"
                   }`}
                   data-cursor="pointer"
                 >
-                  {g === "all" ? "All Genre" : g.toUpperCase()}
+                  {g.name}
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Events Dynamic Grid */}
+          {/* Events Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredEvents.map((event) => (
               <Card key={event.id} event={event} />
             ))}
           </div>
 
-          {/* No Events State */}
+          {/* Empty State */}
           {filteredEvents.length === 0 && (
-            <div className="border border-zinc-900 bg-zinc-950 p-12 text-center">
-              <p className="font-mono text-zinc-500 text-sm">
-                No events currently scheduled in this genre. Check back later!
+            <div className="bg-[#121212] border border-zinc-800 rounded-3xl p-16 text-center">
+              <Compass className="w-10 h-10 text-zinc-600 mx-auto mb-3" />
+              <p className="text-zinc-400 text-sm font-medium">
+                No events currently scheduled in this genre. Check back soon!
               </p>
             </div>
           )}
 
-          {/* Catalog Link */}
-          <div className="mt-12 text-center">
+          {/* View Catalog Link */}
+          <div className="mt-14 text-center">
             <Link href="/events" data-cursor="pointer">
               <Button variant="secondary" size="md">
-                VIEW ALL EVENTS ({events.length}){" "}
-                <ArrowRight className="ml-2 w-4 h-4" />
+                VIEW ALL EVENTS ({events.length}) <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
             </Link>
           </div>
         </div>
       </section>
 
-      {/* 5. HOW IT WORKS - CONCERT PROTOCOL STYLE */}
-      <section className="py-28 bg-black border-b border-zinc-900 relative overflow-hidden">
-        {/* Background Decoration */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] bg-[#ccff00]/10 blur-[120px] rounded-full" />
-
-        <div className="max-w-7xl mx-auto px-6 relative z-10">
+      {/* 5. HOW IT WORKS */}
+      <section id="how-it-works" className="py-28 bg-[#080808] border-b border-white/5 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 md:px-10 relative z-10">
           {/* Header */}
           <div className="text-center max-w-2xl mx-auto mb-20">
-            <span className="text-[11px] font-mono text-[#ccff00] tracking-[0.4em] uppercase">
-              Ticket Access System
+            <span className="text-xs font-semibold text-[#9d4edd] tracking-widest uppercase block mb-2">
+              Simple 3-Step Access
             </span>
-
-            <h2 className="mt-4 text-4xl md:text-6xl font-black uppercase tracking-tighter text-white">
-              HOW IT
-              <span className="text-[#ccff00]"> WORKS.</span>
+            <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tight text-white">
+              YOUR NIGHT STARTS HERE.
             </h2>
-
-            <p className="mt-5 text-zinc-500 font-mono text-sm">
-              Secure your concert experience in three simple protocols.
+            <p className="mt-4 text-zinc-400 text-base">
+              Secure your concert experience in three simple steps.
             </p>
           </div>
 
-          {/* Steps */}
-          <div className="relative grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Line Connector */}
-            <div className="hidden md:block absolute top-[90px] left-[18%] right-[18%] h-px bg-gradient-to-r from-transparent via-[#ccff00]/50 to-transparent" />
-
+          {/* Editorial Steps Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {steps.map((step, idx) => (
-              <div key={idx} className="relative group">
-                {/* Number */}
-                <div
-                  className="
-            absolute -top-10 left-1/2 -translate-x-1/2
-            text-[120px]
-            font-black
-            text-zinc-900
-            group-hover:text-[#ccff00]/10
-            transition duration-500
-          "
-                >
-                  {step.num}
+              <div
+                key={idx}
+                className="bg-[#121212] border border-zinc-800/80 rounded-3xl p-8 md:p-10 flex flex-col justify-between group hover:border-zinc-700 transition-all duration-300 shadow-card-subtle"
+              >
+                <div>
+                  <span className="text-4xl md:text-5xl font-black text-zinc-700 group-hover:text-[#9d4edd] transition-colors block mb-6">
+                    {step.num}
+                  </span>
+                  <h3 className="text-xl font-bold uppercase text-white tracking-tight mb-3">
+                    {step.title}
+                  </h3>
+                  <p className="text-sm text-zinc-400 leading-relaxed font-normal">
+                    {step.desc}
+                  </p>
                 </div>
 
-                {/* Card */}
-                <div
-                  className="
-              relative
-              h-full
-              min-h-[380px]
-              bg-zinc-950
-              border border-zinc-800
-              p-8
-              flex
-              flex-col
-              justify-between
-              overflow-hidden
-              transition-all
-              duration-500
-              group-hover:border-[#ccff00]/50
-              group-hover:-translate-y-3
-            "
-                >
-                  {/* Glow */}
-                  <div
-                    className="
-              absolute
-              inset-0
-              bg-gradient-to-br
-              from-[#ccff00]/10
-              via-transparent
-              to-transparent
-              opacity-0
-              group-hover:opacity-100
-              transition
-              duration-500
-              "
-                  />
-
-                  {/* Top */}
-                  <div className="relative z-10 flex justify-between items-start">
-                    <div>
-                      <span
-                        className="
-                  text-[10px]
-                  font-mono
-                  text-[#ccff00]
-                  tracking-widest
-                  uppercase
-                "
-                      >
-                        Protocol {step.num}
-                      </span>
-
-                      <h3
-                        className="
-                  mt-4
-                  text-2xl
-                  font-black
-                  uppercase
-                  text-white
-                  tracking-tight
-                "
-                      >
-                        {step.title}
-                      </h3>
-                    </div>
-
-                    <div
-                      className="
-                w-14
-                h-14
-                flex
-                items-center
-                justify-center
-                bg-black
-                border
-                border-zinc-700
-                text-[#ccff00]
-                group-hover:border-[#ccff00]
-                transition
-                "
-                    >
-                      {step.icon}
-                    </div>
-                  </div>
-
-                  {/* Bottom */}
-                  <div className="relative z-10">
-                    <div
-                      className="
-                w-full
-                h-px
-                bg-zinc-800
-                mb-6
-              "
-                    />
-
-                    <p
-                      className="
-                text-sm
-                font-mono
-                text-zinc-400
-                leading-relaxed
-              "
-                    >
-                      {step.desc}
-                    </p>
-
-                    <div
-                      className="
-                mt-8
-                flex
-                items-center
-                gap-2
-                text-[10px]
-                font-mono
-                text-zinc-600
-                uppercase
-              "
-                    >
-                      <span
-                        className="
-                  w-2
-                  h-2
-                  bg-[#ccff00]
-                  rounded-full
-                  animate-pulse
-                "
-                      />
-                      System Ready
-                    </div>
-                  </div>
+                <div className="mt-8 pt-6 border-t border-zinc-800/60 flex items-center gap-2 text-xs font-semibold text-zinc-500">
+                  <span className="w-2 h-2 rounded-full bg-[#9d4edd]" />
+                  <span>EchoTic Verified</span>
                 </div>
               </div>
             ))}
@@ -399,199 +304,79 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 6. TESTIMONIALS - FAN ARCHIVE STYLE */}
-      <section className="py-28 bg-[#07070a] relative overflow-hidden">
-        {/* Background Glow */}
-        <div className="absolute top-1/2 right-[-200px] -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-[#ff0055]/10 blur-[140px]" />
-        <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-[#00f0ff]/10 blur-[120px]" />
-
-        <div className="max-w-7xl mx-auto px-6 relative z-10">
+      {/* 6. DISCOVER THE ARTISTS (NEW SECTION) */}
+      <section id="artists" className="py-28 bg-[#0a0a0a] border-b border-white/5 relative">
+        <div className="max-w-7xl mx-auto px-6 md:px-10">
           {/* Header */}
-          <div className="mb-20">
-            <span className="text-[10px] font-mono text-[#ff0055] tracking-[0.4em] uppercase">
-              Fan Database // Feedback Loop
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+            <div>
+              <span className="text-xs font-semibold text-[#9d4edd] tracking-wider uppercase block mb-2">
+                Performers & Acts
+              </span>
+              <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tight text-white">
+                DISCOVER THE ARTISTS.
+              </h2>
+            </div>
+            <p className="text-zinc-400 text-sm max-w-md">
+              Experience world-class performers live in concert across major international venues.
+            </p>
+          </div>
+
+          {/* Artist Grid */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
+            {featuredArtists.map((artist, idx) => (
+              <Link
+                key={idx}
+                href="/events"
+                className="group flex flex-col items-center text-center cursor-pointer"
+              >
+                <div className="w-full aspect-square rounded-2xl overflow-hidden bg-zinc-900 mb-4 border border-zinc-800 group-hover:border-[#9d4edd] transition-all duration-300 relative">
+                  <img
+                    src={artist.image}
+                    alt={artist.name}
+                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity" />
+                </div>
+                <h4 className="text-lg font-bold text-white group-hover:text-[#9d4edd] transition-colors">
+                  {artist.name}
+                </h4>
+                <span className="text-xs text-zinc-500 font-medium">
+                  {artist.genre}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 7. TESTIMONIALS */}
+      <section className="py-28 bg-[#080808] border-b border-white/5 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 md:px-10">
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <span className="text-xs font-semibold text-[#9d4edd] tracking-widest uppercase block mb-2">
+              Fan Experiences
             </span>
-            <h2 className="mt-4 text-4xl md:text-6xl font-black uppercase tracking-tighter text-white">
-              WHAT THE
-              <span className="text-[#ff0055]"> COLLECTIVE</span>
-              <br />
-              SAYS.
+            <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-white">
+              WHAT PEOPLE SAY.
             </h2>
           </div>
 
-          {/* Cards */}
+          {/* Editorial Quote Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((t) => (
+            {editorialTestimonials.map((item, idx) => (
               <div
-                key={t.id}
-                className="
-            group
-            relative
-            bg-zinc-950
-            border
-            border-zinc-800
-            p-8
-            overflow-hidden
-            transition-all
-            duration-500
-            hover:-translate-y-3
-            hover:border-[#ff0055]/60
-          "
+                key={idx}
+                className="bg-[#121212] border border-zinc-800/80 rounded-3xl p-8 flex flex-col justify-between shadow-card-subtle relative"
               >
-                {/* Top Accent */}
-                <div
-                  className="
-            absolute
-            top-0
-            left-0
-            w-full
-            h-[2px]
-            bg-gradient-to-r
-            from-transparent
-            via-[#ff0055]
-            to-transparent
-            opacity-0
-            group-hover:opacity-100
-            transition
-          "
-                />
-
-                {/* Quote Icon */}
-                <div
-                  className="
-            absolute
-            top-6
-            right-7
-            text-6xl
-            font-black
-            text-zinc-900
-            group-hover:text-[#ff0055]/20
-            transition
-          "
-                >
-                  "
-                </div>
-
-                {/* Status */}
-                <div
-                  className="
-            flex
-            items-center
-            gap-2
-            mb-8
-          "
-                >
-                  <span
-                    className="
-              w-2
-              h-2
-              bg-[#00ff99]
-              rounded-full
-              animate-pulse
-            "
-                  />
-
-                  <span
-                    className="
-              text-[9px]
-              font-mono
-              tracking-widest
-              uppercase
-              text-zinc-500
-            "
-                  >
-                    Verified Attendee
-                  </span>
-                </div>
-
-                {/* Review */}
-                <p
-                  className="
-            relative
-            z-10
-            font-mono
-            text-sm
-            text-zinc-300
-            leading-relaxed
-            mb-10
-          "
-                >
-                  "{t.comment}"
+                <span className="text-6xl font-serif text-[#9d4edd]/30 leading-none select-none block mb-4">
+                  “
+                </span>
+                <p className="text-zinc-200 text-base font-medium leading-relaxed mb-6">
+                  {item.quote}
                 </p>
-
-                {/* Rating */}
-                <div
-                  className="
-            flex
-            gap-1
-            mb-8
-          "
-                >
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <span
-                      key={star}
-                      className="
-                  text-[#ffcc00]
-                  text-sm
-                "
-                    >
-                      ★
-                    </span>
-                  ))}
-                </div>
-
-                {/* User */}
-                <div
-                  className="
-            flex
-            items-center
-            gap-4
-            pt-6
-            border-t
-            border-zinc-800
-          "
-                >
-                  <img
-                    src={t.avatar}
-                    alt={t.name}
-                    className="
-                w-12
-                h-12
-                rounded-full
-                object-cover
-                grayscale
-                border
-                border-zinc-700
-                group-hover:grayscale-0
-                transition
-              "
-                  />
-
-                  <div>
-                    <h5
-                      className="
-                font-mono
-                text-sm
-                font-bold
-                uppercase
-                text-white
-              "
-                    >
-                      {t.name}
-                    </h5>
-
-                    <span
-                      className="
-                font-mono
-                text-[10px]
-                text-zinc-500
-                uppercase
-                tracking-widest
-              "
-                    >
-                      {t.role}
-                    </span>
-                  </div>
+                <div className="pt-4 border-t border-zinc-800/60 font-semibold text-xs text-zinc-400">
+                  — {item.author}, <span className="text-zinc-500">{item.location}</span>
                 </div>
               </div>
             ))}
