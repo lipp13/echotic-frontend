@@ -1,8 +1,32 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, Component } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Float } from "@react-three/drei";
+import { Mic, Volume2, Shield } from "lucide-react";
+
+// Error Boundary for WebGL/Canvas crashes
+class CanvasErrorBoundary extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.warn("Decor3D Canvas Error Caught:", error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return this.props.fallback;
+    }
+    return this.props.children;
+  }
+}
 
 function MicModel() {
   const groupRef = useRef();
@@ -19,7 +43,7 @@ function MicModel() {
       {/* Mic Grill */}
       <mesh position={[0, 0.4, 0]}>
         <sphereGeometry args={[0.3, 16, 16]} />
-        <meshPhysicalMaterial
+        <meshStandardMaterial
           color="#cccccc"
           roughness={0.2}
           metalness={0.9}
@@ -107,6 +131,18 @@ function ShieldModel() {
   );
 }
 
+function DecorFallback({ type = "mic", className = "" }) {
+  return (
+    <div className={`flex items-center justify-center border border-zinc-800/80 bg-zinc-900/40 backdrop-blur-md rounded-2xl p-6 ${className}`}>
+      <div className="w-16 h-16 rounded-full bg-[#9d4edd]/20 border border-[#9d4edd]/50 flex items-center justify-center text-[#9d4edd] shadow-lg animate-pulse">
+        {type === "mic" && <Mic className="w-8 h-8" />}
+        {type === "speaker" && <Volume2 className="w-8 h-8" />}
+        {type === "shield" && <Shield className="w-8 h-8" />}
+      </div>
+    </div>
+  );
+}
+
 export default function Decor3D({ type = "mic", className = "" }) {
   const [mounted, setMounted] = useState(false);
   const [hasWebGLError, setHasWebGLError] = useState(false);
@@ -122,27 +158,30 @@ export default function Decor3D({ type = "mic", className = "" }) {
     }
   }, []);
 
+  const fallback = <DecorFallback type={type} className={className} />;
+
   if (!mounted || hasWebGLError) {
-    return (
-      <div className={`flex items-center justify-center border border-zinc-800 bg-zinc-900/40 rounded-full p-2 ${className}`}>
-        <div className="w-6 h-6 rounded-full border-2 border-[#9d4edd]/60 animate-pulse bg-zinc-800" />
-      </div>
-    );
+    return fallback;
   }
 
   return (
     <div className={`relative ${className}`}>
-      <Canvas gl={{ alpha: true, antialias: true }}>
-        <ambientLight intensity={1.5} />
-        <directionalLight position={[2, 2, 2]} intensity={1.8} />
-        <pointLight position={[-2, -2, -2]} intensity={0.5} color="#9d4edd" />
-        
-        <Float speed={3} rotationIntensity={0.2} floatIntensity={0.3}>
-          {type === "mic" && <MicModel />}
-          {type === "speaker" && <SpeakerModel />}
-          {type === "shield" && <ShieldModel />}
-        </Float>
-      </Canvas>
+      <CanvasErrorBoundary fallback={fallback}>
+        <Canvas
+          gl={{ alpha: true, antialias: true }}
+          style={{ width: "100%", height: "100%" }}
+        >
+          <ambientLight intensity={1.5} />
+          <directionalLight position={[2, 2, 2]} intensity={1.8} />
+          <pointLight position={[-2, -2, -2]} intensity={0.5} color="#9d4edd" />
+          
+          <Float speed={3} rotationIntensity={0.2} floatIntensity={0.3}>
+            {type === "mic" && <MicModel />}
+            {type === "speaker" && <SpeakerModel />}
+            {type === "shield" && <ShieldModel />}
+          </Float>
+        </Canvas>
+      </CanvasErrorBoundary>
     </div>
   );
 }
