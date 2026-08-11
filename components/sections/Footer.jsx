@@ -73,14 +73,14 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <a href="#" className="hover:text-white transition-colors">
+                <Link href="/contact" className="hover:text-white transition-colors">
                   Kontak
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="hover:text-white transition-colors">
+                <Link href="/careers" className="hover:text-white transition-colors">
                   Karir
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -92,19 +92,19 @@ export default function Footer() {
             </h5>
             <ul className="space-y-2.5 text-xs font-medium text-slate-400">
               <li>
-                <a href="#" className="hover:text-white transition-colors">
+                <Link href="/contact" className="hover:text-white transition-colors">
                   Pusat Bantuan
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="hover:text-white transition-colors">
+                <Link href="/about#faq" className="hover:text-white transition-colors">
                   Pertanyaan Umum (FAQ)
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="hover:text-white transition-colors">
+                <Link href="/about" className="hover:text-white transition-colors">
                   Syarat & Ketentuan
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
