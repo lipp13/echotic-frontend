@@ -423,13 +423,13 @@ export default function AboutPage() {
 
                 <div className="pt-4 border-t border-white/10 w-full flex justify-center items-center gap-4 text-xs text-slate-400 font-semibold">
                   <a
-                    href={"/careers"}
+                    href="/careers"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-1.5 text-slate-400 hover:text-white transition-colors"
                   >
                     <ExternalLink className="w-3.5 h-3.5 text-[#e5c158]" />
-                    <span>Profil GitHub</span>
+                    <span>Karir Kami.</span>
                   </a>
                 </div>
               </motion.div>

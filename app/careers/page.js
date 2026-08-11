@@ -70,7 +70,7 @@ export default function CareersPage() {
       ],
       socials: {
         github: "https://github.com/farraskhairy",
-        linkedin: "https://linkedin.com/in/farraskhairy",
+        linkedin: "https://www.linkedin.com/in/farras-khairy-594983419/",
         instagram: "https://www.instagram.com/farraskhairy_/",
       },
     },
