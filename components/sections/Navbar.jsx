@@ -23,7 +23,7 @@ export default function Navbar() {
         setScrolled(false);
       }
     };
-    
+
     const checkUser = () => {
       if (isAuthenticated()) {
         setUser(getUserData());
@@ -54,7 +54,11 @@ export default function Navbar() {
     { name: "Konser", href: "/events" },
     { name: "Genre", href: "/events?genre=all" },
     { name: "Tentang Kami", href: "/about" },
-    ...(user?.role === "admin" ? [{ name: "Kontrol Gate", href: "/admin" }] : []),
+    { name: "Kontak", href: "/contact" },
+    { name: "Karir", href: "/careers" },
+    ...(user?.role === "admin"
+      ? [{ name: "Kontrol Gate", href: "/admin" }]
+      : []),
   ];
 
   return (
@@ -152,14 +156,21 @@ export default function Navbar() {
 
           {/* Mobile Menu Trigger */}
           <div className="flex items-center gap-2 md:hidden">
-            <Link href="/events" className="p-2 text-slate-400 hover:text-white">
+            <Link
+              href="/events"
+              className="p-2 text-slate-400 hover:text-white"
+            >
               <Search className="w-5 h-5" />
             </Link>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2 text-white hover:text-slate-300 transition-colors cursor-pointer"
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {mobileMenuOpen ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <Menu className="w-6 h-6" />
+              )}
             </button>
           </div>
         </div>
@@ -232,5 +243,3 @@ export default function Navbar() {
     </>
   );
 }
-
-
