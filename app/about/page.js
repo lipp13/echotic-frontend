@@ -99,6 +99,7 @@ export default function AboutPage() {
       {/* 1. HERO SECTION */}
       <section className="relative pt-32 pb-24 md:pt-40 md:pb-32 overflow-hidden hero-ambient-glow border-b border-white/10">
         <div className="max-w-7xl mx-auto px-6 md:px-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
+          
           {/* Left Column Text */}
           <div className="lg:col-span-7 space-y-8">
             <motion.div
