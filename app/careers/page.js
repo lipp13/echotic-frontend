@@ -26,7 +26,7 @@ export default function CareersPage() {
       id: "alif",
       name: "Alif Alfathar",
       role: "Lead Fullstack & UI/UX Engineer",
-      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=500&q=80",
+      avatar: "/team/alif.jpg",
       bio: "Fokus pada arsitektur web modern Next.js, pembuatan visualizer 3D panggung, sistem desain liquid glass bertema musik, serta animasi mikro antarmuka pengguna.",
       badge: "Frontend & UI Visionary",
       tech: ["Next.js 16", "React 19", "Three.js / R3F", "Framer Motion", "TailwindCSS", "JavaScript ES6+"],
@@ -43,16 +43,16 @@ export default function CareersPage() {
         },
       ],
       socials: {
-        github: "https://github.com/alifalfathar",
-        linkedin: "https://linkedin.com/in/alifalfathar",
-        instagram: "https://instagram.com/alifalfathar",
+        github: "https://github.com/lipp13",
+        linkedin: "https://www.linkedin.com/in/alif-alfathar-183402407/",
+        instagram: "https://instagram.com/alfthrr13",
       },
     },
     {
       id: "farras",
       name: "Farras Khairy",
       role: "Co-Founder & Backend Systems Architect",
-      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=500&q=80",
+      avatar: "/team/farras.jpg",
       bio: "Spesialis dalam arsitektur server Express.js berkecepatan tinggi, logika enkripsi kode QR tiket gate venue, manajemen database, dan otentikasi akun aman.",
       badge: "Backend & Systems Specialist",
       tech: ["Node.js", "Express.js", "PostgreSQL / MongoDB", "REST APIs", "QR Security", "System Architecture"],
@@ -71,7 +71,7 @@ export default function CareersPage() {
       socials: {
         github: "https://github.com/farraskhairy",
         linkedin: "https://linkedin.com/in/farraskhairy",
-        instagram: "https://instagram.com/farraskhairy",
+        instagram: "https://www.instagram.com/farraskhairy_/",
       },
     },
   ];

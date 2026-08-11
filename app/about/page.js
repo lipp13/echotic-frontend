@@ -423,7 +423,7 @@ export default function AboutPage() {
 
                 <div className="pt-4 border-t border-white/10 w-full flex justify-center items-center gap-4 text-xs text-slate-400 font-semibold">
                   <a
-                    href={member.github}
+                    href={"/careers"}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-1.5 text-slate-400 hover:text-white transition-colors"
