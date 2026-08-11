@@ -58,10 +58,10 @@ function MicModel() {
         <meshStandardMaterial color="#141414" roughness={0.3} metalness={0.8} />
       </mesh>
 
-      {/* Mic Neon Ring */}
+      {/* Mic Gold Ring */}
       <mesh position={[0, 0.24, 0]}>
         <torusGeometry args={[0.12, 0.025, 12, 30]} />
-        <meshStandardMaterial color="#9d4edd" roughness={0.1} metalness={0.9} />
+        <meshStandardMaterial color="#e5c158" roughness={0.1} metalness={0.9} />
       </mesh>
     </group>
   );
@@ -90,13 +90,13 @@ function SpeakerModel() {
       {/* Outer Rim */}
       <mesh position={[0, 0, 0.31]}>
         <boxGeometry args={[0.66, 1.06, 0.02]} />
-        <meshStandardMaterial color="#9d4edd" roughness={0.2} metalness={0.8} />
+        <meshStandardMaterial color="#e5c158" roughness={0.2} metalness={0.8} />
       </mesh>
 
       {/* Subwoofer Ring (Big) */}
       <mesh position={[0, -0.25, 0.33]}>
         <cylinderGeometry args={[0.22, 0.22, 0.04, 28]} />
-        <meshStandardMaterial color="#9d4edd" roughness={0.2} metalness={0.7} />
+        <meshStandardMaterial color="#e5c158" roughness={0.2} metalness={0.7} />
       </mesh>
 
       {/* Tweeter Ring (Small) */}
@@ -131,7 +131,7 @@ function PassModel() {
       {/* Hologram Accent Line */}
       <mesh position={[-0.7, 0, 0.035]}>
         <boxGeometry args={[0.08, 0.9, 0.02]} />
-        <meshStandardMaterial color="#9d4edd" roughness={0.1} metalness={0.9} />
+        <meshStandardMaterial color="#e5c158" roughness={0.1} metalness={0.9} />
       </mesh>
 
       {/* Embedded Emblem */}
@@ -166,7 +166,7 @@ function VinylModel() {
       {/* Center Label */}
       <mesh position={[0, 0.025, 0]}>
         <cylinderGeometry args={[0.3, 0.3, 0.01, 36]} />
-        <meshStandardMaterial color="#9d4edd" roughness={0.2} metalness={0.6} />
+        <meshStandardMaterial color="#e5c158" roughness={0.2} metalness={0.6} />
       </mesh>
 
       {/* Center Hole */}
@@ -181,14 +181,14 @@ function VinylModel() {
 // Fallback UI if WebGL is unavailable
 function About3DFallback({ selectedModel }) {
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center bg-zinc-900/40 border border-zinc-800 rounded-2xl p-6 backdrop-blur-md">
-      <div className="w-20 h-20 rounded-full bg-[#9d4edd]/20 border border-[#9d4edd]/50 flex items-center justify-center text-[#9d4edd] shadow-xl animate-pulse mb-3">
+    <div className="w-full h-full flex flex-col items-center justify-center bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-md">
+      <div className="w-20 h-20 rounded-full bg-[#e5c158]/20 border border-[#e5c158]/50 flex items-center justify-center text-[#e5c158] shadow-xl animate-pulse mb-3">
         {selectedModel === "mic" && <Mic className="w-10 h-10" />}
         {selectedModel === "speaker" && <Volume2 className="w-10 h-10" />}
         {selectedModel === "pass" && <Ticket className="w-10 h-10" />}
         {selectedModel === "vinyl" && <Disc className="w-10 h-10" />}
       </div>
-      <span className="text-xs font-semibold text-zinc-400 uppercase tracking-widest">
+      <span className="text-xs font-semibold text-slate-400 uppercase tracking-widest">
         {selectedModel.toUpperCase()} PREVIEW
       </span>
     </div>
@@ -213,9 +213,9 @@ export default function About3D() {
 
   const modelsList = [
     { id: "mic", name: "Mic", title: "STAGE CONDENSER MIC", icon: Mic },
-    { id: "speaker", name: "Speaker", title: "CYBER SUBWOOFER STACK", icon: Volume2 },
+    { id: "speaker", name: "Speaker", title: "SUBWOOFER STACK", icon: Volume2 },
     { id: "pass", name: "Pass", title: "3D HOLOGRAPHIC PASS", icon: Ticket },
-    { id: "vinyl", name: "Vinyl", title: "NEON CONCERT VINYL", icon: Disc },
+    { id: "vinyl", name: "Vinyl", title: "GOLD CONCERT VINYL", icon: Disc },
   ];
 
   const activeModelObj = modelsList.find((m) => m.id === selectedModel) || modelsList[0];
@@ -223,9 +223,9 @@ export default function About3D() {
   return (
     <div className="w-full flex flex-col items-center">
       {/* 3D Canvas Box */}
-      <div className="w-full h-72 relative rounded-2xl overflow-hidden bg-[#0a0a0c] border border-zinc-800/80 shadow-2xl group">
+      <div className="w-full h-72 relative rounded-2xl overflow-hidden bg-black/40 border border-white/10 shadow-2xl group">
         {/* Active Model Overlay Badge */}
-        <div className="absolute top-3 left-3 z-10 px-3 py-1 rounded-full bg-black/60 border border-white/10 backdrop-blur-md text-[10px] font-bold tracking-widest text-[#b565f7] uppercase pointer-events-none">
+        <div className="absolute top-3 left-3 z-10 px-3 py-1 rounded-full bg-black/60 border border-white/10 backdrop-blur-md text-[10px] font-bold tracking-widest text-[#e5c158] uppercase pointer-events-none">
           {activeModelObj.title}
         </div>
 
@@ -241,7 +241,7 @@ export default function About3D() {
 
               <ambientLight intensity={1.6} />
               <directionalLight position={[3, 4, 3]} intensity={2.2} color="#ffffff" />
-              <spotLight position={[-2, -2, 2]} angle={0.5} penumbra={0.8} intensity={4} color="#9d4edd" />
+              <spotLight position={[-2, -2, 2]} angle={0.5} penumbra={0.8} intensity={4} color="#e5c158" />
 
               <Float speed={2.5} rotationIntensity={0.2} floatIntensity={0.3}>
                 {selectedModel === "mic" && <MicModel />}
@@ -250,7 +250,7 @@ export default function About3D() {
                 {selectedModel === "vinyl" && <VinylModel />}
               </Float>
 
-              <Sparkles count={30} scale={4} size={1.5} speed={0.5} color="#9d4edd" opacity={0.5} />
+              <Sparkles count={30} scale={4} size={1.5} speed={0.5} color="#e5c158" opacity={0.5} />
               <OrbitControls enableZoom={false} enablePan={false} autoRotate={false} />
             </Canvas>
           </CanvasErrorBoundary>
@@ -259,7 +259,7 @@ export default function About3D() {
 
       {/* Interactive Controls & Model Selector */}
       <div className="mt-4 flex flex-col items-center gap-3 w-full">
-        <div className="flex items-center justify-center gap-2 p-1.5 rounded-full bg-[#121212] border border-zinc-800 shadow-inner">
+        <div className="flex items-center justify-center gap-2 p-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
           {modelsList.map((m) => {
             const Icon = m.icon;
             const isActive = selectedModel === m.id;
@@ -269,8 +269,8 @@ export default function About3D() {
                 onClick={() => setSelectedModel(m.id)}
                 className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
                   isActive
-                    ? "bg-[#9d4edd] text-white shadow-lg shadow-[#9d4edd]/30"
-                    : "text-zinc-400 hover:text-white hover:bg-zinc-800"
+                    ? "bg-[#e5c158] text-slate-950 font-bold shadow-lg shadow-[#e5c158]/30"
+                    : "text-slate-400 hover:text-white hover:bg-white/10"
                 }`}
               >
                 <Icon className="w-3.5 h-3.5" />
@@ -280,11 +280,12 @@ export default function About3D() {
           })}
         </div>
 
-        <div className="flex items-center gap-1.5 text-[11px] font-semibold text-zinc-500 tracking-wider uppercase">
-          <RotateCw className="w-3 h-3 text-[#9d4edd] animate-spin" />
+        <div className="flex items-center gap-1.5 text-[11px] font-semibold text-slate-400 tracking-wider uppercase">
+          <RotateCw className="w-3 h-3 text-[#e5c158] animate-spin" />
           <span>DRAG TO ROTATE 360° • TAP PILLS TO SWITCH MODEL</span>
         </div>
       </div>
     </div>
   );
 }
+

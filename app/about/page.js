@@ -25,58 +25,58 @@ import FAQAccordion from "@/components/sections/FAQAccordion";
 
 export default function AboutPage() {
   const stats = [
-    { label: "Digital Passes", value: "100%", sub: "Encrypted & Secure" },
-    { label: "Gate Validation", value: "< 1s", sub: "Instant QR Check-in" },
-    { label: "Venue Visualizer", value: "3D", sub: "Interactive Seat Selection" },
-    { label: "Ecosystem Sync", value: "Real-Time", sub: "Web & Mobile Native" },
+    { label: "Tiket Digital", value: "100%", sub: "Terenkripsi & Aman" },
+    { label: "Validasi Gate", value: "< 1s", sub: "Scan QR Instan" },
+    { label: "Visualisasi Venue", value: "3D", sub: "Pemilihan Kursi Interaktif" },
+    { label: "Sinkronisasi", value: "Real-Time", sub: "Web & Mobile Native" },
   ];
 
   const pillars = [
     {
       icon: Ticket,
-      title: "Interactive 3D Ticketing",
+      title: "Pemesanan Tiket 3D Interaktif",
       description:
-        "Say goodbye to flat list selection. EchoTic offers immersive 3D stage rendering and seat previews so fans know exactly what their concert view will be before committing.",
-      tag: "INNOVATION",
+        "Bukan sekadar daftar pilihan datar. EchoTic menawarkan tampilan denah panggung 3D interaktif agar Anda dapat melihat sudut pandang tempat duduk sebelum membeli.",
+      tag: "INOVASI",
     },
     {
       icon: ShieldCheck,
-      title: "Encrypted Digital Passes",
+      title: "Tiket Digital Berenkripsi",
       description:
-        "Every ticket is linked to a dynamically generated QR payload and secure user hash. Scalping friction is eliminated while user security is guaranteed.",
-      tag: "SECURITY",
+        "Setiap tiket terhubung dengan kode QR dinamis dan hash keamanan pengguna. Mencegah pemalsuan dan calo tiket secara total.",
+      tag: "KEAMANAN",
     },
     {
       icon: Zap,
-      title: "Instant Gate Control",
+      title: "Kontrol Gate Instan",
       description:
-        "Designed with event management in mind. Gate administrators scan passes with immediate feedback, validating attendance in less than one second.",
-      tag: "SPEED",
+        "Dirancang khusus untuk pengelola acara. Petugas gate memindai tiket dengan respon langsung, memvalidasi kehadiran dalam waktu kurang dari satu detik.",
+      tag: "KECEPATAN",
     },
     {
       icon: Smartphone,
-      title: "Omnichannel Ecosystem",
+      title: "Ekosistem Multi-Platform",
       description:
-        "Whether using our high-performance Next.js web application or our React Native mobile app, tickets and account states remain perfectly in sync.",
-      tag: "ECOSYSTEM",
+        "Baik menggunakan aplikasi web Next.js maupun aplikasi mobile React Native kami, tiket dan status akun Anda selalu tersinkronisasi sempurna.",
+      tag: "EKOSISTEM",
     },
   ];
 
   const techStack = [
-    { name: "Next.js 16", category: "Web Framework", desc: "React 19 App Router & Server Components" },
-    { name: "Three.js & R3F", category: "3D Graphics", desc: "Interactive WebGL stage & pass models" },
-    { name: "Framer Motion", category: "Animations", desc: "Fluid UI micro-interactions & transitions" },
-    { name: "TailwindCSS v4", category: "Design System", desc: "Modern utility styling & dark themes" },
-    { name: "Express.js REST", category: "Backend API", desc: "High-throughput Node.js microservice" },
-    { name: "React Native / Expo", category: "Mobile App", desc: "Cross-platform mobile wallet experience" },
+    { name: "Next.js 16", category: "Framework Web", desc: "React 19 App Router & Server Components" },
+    { name: "Three.js & R3F", category: "Grafik 3D", desc: "Model panggung & tiket 3D WebGL interaktif" },
+    { name: "Framer Motion", category: "Animasi", desc: "Mikro-interaksi & transisi antarmuka yang mulus" },
+    { name: "TailwindCSS v4", category: "Sistem Desain", desc: "Styling modern dengan tema gelap premium" },
+    { name: "Express.js REST", category: "API Backend", desc: "Layanan microservice Node.js berkecepatan tinggi" },
+    { name: "React Native / Expo", category: "Aplikasi Mobile", desc: "Pengalaman tiket digital di aplikasi mobile" },
   ];
 
   const team = [
     {
       name: "Alif Alfathar",
       role: "Lead Fullstack Architect",
-      bio: "Crafting modern web architectures, Three.js 3D user experiences, and frontend systems.",
-      avatarBg: "from-purple-600 to-indigo-600",
+      bio: "Merancang arsitektur web modern, visualisasi 3D Three.js, dan sistem antarmuka utama.",
+      avatarBg: "from-[#f5d77f] to-[#e5c158]",
       initial: "A",
       image: "/team/alif.jpg",
       github: "https://github.com/lipp13",
@@ -85,8 +85,8 @@ export default function AboutPage() {
     {
       name: "Farras Khairy",
       role: "Backend & Systems Engineer",
-      bio: "Architecting high-throughput REST APIs, database schemas, and ticket verification logic.",
-      avatarBg: "from-fuchsia-600 to-purple-800",
+      bio: "Merancang API REST performa tinggi, skema basis data, dan logika verifikasi tiket.",
+      avatarBg: "from-[#e5c158] to-[#d4af37]",
       initial: "F",
       image: "/team/farras.jpg",
       github: "https://github.com/FarrasKhairy",
@@ -95,13 +95,9 @@ export default function AboutPage() {
   ];
 
   return (
-    <main className="flex-grow bg-[#080808]">
+    <main className="flex-grow bg-[#060608]">
       {/* 1. HERO SECTION */}
-      <section className="relative pt-32 pb-24 md:pt-40 md:pb-32 overflow-hidden hero-grid border-b border-white/5">
-        {/* Glow Effects */}
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-[#9d4edd]/15 rounded-full blur-[150px] pointer-events-none" />
-        <div className="absolute top-10 right-10 w-72 h-72 bg-purple-900/20 rounded-full blur-[100px] pointer-events-none" />
-
+      <section className="relative pt-32 pb-24 md:pt-40 md:pb-32 overflow-hidden hero-ambient-glow border-b border-white/10">
         <div className="max-w-7xl mx-auto px-6 md:px-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
           {/* Left Column Text */}
           <div className="lg:col-span-7 space-y-8">
@@ -109,22 +105,22 @@ export default function AboutPage() {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#9d4edd]/30 bg-[#9d4edd]/10 text-xs font-semibold text-[#b565f7]"
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#e5c158]/30 bg-[#e5c158]/10 text-xs font-semibold text-[#e5c158]"
             >
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>THE ECHOTIC PLATFORM</span>
+              <Sparkles className="w-3.5 h-3.5 text-[#e5c158]" />
+              <span>PLATFORM ECHOTIC</span>
             </motion.div>
 
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-5xl sm:text-6xl md:text-7xl font-black tracking-tight uppercase leading-[0.92] text-white"
+              className="text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight leading-[0.92] text-white"
             >
-              REDEFINING <br />
-              THE CONCERT PASS <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-purple-300 to-[#9d4edd]">
-                EXPERIENCE.
+              Mendefinisikan Ulang <br />
+              Pengalaman <br />
+              <span className="text-gradient-gold">
+                Tiket Konser.
               </span>
             </motion.h1>
 
@@ -132,9 +128,9 @@ export default function AboutPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-zinc-400 text-base md:text-lg max-w-xl font-normal leading-relaxed"
+              className="text-slate-400 text-base md:text-lg max-w-xl font-normal leading-relaxed"
             >
-              EchoTic is built to eliminate friction in live music ticketing. From interactive 3D seat previews to instant QR gate validation, we bridge the gap between fans, venues, and unforgettable live moments.
+              EchoTic hadir untuk menghilangkan kendala dalam pemesanan tiket konser musik. Dari pratinjau kursi 3D interaktif hingga validasi QR gate instan, kami menghubungkan Anda dengan momen musik favorit secara praktis.
             </motion.p>
 
             <motion.div
@@ -144,13 +140,13 @@ export default function AboutPage() {
               className="flex flex-wrap gap-4 pt-2"
             >
               <Link href="/events" data-cursor="pointer">
-                <Button variant="primary" size="lg">
-                  EXPLORE EVENTS <ArrowRight className="ml-2.5 w-4 h-4" />
+                <Button variant="accent" size="lg">
+                  JELAJAHI KONSER <ArrowRight className="ml-2.5 w-4 h-4" />
                 </Button>
               </Link>
               <a href="#vision" data-cursor="pointer">
-                <Button variant="secondary" size="lg">
-                  OUR VISION
+                <Button variant="glass" size="lg">
+                  VISI KAMI
                 </Button>
               </a>
             </motion.div>
@@ -162,11 +158,11 @@ export default function AboutPage() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.7, delay: 0.2 }}
-              className="w-full max-w-md bg-[#121212]/90 border border-zinc-800/80 rounded-3xl p-6 md:p-8 backdrop-blur-xl shadow-2xl relative group flex flex-col items-center text-center"
+              className="w-full max-w-md glass-panel-premium rounded-3xl p-6 md:p-8 backdrop-blur-xl shadow-2xl relative group flex flex-col items-center text-center"
             >
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-700 text-[11px] font-semibold text-zinc-300 mb-4">
-                <span className="w-2 h-2 rounded-full bg-[#9d4edd] animate-pulse" />
-                INTERACTIVE 3D ENGINE
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/15 text-[11px] font-semibold text-slate-300 mb-4">
+                <span className="w-2 h-2 rounded-full bg-[#e5c158] animate-pulse" />
+                MESIN GRAPHIC 3D INTERAKTIF
               </div>
 
               <About3D />
@@ -177,12 +173,12 @@ export default function AboutPage() {
 
       {/* 2. INFINITE SCROLL BANNER */}
       <Marquee
-        text="ZERO TICKET FRICTION • 3D SEAT PREVIEWS • INSTANT GATE CONTROL • ECHOTIC ECOSYSTEM • REVOLUTIONIZING LIVE MUSIC PASSES"
+        text="PEMESANAN TIKET TANPA RIBET • PREVIEW KURSI 3D • SCAN GATE CEPAT • EKOSISTEM ECHOTIC • PLATFORM TIKET KONSER MODERN"
         speed={22}
       />
 
       {/* 3. METRICS BANNER */}
-      <section className="py-16 bg-[#0a0a0a] border-b border-white/5">
+      <section className="py-16 bg-[#08090d] border-b border-white/10">
         <div className="max-w-7xl mx-auto px-6 md:px-10">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {stats.map((stat, idx) => (
@@ -192,15 +188,15 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: idx * 0.1 }}
-                className="bg-[#121212] border border-zinc-800/80 rounded-2xl p-6 flex flex-col justify-between shadow-card-subtle hover:border-[#9d4edd]/50 transition-all duration-300"
+                className="glass-panel-premium glass-panel-hover rounded-2xl p-6 flex flex-col justify-between shadow-2xl transition-all duration-300"
               >
-                <span className="text-xs font-semibold text-zinc-500 uppercase tracking-wider block mb-2">
+                <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-2">
                   {stat.label}
                 </span>
-                <span className="text-4xl md:text-5xl font-black tracking-tight text-white mb-2">
+                <span className="text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-2">
                   {stat.value}
                 </span>
-                <span className="text-xs text-[#9d4edd] font-medium flex items-center gap-1">
+                <span className="text-xs text-[#e5c158] font-medium flex items-center gap-1">
                   <CheckCircle2 className="w-3.5 h-3.5" /> {stat.sub}
                 </span>
               </motion.div>
@@ -210,61 +206,60 @@ export default function AboutPage() {
       </section>
 
       {/* 4. VISION & STORY */}
-      <section id="vision" className="py-28 bg-[#080808] border-b border-white/5 relative">
+      <section id="vision" className="py-24 bg-[#060608] border-b border-white/10 relative">
         <div className="max-w-7xl mx-auto px-6 md:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             <div className="lg:col-span-6 space-y-6">
-              <span className="text-xs font-bold text-[#9d4edd] tracking-widest uppercase block">
-                OUR MISSION & STORY
+              <span className="text-xs font-bold text-[#e5c158] tracking-widest uppercase block">
+                MISI & CERITA KAMI
               </span>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-white leading-tight">
-                BUILT FOR FANS, <br />
-                DESIGNED FOR VENUES.
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white leading-tight">
+                Diciptakan Untuk Penonton, <br />
+                Dirancang Untuk Venue.
               </h2>
-              <p className="text-zinc-400 text-sm md:text-base leading-relaxed">
-                Traditional concert ticketing systems are often fragmented, clunky, and prone to counterfeiting. We created <strong className="text-white">EchoTic</strong> to provide a seamless end-to-end platform that unifies fan booking, seat selection, digital pass storage, and venue entry control into one cohesive aesthetic experience.
+              <p className="text-slate-400 text-sm md:text-base leading-relaxed">
+                Sistem pemesanan tiket konser tradisional seringkali terasa rumit, lambat, dan rentan pemalsuan. Kami membangun <strong className="text-white">EchoTic</strong> untuk memberikan satu platform terpadu yang menyatukan pemesanan tiket, pemilihan kursi 3D, penyimpanan tiket digital, hingga kontrol akses gate.
               </p>
-              <p className="text-zinc-400 text-sm md:text-base leading-relaxed">
-                Whether you are booking a stadium tour on your desktop or presenting your pass at the gate using our mobile app, EchoTic delivers speed, reliability, and modern visual elegance.
+              <p className="text-slate-400 text-sm md:text-base leading-relaxed">
+                Baik Anda memesan tiket tur stadion dari laptop maupun menunjukkan tiket di gate menggunakan smartphone, EchoTic memberikan kecepatan, keandalan, dan tampilan estetis yang elegan.
               </p>
 
-              <div className="pt-4 grid grid-cols-2 gap-4 text-xs font-semibold text-zinc-300">
-                <div className="flex items-center gap-2 bg-[#121212] p-3 rounded-xl border border-zinc-800">
-                  <Layers className="w-4 h-4 text-[#9d4edd]" />
-                  <span>Modular Architecture</span>
+              <div className="pt-4 grid grid-cols-2 gap-4 text-xs font-semibold text-slate-300">
+                <div className="flex items-center gap-2 bg-white/5 p-3 rounded-xl border border-white/10 backdrop-blur-md">
+                  <Layers className="w-4 h-4 text-[#e5c158]" />
+                  <span>Arsitektur Modular</span>
                 </div>
-                <div className="flex items-center gap-2 bg-[#121212] p-3 rounded-xl border border-zinc-800">
-                  <Globe className="w-4 h-4 text-[#9d4edd]" />
-                  <span>Cross-Platform Ready</span>
+                <div className="flex items-center gap-2 bg-white/5 p-3 rounded-xl border border-white/10 backdrop-blur-md">
+                  <Globe className="w-4 h-4 text-[#e5c158]" />
+                  <span>Siap Multi-Platform</span>
                 </div>
               </div>
             </div>
 
             <div className="lg:col-span-6">
-              <div className="bg-gradient-to-br from-[#151518] to-[#0d0d10] border border-zinc-800 rounded-3xl p-8 md:p-10 relative overflow-hidden shadow-2xl">
-                <div className="absolute top-0 right-0 w-48 h-48 bg-[#9d4edd]/10 rounded-full blur-3xl pointer-events-none" />
+              <div className="glass-panel-premium rounded-3xl p-8 md:p-10 relative overflow-hidden shadow-2xl">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="w-10 h-10 rounded-xl bg-[#9d4edd]/20 flex items-center justify-center text-[#9d4edd] font-bold">
+                  <div className="w-10 h-10 rounded-xl bg-[#e5c158]/20 flex items-center justify-center text-[#e5c158] font-bold">
                     <Code2 className="w-5 h-5" />
                   </div>
                   <div>
-                    <h4 className="text-white font-bold text-base">Engineering Principles</h4>
-                    <p className="text-zinc-500 text-xs">High Quality • Zero Compromise</p>
+                    <h4 className="text-white font-bold text-base">Prinsip Rekayasa</h4>
+                    <p className="text-slate-400 text-xs">Kualitas Tinggi • Tanpa Kompromi</p>
                   </div>
                 </div>
 
-                <ul className="space-y-4 text-xs text-zinc-300">
+                <ul className="space-y-4 text-xs text-slate-300">
                   <li className="flex items-start gap-3">
-                    <span className="w-2 h-2 rounded-full bg-[#9d4edd] mt-1.5 flex-shrink-0" />
-                    <span><strong className="text-white">Performance-First UX:</strong> Ultra-fast rendering with Next.js client-side optimizations and lightweight WebGL canvas setup.</span>
+                    <span className="w-2 h-2 rounded-full bg-[#e5c158] mt-1.5 flex-shrink-0" />
+                    <span><strong className="text-white">Pengalaman Pengguna Cepat:</strong> Performa tinggi dengan optimasi Next.js dan kanvas 3D WebGL yang ringan.</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="w-2 h-2 rounded-full bg-[#9d4edd] mt-1.5 flex-shrink-0" />
-                    <span><strong className="text-white">Verified Security:</strong> Pass payload encryption preventing un-authorized duplication or spoofing during entry.</span>
+                    <span className="w-2 h-2 rounded-full bg-[#e5c158] mt-1.5 flex-shrink-0" />
+                    <span><strong className="text-white">Keamanan Terverifikasi:</strong> Enkripsi tiket digital yang mencegah penggandaan dan pemalsuan saat masuk venue.</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="w-2 h-2 rounded-full bg-[#9d4edd] mt-1.5 flex-shrink-0" />
-                    <span><strong className="text-white">Real-Time Validation:</strong> Immediate administrative status feedback for gate ticket controllers.</span>
+                    <span className="w-2 h-2 rounded-full bg-[#e5c158] mt-1.5 flex-shrink-0" />
+                    <span><strong className="text-white">Validasi Real-Time:</strong> Respon konfirmasi langsung bagi petugas gate scan tiket.</span>
                   </li>
                 </ul>
               </div>
@@ -274,17 +269,17 @@ export default function AboutPage() {
       </section>
 
       {/* 5. FOUR PILLARS GRID */}
-      <section className="py-28 bg-[#0a0a0a] border-b border-white/5">
+      <section className="py-24 bg-[#08090d] border-b border-white/10">
         <div className="max-w-7xl mx-auto px-6 md:px-10">
-          <div className="text-center max-w-2xl mx-auto mb-20">
-            <span className="text-xs font-bold text-[#9d4edd] tracking-widest uppercase block mb-2">
-              PLATFORM HIGHLIGHTS
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <span className="text-xs font-bold text-[#e5c158] tracking-widest uppercase block mb-2">
+              KEUNGGULAN UTAMA
             </span>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-white">
-              WHAT SETS ECHOTIC APART.
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white">
+              Keunggulan Platform EchoTic.
             </h2>
-            <p className="mt-4 text-zinc-400 text-sm md:text-base">
-              Four core features engineered to create the ultimate concert pass workflow.
+            <p className="mt-4 text-slate-400 text-sm md:text-base">
+              Empat fitur utama yang dirancang untuk menciptakan pengalaman konser terbaik.
             </p>
           </div>
 
@@ -298,28 +293,28 @@ export default function AboutPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: idx * 0.1 }}
-                  className="bg-[#121212] border border-zinc-800/80 rounded-3xl p-8 md:p-10 flex flex-col justify-between group hover:border-[#9d4edd]/60 transition-all duration-300 shadow-card-subtle relative overflow-hidden"
+                  className="glass-panel-premium glass-panel-hover rounded-3xl p-8 md:p-10 flex flex-col justify-between group shadow-2xl relative overflow-hidden"
                 >
                   <div>
                     <div className="flex items-center justify-between mb-6">
-                      <div className="w-12 h-12 rounded-2xl bg-zinc-900 border border-zinc-700/80 flex items-center justify-center text-[#9d4edd] group-hover:scale-110 group-hover:border-[#9d4edd] transition-all">
+                      <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-[#e5c158] group-hover:scale-110 transition-all">
                         <Icon className="w-6 h-6" />
                       </div>
-                      <span className="text-[10px] font-extrabold tracking-widest uppercase px-3 py-1 rounded-full bg-[#9d4edd]/10 border border-[#9d4edd]/20 text-[#b565f7]">
+                      <span className="text-[10px] font-extrabold tracking-widest uppercase px-3 py-1 rounded-full bg-[#e5c158]/10 border border-[#e5c158]/20 text-[#e5c158]">
                         {item.tag}
                       </span>
                     </div>
 
-                    <h3 className="text-xl font-bold uppercase text-white tracking-tight mb-3">
+                    <h3 className="text-xl font-bold text-white tracking-tight mb-3">
                       {item.title}
                     </h3>
-                    <p className="text-sm text-zinc-400 leading-relaxed font-normal">
+                    <p className="text-sm text-slate-400 leading-relaxed font-normal">
                       {item.description}
                     </p>
                   </div>
 
-                  <div className="mt-8 pt-6 border-t border-zinc-800/60 flex items-center justify-between text-xs text-zinc-500 font-medium">
-                    <span>EchoTic Core Feature</span>
+                  <div className="mt-8 pt-6 border-t border-white/10 flex items-center justify-between text-xs text-slate-400 font-medium">
+                    <span>Fitur Utama EchoTic</span>
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 group-hover:text-white transition-all" />
                   </div>
                 </motion.div>
@@ -330,19 +325,19 @@ export default function AboutPage() {
       </section>
 
       {/* 6. TECH STACK OVERVIEW */}
-      <section className="py-28 bg-[#080808] border-b border-white/5">
+      <section className="py-24 bg-[#060608] border-b border-white/10">
         <div className="max-w-7xl mx-auto px-6 md:px-10">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
             <div>
-              <span className="text-xs font-bold text-[#9d4edd] tracking-widest uppercase block mb-2">
-                DEVELOPMENT STACK
+              <span className="text-xs font-bold text-[#e5c158] tracking-widest uppercase block mb-2">
+                TEKNOLOGI YANG DIGUNAKAN
               </span>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-white">
-                BUILT WITH MODERN TECH.
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white">
+                Teknologi Modern & Handal.
               </h2>
             </div>
-            <p className="text-zinc-400 text-xs md:text-sm max-w-md">
-              Powered by industry-standard frameworks ensuring lightning-fast client loading, fluid 60FPS animations, and robust backend microservices.
+            <p className="text-slate-400 text-xs md:text-sm max-w-md">
+              Ditenagai teknologi modern untuk memastikan waktu muat cepat, animasi 60FPS yang mulus, dan layanan API backend yang andal.
             </p>
           </div>
 
@@ -350,16 +345,16 @@ export default function AboutPage() {
             {techStack.map((tech, idx) => (
               <div
                 key={idx}
-                className="bg-[#121212] border border-zinc-800/80 rounded-2xl p-6 hover:bg-[#151515] transition-colors"
+                className="glass-panel-premium rounded-2xl p-6 hover:bg-white/10 transition-colors"
               >
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-white font-bold text-base">{tech.name}</span>
-                  <Cpu className="w-4 h-4 text-[#9d4edd]" />
+                  <Cpu className="w-4 h-4 text-[#e5c158]" />
                 </div>
-                <span className="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider block mb-2">
+                <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block mb-2">
                   {tech.category}
                 </span>
-                <p className="text-xs text-zinc-400">{tech.desc}</p>
+                <p className="text-xs text-slate-400">{tech.desc}</p>
               </div>
             ))}
           </div>
@@ -367,17 +362,17 @@ export default function AboutPage() {
       </section>
 
       {/* 7. MEET THE CREATORS */}
-      <section className="py-28 bg-[#0a0a0a] border-b border-white/5">
+      <section className="py-24 bg-[#08090d] border-b border-white/10">
         <div className="max-w-7xl mx-auto px-6 md:px-10">
-          <div className="text-center max-w-2xl mx-auto mb-20">
-            <span className="text-xs font-bold text-[#9d4edd] tracking-widest uppercase block mb-2">
-              ENGINEERING & DESIGN
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <span className="text-xs font-bold text-[#e5c158] tracking-widest uppercase block mb-2">
+              TIM PENGEMBANG
             </span>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-white">
-              MEET THE CREATORS.
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white">
+              Pengembang Dibalik EchoTic.
             </h2>
-            <p className="mt-4 text-zinc-400 text-sm md:text-base">
-              The engineering team behind the EchoTic platform.
+            <p className="mt-4 text-slate-400 text-sm md:text-base">
+              Tim rekayasa perangkat lunak di balik platform EchoTic.
             </p>
           </div>
 
@@ -389,10 +384,10 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: idx * 0.15 }}
-                className="bg-[#121212] border border-zinc-800/80 rounded-3xl p-8 flex flex-col items-center text-center shadow-card-subtle relative group hover:border-[#9d4edd]/50 transition-all"
+                className="glass-panel-premium glass-panel-hover rounded-3xl p-8 flex flex-col items-center text-center shadow-2xl relative group"
               >
-                {/* Glowing Avatar Photo */}
-                <div className={`w-24 h-24 rounded-full bg-gradient-to-tr ${member.avatarBg} p-1 shadow-xl shadow-purple-900/40 mb-6 group-hover:scale-105 transition-transform overflow-hidden`}>
+                {/* Avatar Photo */}
+                <div className={`w-24 h-24 rounded-full bg-gradient-to-tr ${member.avatarBg} p-1 shadow-xl mb-6 group-hover:scale-105 transition-transform overflow-hidden`}>
                   {member.image ? (
                     <img
                       src={member.image}
@@ -400,17 +395,17 @@ export default function AboutPage() {
                       className="w-full h-full rounded-full object-cover"
                     />
                   ) : (
-                    <div className="w-full h-full bg-[#0d0d0d] rounded-full flex items-center justify-center font-black text-2xl text-white">
+                    <div className="w-full h-full bg-[#060608] rounded-full flex items-center justify-center font-black text-2xl text-white">
                       {member.initial}
                     </div>
                   )}
                 </div>
 
                 <h3 className="text-xl font-extrabold text-white tracking-tight">{member.name}</h3>
-                <span className="text-xs font-semibold text-[#9d4edd] tracking-wide uppercase mt-1 mb-3">
+                <span className="text-xs font-semibold text-[#e5c158] tracking-wide uppercase mt-1 mb-3">
                   {member.role}
                 </span>
-                <p className="text-xs text-zinc-400 leading-relaxed max-w-xs mb-5">
+                <p className="text-xs text-slate-400 leading-relaxed max-w-xs mb-5">
                   {member.bio}
                 </p>
 
@@ -419,22 +414,22 @@ export default function AboutPage() {
                   {member.skills?.map((skill, sIdx) => (
                     <span
                       key={sIdx}
-                      className="px-2.5 py-1 rounded-md bg-zinc-900 border border-zinc-800 text-[10px] font-semibold text-zinc-300"
+                      className="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-[10px] font-semibold text-slate-300"
                     >
                       {skill}
                     </span>
                   ))}
                 </div>
 
-                <div className="pt-4 border-t border-zinc-800/80 w-full flex justify-center items-center gap-4 text-xs text-zinc-400 font-semibold">
+                <div className="pt-4 border-t border-white/10 w-full flex justify-center items-center gap-4 text-xs text-slate-400 font-semibold">
                   <a
                     href={member.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 text-zinc-400 hover:text-white transition-colors"
+                    className="flex items-center gap-1.5 text-slate-400 hover:text-white transition-colors"
                   >
-                    <ExternalLink className="w-3.5 h-3.5 text-[#9d4edd]" />
-                    <span>GitHub Profile</span>
+                    <ExternalLink className="w-3.5 h-3.5 text-[#e5c158]" />
+                    <span>Profil GitHub</span>
                   </a>
                 </div>
               </motion.div>
@@ -447,29 +442,28 @@ export default function AboutPage() {
       <FAQAccordion />
 
       {/* 9. CALL TO ACTION BANNER */}
-      <section className="py-24 bg-[#080808] relative overflow-hidden">
+      <section className="py-24 bg-[#060608] relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 md:px-10">
-          <div className="bg-gradient-to-r from-purple-950/40 via-[#121212] to-purple-950/40 border border-[#9d4edd]/30 rounded-3xl p-10 md:p-16 text-center relative overflow-hidden shadow-2xl">
-            <div className="absolute inset-0 bg-[#9d4edd]/5 pointer-events-none" />
+          <div className="glass-panel-premium rounded-3xl p-10 md:p-16 text-center relative overflow-hidden shadow-2xl border border-white/15">
             <div className="relative z-10 max-w-2xl mx-auto space-y-6">
-              <span className="text-xs font-bold text-[#9d4edd] tracking-widest uppercase block">
-                JOIN THE EXPERIENCE
+              <span className="text-xs font-bold text-[#e5c158] tracking-widest uppercase block">
+                BERGABUNG SEKARANG
               </span>
-              <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-white leading-tight">
-                READY FOR YOUR NEXT CONCERT?
+              <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white leading-tight">
+                Siap Untuk Konser Berikutnya?
               </h2>
-              <p className="text-zinc-400 text-sm md:text-base">
-                Discover upcoming live shows, grab digital passes, and get ready for an unforgettable night.
+              <p className="text-slate-400 text-sm md:text-base">
+                Jelajahi jadwal konser mendatang, dapatkan tiket digital Anda, dan bersiaplah untuk malam yang tak terlupakan.
               </p>
               <div className="flex flex-wrap justify-center gap-4 pt-4">
                 <Link href="/events" data-cursor="pointer">
-                  <Button variant="primary" size="lg">
-                    BROWSE ALL EVENTS <ArrowRight className="ml-2 w-4 h-4" />
+                  <Button variant="accent" size="lg">
+                    LIHAT SEMUA KONSER <ArrowRight className="ml-2 w-4 h-4" />
                   </Button>
                 </Link>
                 <Link href="/register" data-cursor="pointer">
-                  <Button variant="secondary" size="lg">
-                    CREATE ACCOUNT
+                  <Button variant="glass" size="lg">
+                    BUAT AKUN BARU
                   </Button>
                 </Link>
               </div>
@@ -480,3 +474,5 @@ export default function AboutPage() {
     </main>
   );
 }
+
+

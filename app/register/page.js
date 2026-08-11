@@ -63,12 +63,12 @@ export default function RegisterPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#080808] text-white flex flex-col lg:flex-row relative">
+    <main className="min-h-screen bg-[#060608] text-white flex flex-col lg:flex-row relative">
       {/* Top Left Back Button */}
       <div className="absolute top-6 left-6 z-20">
         <Link
           href="/"
-          className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors text-xs font-semibold uppercase"
+          className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors text-xs font-semibold uppercase"
           data-cursor="pointer"
         >
           <ArrowLeft className="w-4 h-4" />
@@ -77,47 +77,47 @@ export default function RegisterPage() {
       </div>
 
       {/* Left Side: Editorial Visual */}
-      <div className="flex-1 bg-[#0a0a0a] border-r border-white/5 flex flex-col justify-between p-12 lg:p-20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-cover bg-center opacity-30 mix-blend-luminosity pointer-events-none" style={{ backgroundImage: `url('https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=1200&q=80')` }} />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/70 to-transparent" />
+      <div className="flex-1 bg-[#08090d] border-r border-white/10 flex flex-col justify-between p-12 lg:p-20 relative overflow-hidden">
+        <div className="absolute inset-0 bg-cover bg-center opacity-30 pointer-events-none" style={{ backgroundImage: `url('https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=1200&q=80')` }} />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#060608] via-[#060608]/70 to-transparent" />
 
         <div className="text-xl font-black tracking-tight text-white z-10">
-          ECHOTIC<span className="text-[#9d4edd]">.</span>
+          ECHOTIC<span className="text-[#e5c158]">.</span>
         </div>
 
         <div className="my-auto space-y-4 z-10">
-          <h1 className="text-5xl lg:text-7xl font-black tracking-tight uppercase leading-none">
-            CREATE <br />
-            YOUR <span className="text-[#9d4edd]">PASS.</span>
+          <h1 className="text-5xl lg:text-7xl font-extrabold tracking-tight text-white leading-none">
+            Create Your <br />
+            <span className="text-gradient-gold">Pass.</span>
           </h1>
-          <p className="text-sm text-zinc-300 max-w-sm font-normal">
+          <p className="text-sm text-slate-300 max-w-sm font-normal">
             Create an account to track tickets, secure presale passes, and personalize your concert experience.
           </p>
         </div>
 
-        <div className="flex justify-between text-xs text-zinc-500 font-medium border-t border-zinc-800 pt-6 z-10">
+        <div className="flex justify-between text-xs text-slate-400 font-medium border-t border-white/10 pt-6 z-10">
           <span>FREE MEMBER ACCOUNT</span>
           <span>ECHOTIC PLATFORM</span>
         </div>
       </div>
 
       {/* Right Side: Form */}
-      <div className="flex-1 flex items-center justify-center p-6 lg:p-20 bg-[#080808]">
-        <div className="w-full max-w-md bg-[#121212] border border-zinc-800 rounded-3xl p-8 md:p-10 relative shadow-2xl">
-          <h2 className="text-2xl font-bold tracking-tight uppercase mb-1">
+      <div className="flex-1 flex items-center justify-center p-6 lg:p-20 bg-[#060608]">
+        <div className="w-full max-w-md glass-panel-premium rounded-3xl p-8 md:p-10 relative shadow-2xl">
+          <h2 className="text-2xl font-bold tracking-tight text-white mb-1">
             Create Account
           </h2>
-          <p className="text-xs text-zinc-400 mb-8">
+          <p className="text-xs text-slate-400 mb-8">
             Fill in your details to start booking passes
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-1.5">
-              <label className="block text-xs font-bold text-zinc-300 uppercase tracking-wider">
+              <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider">
                 Username
               </label>
               <div className="relative">
-                <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-zinc-500">
+                <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400">
                   <User className="w-4 h-4" />
                 </span>
                 <input
@@ -126,17 +126,17 @@ export default function RegisterPage() {
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder="alexjohnson"
                   disabled={loading}
-                  className="w-full bg-zinc-900 border border-zinc-700 focus:border-[#9d4edd] rounded-2xl pl-11 pr-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none transition-colors"
+                  className="w-full bg-white/5 border border-white/10 focus:border-[#e5c158] rounded-2xl pl-11 pr-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none transition-colors"
                 />
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <label className="block text-xs font-bold text-zinc-300 uppercase tracking-wider">
+              <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider">
                 Email Address
               </label>
               <div className="relative">
-                <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-zinc-500">
+                <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400">
                   <Mail className="w-4 h-4" />
                 </span>
                 <input
@@ -145,17 +145,17 @@ export default function RegisterPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="alex@domain.com"
                   disabled={loading}
-                  className="w-full bg-zinc-900 border border-zinc-700 focus:border-[#9d4edd] rounded-2xl pl-11 pr-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none transition-colors"
+                  className="w-full bg-white/5 border border-white/10 focus:border-[#e5c158] rounded-2xl pl-11 pr-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none transition-colors"
                 />
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <label className="block text-xs font-bold text-zinc-300 uppercase tracking-wider">
+              <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider">
                 Password
               </label>
               <div className="relative">
-                <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-zinc-500">
+                <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400">
                   <KeyRound className="w-4 h-4" />
                 </span>
                 <input
@@ -164,17 +164,17 @@ export default function RegisterPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
                   disabled={loading}
-                  className="w-full bg-zinc-900 border border-zinc-700 focus:border-[#9d4edd] rounded-2xl pl-11 pr-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none transition-colors"
+                  className="w-full bg-white/5 border border-white/10 focus:border-[#e5c158] rounded-2xl pl-11 pr-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none transition-colors"
                 />
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <label className="block text-xs font-bold text-zinc-300 uppercase tracking-wider">
+              <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider">
                 Confirm Password
               </label>
               <div className="relative">
-                <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-zinc-500">
+                <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400">
                   <KeyRound className="w-4 h-4" />
                 </span>
                 <input
@@ -183,7 +183,7 @@ export default function RegisterPage() {
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="••••••••"
                   disabled={loading}
-                  className="w-full bg-zinc-900 border border-zinc-700 focus:border-[#9d4edd] rounded-2xl pl-11 pr-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none transition-colors"
+                  className="w-full bg-white/5 border border-white/10 focus:border-[#e5c158] rounded-2xl pl-11 pr-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none transition-colors"
                 />
               </div>
             </div>
@@ -206,10 +206,10 @@ export default function RegisterPage() {
             </Button>
           </form>
 
-          <div className="mt-6 pt-6 border-t border-zinc-800 text-center">
-            <p className="text-xs text-zinc-400">
+          <div className="mt-6 pt-6 border-t border-white/10 text-center">
+            <p className="text-xs text-slate-400">
               Already have an account?{" "}
-              <Link href="/login" className="text-[#9d4edd] font-semibold hover:underline" data-cursor="pointer">
+              <Link href="/login" className="text-[#e5c158] font-semibold hover:underline" data-cursor="pointer">
                 Sign In
               </Link>
             </p>
@@ -219,3 +219,4 @@ export default function RegisterPage() {
     </main>
   );
 }
+

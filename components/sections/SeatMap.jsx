@@ -33,38 +33,38 @@ export default function SeatMap({ event, onSelectionChange }) {
 
   if (!event.seatingConfig?.hasSeatedMap || sections.length === 0) {
     return (
-      <div className="border border-zinc-800 bg-[#121212] rounded-2xl p-6 text-center">
-        <p className="text-sm text-zinc-400 font-medium">
-          General Admission / Standing Event. No individual seat selection is required.
+      <div className="glass-panel-premium rounded-2xl p-6 text-center">
+        <p className="text-sm text-slate-400 font-medium">
+          Konser Festival / Standing Event. Tidak memerlukan pemilihan nomor kursi.
         </p>
       </div>
     );
   }
 
   return (
-    <div className="space-y-8 bg-[#121212] border border-zinc-800 rounded-3xl p-6 md:p-8 relative shadow-card-subtle">
+    <div className="space-y-8 glass-panel-premium rounded-3xl p-6 md:p-8 relative shadow-2xl">
       {/* Stage Layout */}
       <div className="w-full flex flex-col items-center mb-10">
-        <div className="w-3/4 h-8 bg-zinc-900 border border-zinc-700/80 rounded-xl text-center flex items-center justify-center relative overflow-hidden shadow-md">
-          <span className="text-xs font-bold tracking-widest text-zinc-300 uppercase">
-            STAGE FRONT
+        <div className="w-3/4 h-8 bg-white/5 border border-white/15 rounded-xl text-center flex items-center justify-center relative overflow-hidden shadow-md backdrop-blur-md">
+          <span className="text-xs font-bold tracking-widest text-slate-300 uppercase">
+            AREA PANGGUNG UTAMA
           </span>
-          <div className="absolute bottom-0 inset-x-0 h-[2px] bg-[#9d4edd]" />
+          <div className="absolute bottom-0 inset-x-0 h-[2px] bg-[#e5c158]" />
         </div>
         {/* Subtle Spotlight Beam */}
-        <div className="w-1/2 h-10 bg-gradient-to-b from-[#9d4edd]/10 to-transparent clip-path-spotlight opacity-50 pointer-events-none" />
+        <div className="w-1/2 h-10 bg-gradient-to-b from-[#e5c158]/10 to-transparent opacity-50 pointer-events-none" />
       </div>
 
       {/* Map Sections */}
       <div className="space-y-8">
         {sections.map((section) => (
-          <div key={section.id} className="border-t border-zinc-800/80 pt-6">
+          <div key={section.id} className="border-t border-white/10 pt-6">
             <div className="flex justify-between items-center mb-4">
               <h4 className="text-sm font-bold text-white uppercase tracking-wider">
-                {section.name} — <span className="text-[#9d4edd]">{formatPrice(section.price)}</span>
+                {section.name} — <span className="text-[#e5c158]">{formatPrice(section.price)}</span>
               </h4>
-              <span className="text-xs text-zinc-500 font-medium">
-                {section.rows.length} rows, {section.seatsPerRow} seats/row
+              <span className="text-xs text-slate-400 font-medium">
+                {section.rows.length} baris, {section.seatsPerRow} kursi/baris
               </span>
             </div>
 
@@ -73,7 +73,7 @@ export default function SeatMap({ event, onSelectionChange }) {
               {section.rows.map((row) => (
                 <div key={row} className="flex gap-2 items-center justify-start min-w-[320px]">
                   {/* Row Label */}
-                  <span className="w-6 text-xs font-bold text-zinc-500 text-right mr-2">
+                  <span className="w-6 text-xs font-bold text-slate-400 text-right mr-2">
                     {row}
                   </span>
 
@@ -90,13 +90,13 @@ export default function SeatMap({ event, onSelectionChange }) {
                           key={seatNum}
                           disabled={isOccupied}
                           onClick={() => handleSeatClick(section, row, seatNum, section.price)}
-                          title={`${section.name} - Row ${row} Seat ${seatNum}`}
+                          title={`${section.name} - Baris ${row} Kursi ${seatNum}`}
                           className={`w-7 h-7 rounded-lg text-xs font-semibold flex items-center justify-center border transition-all cursor-pointer ${
                             isOccupied
-                              ? "bg-zinc-900 border-zinc-900 text-zinc-700 cursor-not-allowed"
+                              ? "bg-white/5 border-white/5 text-slate-600 cursor-not-allowed"
                               : isSelected
-                              ? "bg-[#9d4edd] border-[#9d4edd] text-white font-bold shadow-md shadow-[#9d4edd]/30"
-                              : "bg-zinc-900/60 border-zinc-700/80 text-zinc-300 hover:border-[#9d4edd] hover:text-white"
+                              ? "bg-[#e5c158] border-[#e5c158] text-slate-950 font-bold shadow-md shadow-[#e5c158]/30"
+                              : "bg-white/5 border-white/10 text-slate-300 hover:border-[#e5c158] hover:text-white"
                           }`}
                         >
                           {seatNum}
@@ -106,7 +106,7 @@ export default function SeatMap({ event, onSelectionChange }) {
                   </div>
 
                   {/* Row Label Right */}
-                  <span className="w-6 text-xs font-bold text-zinc-500 text-left ml-2">
+                  <span className="w-6 text-xs font-bold text-slate-400 text-left ml-2">
                     {row}
                   </span>
                 </div>
@@ -117,33 +117,33 @@ export default function SeatMap({ event, onSelectionChange }) {
       </div>
 
       {/* Legend */}
-      <div className="flex justify-center gap-8 border-t border-zinc-800/80 pt-6 text-xs text-zinc-400 font-medium">
+      <div className="flex justify-center gap-8 border-t border-white/10 pt-6 text-xs text-slate-400 font-medium">
         <div className="flex items-center gap-2">
-          <div className="w-4 h-4 rounded-md border border-zinc-700 bg-zinc-900/60" />
-          <span>Available</span>
+          <div className="w-4 h-4 rounded-md border border-white/10 bg-white/5" />
+          <span>Tersedia</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-4 h-4 rounded-md bg-zinc-900 border border-zinc-900" />
-          <span>Occupied</span>
+          <div className="w-4 h-4 rounded-md bg-white/5 border border-white/5 opacity-50" />
+          <span>Terisi</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-4 h-4 rounded-md bg-[#9d4edd] border border-[#9d4edd]" />
-          <span>Selected</span>
+          <div className="w-4 h-4 rounded-md bg-[#e5c158] border border-[#e5c158]" />
+          <span>Dipilih</span>
         </div>
       </div>
 
       {/* Summary of Selection */}
       {selectedSeats.length > 0 && (
-        <div className="border border-zinc-800 bg-zinc-900/80 rounded-2xl p-5 mt-6 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="border border-white/10 bg-white/5 rounded-2xl p-5 mt-6 flex flex-col md:flex-row items-center justify-between gap-4 backdrop-blur-md">
           <div className="space-y-1">
-            <span className="text-xs text-zinc-400 uppercase font-semibold tracking-wider block">
-              Selected Seats
+            <span className="text-xs text-slate-400 uppercase font-semibold tracking-wider block">
+              Kursi Yang Dipilih
             </span>
             <div className="flex flex-wrap gap-2">
               {selectedSeats.map((seat) => (
                 <span
                   key={seat.id}
-                  className="bg-zinc-800 border border-zinc-700 px-3 py-1 rounded-full text-xs font-semibold text-white"
+                  className="bg-white/10 border border-white/15 px-3 py-1 rounded-full text-xs font-semibold text-white font-mono"
                 >
                   {seat.row}-{seat.seatNum} ({seat.id.split("-")[0]})
                 </span>
@@ -152,7 +152,7 @@ export default function SeatMap({ event, onSelectionChange }) {
           </div>
           
           <div className="text-right">
-            <span className="text-xs text-zinc-400 uppercase font-semibold tracking-wider block">
+            <span className="text-xs text-slate-400 uppercase font-semibold tracking-wider block">
               Subtotal
             </span>
             <span className="text-xl font-bold text-white">
@@ -164,3 +164,5 @@ export default function SeatMap({ event, onSelectionChange }) {
     </div>
   );
 }
+
+

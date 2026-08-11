@@ -49,7 +49,7 @@ export default function EventDetailPage() {
   if (loading) {
     return (
       <div className="flex justify-center items-center py-24 flex-grow">
-        <Loader2 className="w-8 h-8 text-[#9d4edd] animate-spin" />
+        <Loader2 className="w-8 h-8 text-[#e5c158] animate-spin" />
       </div>
     );
   }
@@ -57,13 +57,13 @@ export default function EventDetailPage() {
   if (notFound || !event) {
     return (
       <div className="max-w-7xl mx-auto px-6 py-24 text-center">
-        <ShieldAlert className="w-12 h-12 text-[#9d4edd] mx-auto mb-4" />
-        <h2 className="text-xl font-bold uppercase mb-2">Show Not Found</h2>
-        <p className="text-zinc-400 text-xs mb-8">
-          The requested concert could not be found or has expired.
+        <ShieldAlert className="w-12 h-12 text-[#e5c158] mx-auto mb-4" />
+        <h2 className="text-xl font-bold uppercase mb-2">Konser Tidak Ditemukan</h2>
+        <p className="text-slate-400 text-xs mb-8">
+          Jadwal konser yang Anda cari tidak ditemukan atau telah berakhir.
         </p>
         <Link href="/events" data-cursor="pointer">
-          <Button variant="accent">Browse Events</Button>
+          <Button variant="accent">Cari Konser Lain</Button>
         </Link>
       </div>
     );
@@ -80,7 +80,7 @@ export default function EventDetailPage() {
   const handleShare = () => {
     if (typeof window !== "undefined") {
       navigator.clipboard.writeText(window.location.href);
-      addToast("Event link copied to clipboard!", "info");
+      addToast("Tautan konser berhasil disalin ke papan klip!", "info");
     }
   };
 
@@ -88,7 +88,7 @@ export default function EventDetailPage() {
     // If seated, must select at least one seat
     if (event.seatingConfig?.hasSeatedMap) {
       if (selectedSeats.length === 0) {
-        addToast("Please select at least one seat from the map", "error");
+        addToast("Silakan pilih minimal 1 kursi pada denah", "error");
         return;
       }
       
@@ -111,7 +111,7 @@ export default function EventDetailPage() {
     } else {
       // General Admission Checkout
       if (!selectedCategory) {
-        addToast("Please select a ticket category", "error");
+        addToast("Silakan pilih kategori tiket", "error");
         return;
       }
 
@@ -140,11 +140,11 @@ export default function EventDetailPage() {
       <div className="mb-8">
         <Link
           href="/events"
-          className="inline-flex items-center gap-2 text-zinc-400 hover:text-white transition-colors text-xs font-semibold uppercase"
+          className="inline-flex items-center gap-2 text-slate-400 hover:text-white transition-colors text-xs font-semibold uppercase"
           data-cursor="pointer"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Back to directory</span>
+          <span>Kembali ke katalog</span>
         </Link>
       </div>
 
@@ -153,60 +153,58 @@ export default function EventDetailPage() {
         <div className="lg:col-span-7 space-y-10">
           
           {/* Banner Graphic */}
-          <div className="border border-zinc-800 bg-[#121212] rounded-3xl overflow-hidden aspect-[16/9] relative group shadow-card-subtle">
+          <div className="glass-panel-premium rounded-3xl overflow-hidden aspect-[16/9] relative group shadow-2xl">
             <img
               src={event.image}
               alt={event.title}
               className="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-700"
             />
             {/* Tag Overlay */}
-            <div className="absolute bottom-6 right-6 border border-white/10 bg-black/80 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-semibold text-white uppercase tracking-wider">
-              OFFICIAL EVENT PASS
+            <div className="absolute bottom-6 right-6 border border-white/15 bg-black/75 backdrop-blur-xl px-4 py-1.5 rounded-full text-xs font-semibold text-white uppercase tracking-wider shadow-lg">
+              TIKET RESMI KONSER
             </div>
           </div>
 
           {/* Titles & Meta */}
           <div className="space-y-3">
-            <span className="text-xs font-semibold text-[#9d4edd] tracking-wider uppercase block">
-              {event.subtitle || "LIVE IN CONCERT"}
+            <span className="text-xs font-bold text-[#e5c158] tracking-widest uppercase block">
+              {event.subtitle || "KONSER MUSIK LIVE"}
             </span>
-            <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tight text-white leading-none">
+            <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-white leading-none">
               {event.title}
             </h1>
             
-            <div className="flex flex-wrap gap-6 pt-4 border-t border-zinc-800/80 text-xs font-medium text-zinc-300">
+            <div className="flex flex-wrap gap-6 pt-4 border-t border-white/10 text-xs font-medium text-slate-300">
               <div className="flex items-center gap-2">
-                <Calendar className="w-4 h-4 text-[#9d4edd]" />
-                <span>{formatDate(event.date)} at {event.time}</span>
+                <Calendar className="w-4 h-4 text-[#e5c158]" />
+                <span>{formatDate(event.date)} pukul {event.time}</span>
               </div>
               <div className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-[#9d4edd]" />
+                <MapPin className="w-4 h-4 text-[#e5c158]" />
                 <span>{venue?.name}, {venue?.city}</span>
               </div>
             </div>
           </div>
 
           {/* Description */}
-          <div className="space-y-3 border-t border-zinc-800/80 pt-8">
-            <h4 className="text-xs font-bold text-zinc-400 uppercase tracking-wider">
-              About The Show
+          <div className="space-y-3 border-t border-white/10 pt-8">
+            <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+              Tentang Konser Ini
             </h4>
-            <p className="text-sm leading-relaxed text-zinc-300 font-normal">
+            <p className="text-sm leading-relaxed text-slate-300 font-normal">
               {event.description}
             </p>
           </div>
 
-
-
           {/* Location Map Embed */}
           {venue && (
-            <div className="space-y-4 border-t border-zinc-800/80 pt-8">
-              <h4 className="text-xs font-bold text-zinc-400 uppercase tracking-wider">
-                Venue & Address
+            <div className="space-y-4 border-t border-white/10 pt-8">
+              <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                Lokasi & Alamat Venue
               </h4>
-              <p className="text-xs text-zinc-300">{venue.address}</p>
+              <p className="text-xs text-slate-300">{venue.address}</p>
               
-              <div className="border border-zinc-800 bg-zinc-950 rounded-2xl overflow-hidden aspect-[21/9]">
+              <div className="glass-panel-premium rounded-2xl overflow-hidden aspect-[21/9]">
                 <iframe
                   src={venue.mapUrl}
                   width="100%"
@@ -225,17 +223,17 @@ export default function EventDetailPage() {
 
         {/* Right Column: Ticket Buying Interface */}
         <div className="lg:col-span-5 space-y-8">
-          <div className="bg-[#121212] border border-zinc-800/80 rounded-3xl p-6 md:p-8 relative shadow-card-subtle">
-            <h3 className="text-xl font-bold uppercase text-white mb-6 flex items-center gap-2.5">
-              <Ticket className="w-5 h-5 text-[#9d4edd]" />
-              <span>Select Pass Category</span>
+          <div className="glass-panel-premium rounded-3xl p-6 md:p-8 relative shadow-2xl">
+            <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2.5">
+              <Ticket className="w-5 h-5 text-[#e5c158]" />
+              <span>Pilih Kategori Tiket</span>
             </h3>
 
             {/* SEATED CONFIGURATION */}
             {event.seatingConfig?.hasSeatedMap ? (
               <div className="space-y-6">
-                <p className="text-xs text-zinc-400 leading-relaxed font-normal">
-                  This concert features reserved seating. Click desired seat dots on the interactive map below.
+                <p className="text-xs text-slate-400 leading-relaxed font-normal">
+                  Konser ini menggunakan nomor kursi. Klik titik kursi yang diinginkan pada denah di bawah.
                 </p>
                 
                 {/* Seating Map selector */}
@@ -243,19 +241,19 @@ export default function EventDetailPage() {
 
                 {/* Subtotal buy widget */}
                 {selectedSeats.length > 0 ? (
-                  <div className="space-y-4 pt-4 border-t border-zinc-800">
+                  <div className="space-y-4 pt-4 border-t border-white/10">
                     <Button
                       variant="accent"
                       onClick={handleCheckoutRedirect}
                       className="w-full py-4 text-center justify-center font-bold text-sm"
                       data-cursor="pointer"
                     >
-                      GET TICKETS ({selectedSeats.length}) <ChevronRight className="w-4 h-4 ml-1" />
+                      BELI TIKET ({selectedSeats.length}) <ChevronRight className="w-4 h-4 ml-1" />
                     </Button>
                   </div>
                 ) : (
-                  <div className="border border-zinc-800 rounded-2xl p-4 text-center text-xs text-zinc-500 bg-zinc-900/40">
-                    Select your seat from the chart above
+                  <div className="border border-white/10 rounded-2xl p-4 text-center text-xs text-slate-400 bg-white/5">
+                    Pilih kursi Anda dari denah di atas
                   </div>
                 )}
               </div>
@@ -263,8 +261,8 @@ export default function EventDetailPage() {
               /* GENERAL ADMISSION */
               <div className="space-y-6">
                 <div className="space-y-3">
-                  <span className="text-xs font-bold text-zinc-400 uppercase tracking-wider block">
-                    Choose Pass Category
+                  <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block">
+                    Pilih Kategori Tiket
                   </span>
                   
                   <div className="space-y-2.5">
@@ -276,20 +274,20 @@ export default function EventDetailPage() {
                           onClick={() => setSelectedCategory(cat)}
                           className={`w-full text-left p-4 rounded-2xl border flex items-center justify-between transition-all cursor-pointer ${
                             isSelected
-                              ? "bg-[#9d4edd]/15 border-[#9d4edd] text-white shadow-md shadow-[#9d4edd]/10"
-                              : "bg-zinc-900/60 border-zinc-800 text-zinc-300 hover:border-zinc-700"
+                              ? "bg-[#e5c158]/15 border-[#e5c158] text-white shadow-md shadow-[#e5c158]/10"
+                              : "bg-white/5 border-white/10 text-slate-300 hover:border-white/20"
                           }`}
                         >
                           <div>
                             <div className="flex items-center gap-2">
                               <h5 className="text-sm font-bold uppercase">{cat.name}</h5>
-                              {isSelected && <Check className="w-4 h-4 text-[#9d4edd]" />}
+                              {isSelected && <Check className="w-4 h-4 text-[#e5c158]" />}
                             </div>
-                            <span className="text-xs text-zinc-400">
-                              Available • {cat.capacity - cat.sold} remaining
+                            <span className="text-xs text-slate-400">
+                              Tersedia • sisa {cat.capacity - cat.sold} tiket
                             </span>
                           </div>
-                          <span className={`text-sm font-bold ${isSelected ? "text-[#9d4edd]" : "text-white"}`}>
+                          <span className={`text-sm font-bold ${isSelected ? "text-[#e5c158]" : "text-white"}`}>
                             {formatPrice(cat.price)}
                           </span>
                         </button>
@@ -299,15 +297,15 @@ export default function EventDetailPage() {
                 </div>
 
                 {/* Quantity Counter */}
-                <div className="flex justify-between items-center border-t border-zinc-800 pt-6">
-                  <span className="text-xs font-bold text-zinc-400 uppercase tracking-wider block">
-                    Select Quantity
+                <div className="flex justify-between items-center border-t border-white/10 pt-6">
+                  <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block">
+                    Jumlah Tiket
                   </span>
 
-                  <div className="flex items-center gap-4 bg-zinc-900 border border-zinc-700 rounded-full px-4 py-1.5">
+                  <div className="flex items-center gap-4 bg-white/5 border border-white/15 rounded-full px-4 py-1.5">
                     <button
                       onClick={() => setTicketQuantity(Math.max(1, ticketQuantity - 1))}
-                      className="w-6 text-zinc-400 hover:text-white font-bold text-base text-center cursor-pointer"
+                      className="w-6 text-slate-400 hover:text-white font-bold text-base text-center cursor-pointer"
                     >
                       -
                     </button>
@@ -316,7 +314,7 @@ export default function EventDetailPage() {
                     </span>
                     <button
                       onClick={() => setTicketQuantity(Math.min(5, ticketQuantity + 1))}
-                      className="w-6 text-zinc-400 hover:text-white font-bold text-base text-center cursor-pointer"
+                      className="w-6 text-slate-400 hover:text-white font-bold text-base text-center cursor-pointer"
                     >
                       +
                     </button>
@@ -325,8 +323,8 @@ export default function EventDetailPage() {
 
                 {/* Pricing subtotal */}
                 {selectedCategory && (
-                  <div className="border-y border-zinc-800 py-4 flex justify-between items-center">
-                    <span className="text-xs font-bold text-zinc-400 uppercase tracking-wider">
+                  <div className="border-y border-white/10 py-4 flex justify-between items-center">
+                    <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
                       Subtotal
                     </span>
                     <span className="text-xl font-bold text-white">
@@ -342,20 +340,20 @@ export default function EventDetailPage() {
                   className="w-full py-4 text-center justify-center font-bold text-sm"
                   data-cursor="pointer"
                 >
-                  GET TICKETS →
+                  BELI TIKET SEKARANG →
                 </Button>
               </div>
             )}
 
             {/* Guarantee and share */}
-            <div className="mt-6 pt-6 border-t border-zinc-800/80 flex justify-between items-center text-xs text-zinc-500 font-medium">
-              <span>Official EchoTic Booking</span>
+            <div className="mt-6 pt-6 border-t border-white/10 flex justify-between items-center text-xs text-slate-400 font-medium">
+              <span>Pemesanan Resmi EchoTic</span>
               <button
                 onClick={handleShare}
                 className="flex items-center gap-1.5 hover:text-white transition-colors cursor-pointer"
               >
                 <Share2 className="w-3.5 h-3.5" />
-                <span>Share</span>
+                <span>Bagikan</span>
               </button>
             </div>
           </div>
@@ -364,3 +362,5 @@ export default function EventDetailPage() {
     </motion.main>
   );
 }
+
+

@@ -18,73 +18,74 @@ export default function Card({ event }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      whileHover={{ y: -6 }}
-      transition={{ duration: 0.3, ease: "easeOut" }}
-      className="group relative flex flex-col bg-[#121212] border border-zinc-800/80 hover:border-zinc-700 rounded-2xl overflow-hidden shadow-card-subtle transition-all duration-300"
+      whileHover={{ y: -5 }}
+      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+      className="group relative flex flex-col glass-panel-premium glass-panel-hover rounded-2xl overflow-hidden card-ambient-shadow"
     >
-      {/* Image Container — Large Artwork Priority */}
-      <div className="relative aspect-[16/10] overflow-hidden bg-zinc-900">
+      {/* Image Container — Artwork Priority */}
+      <div className="relative aspect-[16/10] overflow-hidden bg-slate-900">
         <motion.img
           src={image}
           alt={title}
           className="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-700 ease-out"
         />
         
-        {/* Subtle Overlay gradient */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-transparent to-black/30 opacity-80" />
+        {/* Subtle Vignette gradient */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0d0e14] via-[#0d0e14]/30 to-transparent" />
 
-        {/* Top Badges */}
-        <div className="absolute top-4 left-4 flex gap-2">
-          <span className="bg-black/60 backdrop-blur-md border border-white/10 px-3 py-1 rounded-full text-[11px] font-medium text-zinc-200 tracking-wide">
+        {/* Floating Glass Date Badge */}
+        <div className="absolute top-3.5 left-3.5 flex gap-2">
+          <span className="bg-[#060608]/75 backdrop-blur-xl border border-white/10 px-3 py-1 rounded-full text-xs font-semibold text-slate-200 tracking-tight shadow-md">
             {formatDate(date).split(",")[1]?.trim() || date}
           </span>
         </div>
       </div>
 
-      {/* Content */}
-      <div className="p-6 flex flex-col flex-grow relative -mt-4 bg-gradient-to-b from-transparent via-[#121212] to-[#121212] rounded-t-2xl z-10">
-        {/* Artist / Subtitle */}
-        <span className="text-xs font-semibold text-[#9d4edd] uppercase tracking-wider mb-1">
+      {/* Card Content Body */}
+      <div className="p-5 md:p-6 flex flex-col flex-grow relative bg-[#0d0e14]/90 rounded-b-2xl">
+        {/* Artist / Subtitle Badge */}
+        <span className="text-xs font-bold text-[#e5c158] uppercase tracking-wider mb-1.5">
           {displayArtist}
         </span>
         
         {/* Heading Link */}
-        <Link href={`/events/${id}`} className="group-hover:text-white transition-colors">
-          <h3 className="text-xl font-bold tracking-tight text-white line-clamp-1 mb-3">
+        <Link href={`/events/${id}`} className="group-hover:text-[#e5c158] transition-colors">
+          <h3 className="text-lg md:text-xl font-bold tracking-tight text-white line-clamp-1 mb-2.5">
             {title}
           </h3>
         </Link>
 
-        {/* Meta Info */}
-        <div className="flex items-center gap-4 text-xs text-zinc-400 mb-6 font-normal">
+        {/* Meta Details */}
+        <div className="flex items-center gap-3 text-xs text-slate-400 mb-6 font-normal">
           <div className="flex items-center gap-1.5 truncate">
-            <MapPin className="w-3.5 h-3.5 text-zinc-500 flex-shrink-0" />
-            <span className="truncate">{venueId.toUpperCase()}</span>
+            <MapPin className="w-3.5 h-3.5 text-[#e5c158]/80 flex-shrink-0" />
+            <span className="truncate uppercase font-medium">{venueId}</span>
           </div>
-          <span className="text-zinc-700">•</span>
+          <span className="text-slate-600">•</span>
           <div className="flex items-center gap-1.5 flex-shrink-0">
-            <Calendar className="w-3.5 h-3.5 text-zinc-500" />
+            <Calendar className="w-3.5 h-3.5 text-slate-400" />
             <span>{date}</span>
           </div>
         </div>
 
-        {/* Footer Row: Pricing & Arrow CTA */}
-        <div className="mt-auto pt-4 border-t border-zinc-800/60 flex items-center justify-between">
+        {/* Footer Row: Pricing & Action Button */}
+        <div className="mt-auto pt-4 border-t border-white/10 flex items-center justify-between">
           <div>
-            <span className="text-[10px] text-zinc-500 uppercase tracking-wider block font-medium">
+            <span className="text-[11px] text-slate-400 uppercase tracking-wider block font-medium">
               From
             </span>
-            <span className="text-base font-bold text-white">
+            <span className="text-base font-extrabold text-white">
               {formatPrice(lowestPrice)}
             </span>
           </div>
 
           <Link
             href={`/events/${id}`}
-            className="w-10 h-10 rounded-full bg-zinc-900 border border-zinc-700/80 group-hover:border-[#9d4edd] group-hover:bg-[#9d4edd] text-zinc-300 group-hover:text-white flex items-center justify-center transition-all duration-300 shadow-sm"
+            className="w-9 h-9 rounded-full bg-white/10 border border-white/15 group-hover:border-[#e5c158] group-hover:bg-[#e5c158] text-slate-200 group-hover:text-black flex items-center justify-center transition-all duration-300 shadow-sm"
+            aria-label={`View details for ${title}`}
           >
             <ArrowRight className="w-4 h-4 transform group-hover:translate-x-0.5 transition-transform" />
           </Link>
@@ -93,3 +94,4 @@ export default function Card({ event }) {
     </motion.div>
   );
 }
+

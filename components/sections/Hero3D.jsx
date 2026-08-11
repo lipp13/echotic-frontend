@@ -43,17 +43,17 @@ function useTicketTexture() {
       if (!ctx) return;
 
       // Pure sleek dark ticket background
-      ctx.fillStyle = "#0c0c0c";
+      ctx.fillStyle = "#0a0b10";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Subtle dark border
-      ctx.strokeStyle = "#262626";
+      // Subtle metallic gold border
+      ctx.strokeStyle = "#332a15";
       ctx.lineWidth = 4;
       ctx.strokeRect(12, 12, canvas.width - 24, canvas.height - 24);
 
       // Tear-off stub divider line
       ctx.setLineDash([8, 8]);
-      ctx.strokeStyle = "#2d2d2d";
+      ctx.strokeStyle = "#252835";
       ctx.lineWidth = 3;
       ctx.beginPath();
       ctx.moveTo(740, 16);
@@ -61,8 +61,8 @@ function useTicketTexture() {
       ctx.stroke();
       ctx.setLineDash([]); // reset
 
-      // Electric Purple Accent line on left
-      ctx.fillStyle = "#9d4edd";
+      // Champagne Gold Accent line on left
+      ctx.fillStyle = "#e5c158";
       ctx.fillRect(20, 20, 8, canvas.height - 40);
 
       // Brand Wordmark - ECHOTIC PASS
@@ -72,7 +72,7 @@ function useTicketTexture() {
       ctx.fillText("ECHOTIC", 50, 85);
 
       ctx.font = "600 18px system-ui, sans-serif";
-      ctx.fillStyle = "#9d4edd";
+      ctx.fillStyle = "#e5c158";
       ctx.fillText("OFFICIAL ACCESS PASS", 230, 85);
 
       // Main Artist Title
@@ -80,8 +80,8 @@ function useTicketTexture() {
       ctx.fillStyle = "#ffffff";
       ctx.fillText("WORLD TOUR 2026", 50, 175);
 
-      // Category Badge (Safe roundRect fallback)
-      ctx.fillStyle = "#1a1a1a";
+      // Category Badge
+      ctx.fillStyle = "#161824";
       ctx.beginPath();
       if (typeof ctx.roundRect === "function") {
         ctx.roundRect(50, 210, 240, 44, 8);
@@ -89,22 +89,22 @@ function useTicketTexture() {
         ctx.rect(50, 210, 240, 44);
       }
       ctx.fill();
-      ctx.strokeStyle = "#333333";
+      ctx.strokeStyle = "#e5c158";
       ctx.lineWidth = 1;
       ctx.stroke();
 
       ctx.font = "bold 18px system-ui, sans-serif";
-      ctx.fillStyle = "#ffffff";
+      ctx.fillStyle = "#e5c158";
       ctx.fillText("VIP ALL-ACCESS PASS", 70, 238);
 
       // Venue & Date Info
       ctx.font = "500 20px system-ui, sans-serif";
-      ctx.fillStyle = "#a1a1a1";
+      ctx.fillStyle = "#cbd5e1";
       ctx.fillText("JAKARTA INTERNATIONAL STADIUM", 50, 305);
       ctx.fillText("OCTOBER 24, 2026 • 20:00 WIB", 50, 335);
 
       // Barcode / QR Graphic Simulation
-      ctx.fillStyle = "#ffffff";
+      ctx.fillStyle = "#f8fafc";
       for (let x = 50; x < 680; x += Math.random() * 10 + 6) {
         const w = Math.random() * 5 + 2;
         ctx.fillRect(x, 380, w, 70);
@@ -121,19 +121,19 @@ function useTicketTexture() {
       ctx.fillText("ECHOTIC", 0, -50);
 
       ctx.font = "bold 20px system-ui, sans-serif";
-      ctx.fillStyle = "#9d4edd";
+      ctx.fillStyle = "#e5c158";
       ctx.fillText("PASS #9402", 0, -15);
 
       ctx.font = "500 16px system-ui, sans-serif";
-      ctx.fillStyle = "#777777";
+      ctx.fillStyle = "#94a3b8";
       ctx.fillText("GATE A • SEAT V-12", 0, 20);
 
       // Simulated QR Square in stub
       ctx.fillStyle = "#ffffff";
       ctx.fillRect(-30, 40, 60, 60);
-      ctx.fillStyle = "#0c0c0c";
+      ctx.fillStyle = "#0a0b10";
       ctx.fillRect(-22, 48, 44, 44);
-      ctx.fillStyle = "#ffffff";
+      ctx.fillStyle = "#e5c158";
       ctx.fillRect(-14, 56, 28, 28);
 
       ctx.restore();
@@ -173,9 +173,9 @@ function TicketMesh() {
       <mesh>
         <boxGeometry args={[outerW, outerH, 0.06]} />
         <meshStandardMaterial
-          color="#121212"
-          roughness={0.2}
-          metalness={0.8}
+          color="#0f1118"
+          roughness={0.15}
+          metalness={0.85}
         />
       </mesh>
 
@@ -198,11 +198,11 @@ function TicketMesh() {
 // Fallback component
 function TicketFallback() {
   return (
-    <div className="relative w-full h-[350px] md:h-[450px] flex items-center justify-center bg-[#121212]/60 border border-zinc-800 rounded-3xl overflow-hidden group shadow-2xl">
-      <div className="w-[340px] h-[190px] bg-[#0c0c0c] border border-zinc-700/80 rounded-2xl p-5 flex justify-between shadow-2xl relative backdrop-blur-md transform group-hover:scale-105 transition-all duration-500">
-        <div className="flex flex-col justify-between flex-1 pr-4 border-r border-dashed border-zinc-800">
+    <div className="relative w-full h-[350px] md:h-[450px] flex items-center justify-center bg-[#0d0e14]/70 border border-white/10 rounded-3xl overflow-hidden group shadow-2xl backdrop-blur-xl">
+      <div className="w-[340px] h-[190px] bg-[#0a0b10] border border-[#e5c158]/30 rounded-2xl p-5 flex justify-between shadow-2xl relative transform group-hover:scale-105 transition-all duration-500">
+        <div className="flex flex-col justify-between flex-1 pr-4 border-r border-dashed border-white/10">
           <div>
-            <span className="text-xs font-bold text-[#9d4edd] uppercase tracking-wider block">
+            <span className="text-xs font-bold text-[#e5c158] uppercase tracking-wider block">
               ECHOTIC PASS
             </span>
             <h3 className="text-white text-base font-bold tracking-tight mt-1">
@@ -211,10 +211,10 @@ function TicketFallback() {
           </div>
 
           <div>
-            <span className="inline-block bg-zinc-900 border border-zinc-800 text-[10px] font-semibold text-zinc-300 px-2.5 py-1 rounded-md mb-1">
+            <span className="inline-block bg-white/10 border border-white/15 text-[10px] font-semibold text-slate-200 px-2.5 py-1 rounded-md mb-1">
               VIP ALL-ACCESS PASS
             </span>
-            <p className="text-[10px] text-zinc-400 font-medium truncate">
+            <p className="text-[10px] text-slate-400 font-medium truncate">
               JAKARTA INT'L STADIUM • OCT 24
             </p>
           </div>
@@ -222,9 +222,9 @@ function TicketFallback() {
 
         <div className="w-16 flex flex-col items-center justify-between pl-3">
           <div className="w-8 h-8 bg-white rounded flex items-center justify-center">
-            <div className="w-4 h-4 bg-black" />
+            <div className="w-4 h-4 bg-[#e5c158]" />
           </div>
-          <span className="text-[9px] text-[#9d4edd] font-bold">#9402</span>
+          <span className="text-[9px] text-[#e5c158] font-bold">#9402</span>
         </div>
       </div>
     </div>
@@ -262,13 +262,13 @@ export default function Hero3D() {
 
           <ambientLight intensity={1.8} />
           <directionalLight position={[5, 5, 5]} intensity={2.0} color="#ffffff" />
-          <spotLight position={[0, 5, 3]} angle={0.5} penumbra={0.8} intensity={6} color="#9d4edd" />
+          <spotLight position={[0, 5, 3]} angle={0.5} penumbra={0.8} intensity={5} color="#e5c158" />
 
           <Float speed={2} rotationIntensity={0.2} floatIntensity={0.3}>
             <TicketMesh />
           </Float>
 
-          <Sparkles count={25} scale={4.5} size={1.2} speed={0.4} color="#9d4edd" opacity={0.4} />
+          <Sparkles count={20} scale={4.5} size={1.2} speed={0.4} color="#e5c158" opacity={0.3} />
           <OrbitControls enableZoom={false} enablePan={false} autoRotate={false} />
         </Canvas>
       </CanvasErrorBoundary>

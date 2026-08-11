@@ -60,7 +60,7 @@ function MicModel() {
       {/* Mic Ring */}
       <mesh position={[0, 0.22, 0]}>
         <torusGeometry args={[0.11, 0.02, 8, 24]} />
-        <meshStandardMaterial color="#9d4edd" roughness={0.2} metalness={0.8} />
+        <meshStandardMaterial color="#e5c158" roughness={0.2} metalness={0.8} />
       </mesh>
     </group>
   );
@@ -88,7 +88,7 @@ function SpeakerModel() {
       {/* Subwoofer Ring (Big) */}
       <mesh position={[0, -0.2, 0.26]}>
         <cylinderGeometry args={[0.2, 0.2, 0.05, 24]} />
-        <meshStandardMaterial color="#9d4edd" roughness={0.2} metalness={0.6} />
+        <meshStandardMaterial color="#e5c158" roughness={0.2} metalness={0.6} />
       </mesh>
 
       {/* Tweeter Ring (Small) */}
@@ -115,7 +115,7 @@ function ShieldModel() {
       {/* Outer Ring */}
       <mesh>
         <cylinderGeometry args={[0.4, 0.4, 0.1, 32]} />
-        <meshStandardMaterial color="#9d4edd" roughness={0.2} metalness={0.8} />
+        <meshStandardMaterial color="#e5c158" roughness={0.2} metalness={0.8} />
       </mesh>
       {/* Core */}
       <mesh position={[0, 0, 0.02]}>
@@ -133,8 +133,8 @@ function ShieldModel() {
 
 function DecorFallback({ type = "mic", className = "" }) {
   return (
-    <div className={`flex items-center justify-center border border-zinc-800/80 bg-zinc-900/40 backdrop-blur-md rounded-2xl p-6 ${className}`}>
-      <div className="w-16 h-16 rounded-full bg-[#9d4edd]/20 border border-[#9d4edd]/50 flex items-center justify-center text-[#9d4edd] shadow-lg animate-pulse">
+    <div className={`flex items-center justify-center border border-white/10 bg-white/5 backdrop-blur-md rounded-2xl p-6 ${className}`}>
+      <div className="w-16 h-16 rounded-full bg-[#e5c158]/20 border border-[#e5c158]/50 flex items-center justify-center text-[#e5c158] shadow-lg animate-pulse">
         {type === "mic" && <Mic className="w-8 h-8" />}
         {type === "speaker" && <Volume2 className="w-8 h-8" />}
         {type === "shield" && <Shield className="w-8 h-8" />}
@@ -173,7 +173,7 @@ export default function Decor3D({ type = "mic", className = "" }) {
         >
           <ambientLight intensity={1.5} />
           <directionalLight position={[2, 2, 2]} intensity={1.8} />
-          <pointLight position={[-2, -2, -2]} intensity={0.5} color="#9d4edd" />
+          <pointLight position={[-2, -2, -2]} intensity={0.5} color="#e5c158" />
           
           <Float speed={3} rotationIntensity={0.2} floatIntensity={0.3}>
             {type === "mic" && <MicModel />}
@@ -185,3 +185,4 @@ export default function Decor3D({ type = "mic", className = "" }) {
     </div>
   );
 }
+

@@ -52,7 +52,7 @@ export default function Home() {
       : events.filter((e) => e.genre?.toLowerCase() === selectedGenre.toLowerCase());
 
   const genresList = [
-    { id: "all", name: "All" },
+    { id: "all", name: "Semua Genre" },
     { id: "pop", name: "Pop" },
     { id: "rock", name: "Rock" },
     { id: "edm", name: "EDM" },
@@ -63,85 +63,85 @@ export default function Home() {
   const steps = [
     {
       num: "01",
-      title: "FIND YOUR SHOW",
-      desc: "Discover concerts from your favorite artists and explore upcoming global tours.",
+      title: "Temukan Konser",
+      desc: "Jelajahi konser musisi favorit Anda dari berbagai genre dan kota di seluruh Indonesia.",
     },
     {
       num: "02",
-      title: "CHOOSE YOUR TICKET",
-      desc: "Select your preferred ticket category or pick your vantage point on our seat map.",
+      title: "Pilih Tiket & Kursi",
+      desc: "Tentukan kategori tiket atau pilih sudut pandang tempat duduk terbaik pada denah 3D.",
     },
     {
       num: "03",
-      title: "ENJOY THE SHOW",
-      desc: "Get your digital pass instant confirmation and experience an unforgettable night.",
+      title: "Tiket Digital Instant",
+      desc: "Dapatkan tiket QR resmi berenkripsi yang siap di-scan di gate venue langsung dari akun Anda.",
     },
   ];
 
-
-
   const editorialTestimonials = [
     {
-      quote: "EchoTic made getting tickets ridiculously simple.",
-      author: "Alex",
+      quote: "Beli tiket konser stadion via EchoTic beneran simpel dan tampilannya mewah banget.",
+      author: "Alex R.",
       location: "Jakarta",
     },
     {
-      quote: "The cleanest ticket booking experience I have ever used for a stadium tour.",
-      author: "Sarah",
+      quote: "Pengalaman pesan tiket paling rapi. Vibe-nya kaya Apple Music tapi khusus buat event konser.",
+      author: "Sarah M.",
       location: "Bandung",
     },
     {
-      quote: "Instant digital passes with zero hassle. Beautiful visual design.",
-      author: "Michael",
+      quote: "Tiket digital langsung masuk tanpa ribet. Visual 3D tempat duduknya akurat banget!",
+      author: "Michael T.",
       location: "Surabaya",
     },
   ];
 
   return (
-    <main className="flex-grow bg-[#080808]">
+    <main className="flex-grow bg-[#060608] text-[#f8fafc]">
       {/* 1. HERO SECTION */}
-      <section className="relative pt-32 pb-20 md:pt-44 md:pb-32 overflow-hidden hero-grid border-b border-white/5">
-        {/* Background Visual Overlay */}
-        <div className="absolute inset-0 bg-cover bg-center opacity-20 pointer-events-none mix-blend-luminosity" style={{ backgroundImage: `url('https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=2000&q=80')` }} />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-[#080808]/80 to-transparent" />
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-[#9d4edd]/10 rounded-full blur-[140px] pointer-events-none" />
+      <section className="relative pt-24 pb-20 md:pt-36 md:pb-28 overflow-hidden hero-ambient-glow border-b border-white/10">
+        {/* Subtle Ambient Vignette Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#060608]/70 via-transparent to-[#060608]" />
 
         <div className="max-w-7xl mx-auto px-6 md:px-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
-          {/* Left Column: Bold Editorial Headline */}
-          <div className="lg:col-span-7 space-y-8 text-left">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-xs font-semibold text-zinc-300">
-              <span className="w-2 h-2 rounded-full bg-[#9d4edd] animate-pulse" />
-              <span>LIVE MUSIC / 2026</span>
+          {/* Left Column: Refined Headline */}
+          <div className="lg:col-span-7 space-y-7 text-left">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-xs font-semibold text-slate-300">
+              <span className="w-2 h-2 rounded-full bg-[#e5c158] animate-pulse" />
+              <span>TIKET KONSER RESMI 2026</span>
             </div>
 
-            <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tight uppercase leading-[0.88] text-white">
-              MUSIC <br />
-              BECOMES <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-200 to-[#9d4edd]">
-                MEMORY.
+            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight leading-[1.02] text-white">
+              Nikmati Musik <br />
+              <span className="text-gradient-gold">
+                Tanpa Batas.
               </span>
             </h1>
 
-            <p className="text-zinc-400 text-base md:text-lg max-w-xl font-normal leading-relaxed">
-              Discover unforgettable live experiences from the artists you love. Simple, elegant, and built for true music fans.
+            <p className="text-slate-300 text-base md:text-lg max-w-xl font-normal leading-relaxed">
+              Jelajahi dan amankan tiket resmi untuk konser musik besar, tur stadion, hingga pertunjukan privat. Praktis, aman, dan dirancang khusus untuk pencinta musik Indonesia.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 pt-2">
+            <div className="flex flex-col sm:flex-row gap-4 pt-3">
               <Link href="/events" data-cursor="pointer">
-                <Button variant="primary" size="lg" className="w-full sm:w-auto">
-                  EXPLORE EVENTS <ArrowRight className="ml-2.5 w-4 h-4" />
+                <Button variant="accent" size="lg" className="w-full sm:w-auto shadow-lg shadow-[#e5c158]/10">
+                  JELAJAHI KONSER <ArrowRight className="ml-2.5 w-4 h-4" />
+                </Button>
+              </Link>
+              <Link href="/about" data-cursor="pointer">
+                <Button variant="secondary" size="lg" className="w-full sm:w-auto">
+                  TENTANG ECHOTIC
                 </Button>
               </Link>
             </div>
           </div>
 
-          {/* Right Column: 3D Interactive Ticket Canvas */}
+          {/* Right Column: 3D VIP Ticket Pass Canvas */}
           <div className="lg:col-span-5 flex flex-col items-center">
-            <div className="w-full max-w-md bg-[#121212]/80 border border-zinc-800/80 rounded-3xl p-4 backdrop-blur-md shadow-2xl relative group">
+            <div className="w-full max-w-md glass-panel-premium rounded-3xl p-4 shadow-2xl relative group">
               <Hero3D />
-              <div className="text-center text-xs font-medium text-zinc-500 tracking-wider uppercase mt-3">
-                INTERACTIVE PASS • DRAG TO ROTATE
+              <div className="text-center text-xs font-semibold text-slate-400 tracking-wider uppercase mt-3">
+                TIKET INTERAKTIF 3D • GESER UNTUK ROTASI
               </div>
             </div>
           </div>
@@ -150,34 +150,34 @@ export default function Home() {
 
       {/* 2. INFINITE SCROLL BANNER */}
       <Marquee
-        text="LIVE MUSIC • BETTER EXPERIENCED • ECHOTIC PRESALE • UNFORGETTABLE EXPERIENCES • STADIUM TOURS • TICKET DISCOVERY"
+        text="KONSER MUSIK INDONESIA • TIKET DIGITAL RESMI • HARGA TRANSPARAN • SCAN QR GATE CEPAT • PENGALAMAN TAK TERLUPAKAN"
         speed={25}
       />
 
-      {/* 3. URGENCY COUNTDOWN TIMER SECTION */}
-      <section className="py-16 bg-[#080808] border-b border-white/5">
+      {/* 3. PRESALE TIMER SECTION */}
+      <section className="py-14 bg-[#060608] border-b border-white/10">
         <div className="max-w-7xl mx-auto px-6 md:px-10">
           <Countdown
             targetDate="2026-09-15T20:00:00"
-            title="NEXT SHOW PRESALE CLOSES IN"
+            title="PRESALE KONSER BERIKUTNYA DITUTUP DALAM"
           />
         </div>
       </section>
 
       {/* 4. FEATURED EVENTS & GENRE FILTERS */}
-      <section className="py-24 bg-[#0a0a0a] border-b border-white/5 relative">
+      <section className="py-24 bg-[#08090d] border-b border-white/10 relative">
         <div className="max-w-7xl mx-auto px-6 md:px-10">
           {/* Header */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
             <div>
-              <span className="text-xs font-semibold text-[#9d4edd] tracking-wider uppercase block mb-2">
-                Live Experiences
+              <span className="text-xs font-bold text-[#e5c158] tracking-widest uppercase block mb-2">
+                Pengalaman Live
               </span>
-              <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-white">
-                FEATURED EVENTS.
+              <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white">
+                Konser Pilihan Terbaru.
               </h2>
-              <p className="text-sm text-zinc-400 mt-2">
-                The shows everyone's talking about.
+              <p className="text-sm text-slate-400 mt-2">
+                Penampilan terbaik dari musisi papan atas tanah air dan mancanegara.
               </p>
             </div>
 
@@ -187,10 +187,10 @@ export default function Home() {
                 <button
                   key={g.id}
                   onClick={() => setSelectedGenre(g.id)}
-                  className={`px-5 py-2.5 rounded-full text-xs font-semibold tracking-wide transition-all cursor-pointer ${
+                  className={`px-4 py-2 rounded-full text-xs font-semibold tracking-wide transition-all cursor-pointer ${
                     selectedGenre.toLowerCase() === g.id.toLowerCase()
-                      ? "bg-[#9d4edd] text-white shadow-lg shadow-[#9d4edd]/20"
-                      : "bg-[#151515] text-zinc-400 hover:text-white hover:bg-zinc-800 border border-zinc-800"
+                      ? "bg-[#e5c158] text-black font-bold shadow-md shadow-[#e5c158]/20"
+                      : "bg-white/5 text-slate-300 hover:text-white hover:bg-white/10 border border-white/10"
                   }`}
                   data-cursor="pointer"
                 >
@@ -209,10 +209,10 @@ export default function Home() {
 
           {/* Empty State */}
           {filteredEvents.length === 0 && (
-            <div className="bg-[#121212] border border-zinc-800 rounded-3xl p-16 text-center">
-              <Compass className="w-10 h-10 text-zinc-600 mx-auto mb-3" />
-              <p className="text-zinc-400 text-sm font-medium">
-                No events currently scheduled in this genre. Check back soon!
+            <div className="glass-panel-premium rounded-3xl p-16 text-center">
+              <Compass className="w-10 h-10 text-slate-500 mx-auto mb-3" />
+              <p className="text-slate-300 text-sm font-medium">
+                Belum ada jadwal konser untuk genre ini. Cek kembali nanti!
               </p>
             </div>
           )}
@@ -221,7 +221,7 @@ export default function Home() {
           <div className="mt-14 text-center">
             <Link href="/events" data-cursor="pointer">
               <Button variant="secondary" size="md">
-                VIEW ALL EVENTS ({events.length}) <ArrowRight className="ml-2 w-4 h-4" />
+                LIHAT SEMUA KONSER ({events.length}) <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
             </Link>
           </div>
@@ -229,18 +229,18 @@ export default function Home() {
       </section>
 
       {/* 5. HOW IT WORKS */}
-      <section id="how-it-works" className="py-28 bg-[#080808] border-b border-white/5 relative overflow-hidden">
+      <section id="how-it-works" className="py-28 bg-[#060608] border-b border-white/10 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 md:px-10 relative z-10">
           {/* Header */}
-          <div className="text-center max-w-2xl mx-auto mb-20">
-            <span className="text-xs font-semibold text-[#9d4edd] tracking-widest uppercase block mb-2">
-              Simple 3-Step Access
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <span className="text-xs font-bold text-[#e5c158] tracking-widest uppercase block mb-2">
+              Akses Mudah
             </span>
-            <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tight text-white">
-              YOUR NIGHT STARTS HERE.
+            <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white">
+              Langkah Mudah Menuju Konser.
             </h2>
-            <p className="mt-4 text-zinc-400 text-base">
-              Secure your concert experience in three simple steps.
+            <p className="mt-3 text-slate-400 text-base">
+              Dapatkan tiket digital konser Anda hanya dalam 3 langkah praktis.
             </p>
           </div>
 
@@ -249,23 +249,23 @@ export default function Home() {
             {steps.map((step, idx) => (
               <div
                 key={idx}
-                className="bg-[#121212] border border-zinc-800/80 rounded-3xl p-8 md:p-10 flex flex-col justify-between group hover:border-zinc-700 transition-all duration-300 shadow-card-subtle"
+                className="glass-panel-premium glass-panel-hover rounded-3xl p-8 md:p-10 flex flex-col justify-between"
               >
                 <div>
-                  <span className="text-4xl md:text-5xl font-black text-zinc-700 group-hover:text-[#9d4edd] transition-colors block mb-6">
+                  <span className="text-4xl md:text-5xl font-extrabold text-[#e5c158]/40 block mb-6 font-mono">
                     {step.num}
                   </span>
-                  <h3 className="text-xl font-bold uppercase text-white tracking-tight mb-3">
+                  <h3 className="text-xl font-bold text-white tracking-tight mb-3">
                     {step.title}
                   </h3>
-                  <p className="text-sm text-zinc-400 leading-relaxed font-normal">
+                  <p className="text-sm text-slate-300 leading-relaxed font-normal">
                     {step.desc}
                   </p>
                 </div>
 
-                <div className="mt-8 pt-6 border-t border-zinc-800/60 flex items-center gap-2 text-xs font-semibold text-zinc-500">
-                  <span className="w-2 h-2 rounded-full bg-[#9d4edd]" />
-                  <span>EchoTic Verified</span>
+                <div className="mt-8 pt-6 border-t border-white/10 flex items-center gap-2 text-xs font-semibold text-slate-400">
+                  <span className="w-2 h-2 rounded-full bg-[#e5c158]" />
+                  <span>Tiket Resmi EchoTic</span>
                 </div>
               </div>
             ))}
@@ -273,35 +273,33 @@ export default function Home() {
         </div>
       </section>
 
-
-
-      {/* 7. TESTIMONIALS */}
-      <section className="py-28 bg-[#080808] border-b border-white/5 relative overflow-hidden">
+      {/* 6. TESTIMONIALS */}
+      <section className="py-28 bg-[#08090d] border-b border-white/10 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 md:px-10">
           <div className="text-center max-w-2xl mx-auto mb-16">
-            <span className="text-xs font-semibold text-[#9d4edd] tracking-widest uppercase block mb-2">
-              Fan Experiences
+            <span className="text-xs font-bold text-[#e5c158] tracking-widest uppercase block mb-2">
+              Ulasan Penonton
             </span>
-            <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-white">
-              WHAT PEOPLE SAY.
+            <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white">
+              Apa Kata Para Penikmat Musik.
             </h2>
           </div>
 
-          {/* Editorial Quote Grid */}
+          {/* Quote Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {editorialTestimonials.map((item, idx) => (
               <div
                 key={idx}
-                className="bg-[#121212] border border-zinc-800/80 rounded-3xl p-8 flex flex-col justify-between shadow-card-subtle relative"
+                className="glass-panel-premium glass-panel-hover rounded-3xl p-8 flex flex-col justify-between relative"
               >
-                <span className="text-6xl font-serif text-[#9d4edd]/30 leading-none select-none block mb-4">
+                <span className="text-5xl font-serif text-[#e5c158]/40 leading-none select-none block mb-4">
                   “
                 </span>
-                <p className="text-zinc-200 text-base font-medium leading-relaxed mb-6">
+                <p className="text-slate-200 text-base font-medium leading-relaxed mb-6">
                   {item.quote}
                 </p>
-                <div className="pt-4 border-t border-zinc-800/60 font-semibold text-xs text-zinc-400">
-                  — {item.author}, <span className="text-zinc-500">{item.location}</span>
+                <div className="pt-4 border-t border-white/10 font-semibold text-xs text-slate-300">
+                  — {item.author}, <span className="text-slate-500">{item.location}</span>
                 </div>
               </div>
             ))}
@@ -311,3 +309,5 @@ export default function Home() {
     </main>
   );
 }
+
+

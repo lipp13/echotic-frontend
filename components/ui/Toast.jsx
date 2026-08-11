@@ -53,19 +53,19 @@ function ToastItem({ toast, onClose }) {
 
   const typeConfig = {
     success: {
-      bg: "bg-black/90 border-[#ccff00]/40 shadow-[#ccff00]/10",
-      icon: <CheckCircle2 className="w-5 h-5 text-[#ccff00]" />,
-      barBg: "bg-[#ccff00]",
+      bg: "bg-[#0d0e14]/90 border-[#e5c158]/30 shadow-[#e5c158]/10",
+      icon: <CheckCircle2 className="w-5 h-5 text-[#e5c158]" />,
+      barBg: "bg-[#e5c158]",
     },
     error: {
-      bg: "bg-black/90 border-[#ff0055]/40 shadow-[#ff0055]/10",
-      icon: <AlertTriangle className="w-5 h-5 text-[#ff0055]" />,
-      barBg: "bg-[#ff0055]",
+      bg: "bg-[#0d0e14]/90 border-rose-500/30 shadow-rose-500/10",
+      icon: <AlertTriangle className="w-5 h-5 text-rose-400" />,
+      barBg: "bg-rose-500",
     },
     info: {
-      bg: "bg-black/90 border-[#00f0ff]/40 shadow-[#00f0ff]/10",
-      icon: <Info className="w-5 h-5 text-[#00f0ff]" />,
-      barBg: "bg-[#00f0ff]",
+      bg: "bg-[#0d0e14]/90 border-sky-500/30 shadow-sky-500/10",
+      icon: <Info className="w-5 h-5 text-sky-400" />,
+      barBg: "bg-sky-400",
     },
   };
 
@@ -74,28 +74,28 @@ function ToastItem({ toast, onClose }) {
   return (
     <motion.div
       layout
-      initial={{ opacity: 0, y: 50, scale: 0.9 }}
+      initial={{ opacity: 0, y: 30, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.85, transition: { duration: 0.2 } }}
-      className={`pointer-events-auto flex flex-col overflow-hidden rounded-lg border backdrop-blur-md p-4 shadow-xl ${config.bg}`}
+      exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.15 } }}
+      className={`pointer-events-auto flex flex-col overflow-hidden rounded-2xl border backdrop-blur-xl p-4 shadow-2xl ${config.bg}`}
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
           {config.icon}
-          <p className="text-sm font-medium text-white font-mono tracking-tight">
+          <p className="text-xs font-semibold text-white tracking-tight">
             {message}
           </p>
         </div>
         <button
           onClick={onClose}
-          className="text-zinc-400 hover:text-white transition-colors cursor-pointer"
+          className="text-slate-400 hover:text-white transition-colors cursor-pointer"
         >
           <X className="w-4 h-4" />
         </button>
       </div>
       
       {/* Progress Bar Animation */}
-      <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-zinc-800">
+      <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-white/10">
         <motion.div
           initial={{ width: "100%" }}
           animate={{ width: "0%" }}
@@ -106,3 +106,4 @@ function ToastItem({ toast, onClose }) {
     </motion.div>
   );
 }
+

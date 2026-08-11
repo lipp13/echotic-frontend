@@ -9,7 +9,7 @@ import { QRCodeSVG } from "qrcode.react";
  */
 export default function QrCodeGenerator({ value = "TKT-ECHOTIC", size = 180, className = "" }) {
   return (
-    <div className={`flex flex-col items-center justify-center p-4 bg-white border-2 border-[#ccff00] rounded-xl shadow-[0_0_25px_rgba(204,255,0,0.25)] ${className}`}>
+    <div className={`flex flex-col items-center justify-center p-4 bg-white border border-[#e5c158]/50 rounded-2xl shadow-xl ${className}`}>
       <QRCodeSVG
         value={value}
         size={size}
@@ -18,9 +18,10 @@ export default function QrCodeGenerator({ value = "TKT-ECHOTIC", size = 180, cla
         level="H"
         includeMargin={true}
       />
-      <div className="mt-3 px-3 py-1 bg-black text-[#ccff00] font-mono text-[11px] font-bold uppercase tracking-widest rounded border border-zinc-800">
+      <div className="mt-3 px-3 py-1 bg-[#060608] text-[#e5c158] font-mono text-[11px] font-bold uppercase tracking-widest rounded-lg border border-white/10">
         {value}
       </div>
     </div>
   );
 }
+
