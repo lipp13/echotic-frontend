@@ -105,7 +105,12 @@ export default function Home() {
 
         <div className="max-w-7xl mx-auto px-6 md:px-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
           {/* Left Column: Refined Headline */}
-          <div className="lg:col-span-7 space-y-7 text-left">
+          <motion.div 
+            initial={{ opacity: 0, y: 25 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="lg:col-span-7 space-y-7 text-left"
+          >
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-xs font-semibold text-slate-300">
               <span className="w-2 h-2 rounded-full bg-[#e5c158] animate-pulse" />
               <span>TIKET KONSER RESMI 2026</span>
@@ -134,17 +139,22 @@ export default function Home() {
                 </Button>
               </Link>
             </div>
-          </div>
+          </motion.div>
 
           {/* Right Column: 3D VIP Ticket Pass Canvas */}
-          <div className="lg:col-span-5 flex flex-col items-center">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9, y: 25 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="lg:col-span-5 flex flex-col items-center"
+          >
             <div className="w-full max-w-md glass-panel-premium rounded-3xl p-4 shadow-2xl relative group">
               <Hero3D />
               <div className="text-center text-xs font-semibold text-slate-400 tracking-wider uppercase mt-3">
                 TIKET INTERAKTIF 3D • GESER UNTUK ROTASI
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -156,19 +166,31 @@ export default function Home() {
 
       {/* 3. PRESALE TIMER SECTION */}
       <section className="py-14 bg-[#060608] border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-6 md:px-10">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="max-w-7xl mx-auto px-6 md:px-10"
+        >
           <Countdown
             targetDate="2026-09-15T20:00:00"
             title="PRESALE KONSER BERIKUTNYA DITUTUP DALAM"
           />
-        </div>
+        </motion.div>
       </section>
 
       {/* 4. FEATURED EVENTS & GENRE FILTERS */}
       <section className="py-24 bg-[#08090d] border-b border-white/10 relative">
         <div className="max-w-7xl mx-auto px-6 md:px-10">
           {/* Header */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12"
+          >
             <div>
               <span className="text-xs font-bold text-[#e5c158] tracking-widest uppercase block mb-2">
                 Pengalaman Live
@@ -198,12 +220,20 @@ export default function Home() {
                 </button>
               ))}
             </div>
-          </div>
+          </motion.div>
 
           {/* Events Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredEvents.map((event) => (
-              <Card key={event.id} event={event} />
+            {filteredEvents.map((event, idx) => (
+              <motion.div
+                key={event.id}
+                initial={{ opacity: 0, y: 25 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: idx * 0.1 }}
+              >
+                <Card event={event} />
+              </motion.div>
             ))}
           </div>
 
@@ -232,7 +262,13 @@ export default function Home() {
       <section id="how-it-works" className="py-28 bg-[#060608] border-b border-white/10 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 md:px-10 relative z-10">
           {/* Header */}
-          <div className="text-center max-w-2xl mx-auto mb-16">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="text-center max-w-2xl mx-auto mb-16"
+          >
             <span className="text-xs font-bold text-[#e5c158] tracking-widest uppercase block mb-2">
               Akses Mudah
             </span>
@@ -242,13 +278,17 @@ export default function Home() {
             <p className="mt-3 text-slate-400 text-base">
               Dapatkan tiket digital konser Anda hanya dalam 3 langkah praktis.
             </p>
-          </div>
+          </motion.div>
 
           {/* Editorial Steps Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {steps.map((step, idx) => (
-              <div
+              <motion.div
                 key={idx}
+                initial={{ opacity: 0, y: 25 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.15 }}
                 className="glass-panel-premium glass-panel-hover rounded-3xl p-8 md:p-10 flex flex-col justify-between"
               >
                 <div>
@@ -267,7 +307,7 @@ export default function Home() {
                   <span className="w-2 h-2 rounded-full bg-[#e5c158]" />
                   <span>Tiket Resmi EchoTic</span>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -276,20 +316,30 @@ export default function Home() {
       {/* 6. TESTIMONIALS */}
       <section className="py-28 bg-[#08090d] border-b border-white/10 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 md:px-10">
-          <div className="text-center max-w-2xl mx-auto mb-16">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="text-center max-w-2xl mx-auto mb-16"
+          >
             <span className="text-xs font-bold text-[#e5c158] tracking-widest uppercase block mb-2">
               Ulasan Penonton
             </span>
             <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white">
               Apa Kata Para Penikmat Musik.
             </h2>
-          </div>
+          </motion.div>
 
           {/* Quote Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {editorialTestimonials.map((item, idx) => (
-              <div
+              <motion.div
                 key={idx}
+                initial={{ opacity: 0, y: 25 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.15 }}
                 className="glass-panel-premium glass-panel-hover rounded-3xl p-8 flex flex-col justify-between relative"
               >
                 <span className="text-5xl font-serif text-[#e5c158]/40 leading-none select-none block mb-4">
@@ -301,7 +351,7 @@ export default function Home() {
                 <div className="pt-4 border-t border-white/10 font-semibold text-xs text-slate-300">
                   — {item.author}, <span className="text-slate-500">{item.location}</span>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -309,5 +359,6 @@ export default function Home() {
     </main>
   );
 }
+
 
 

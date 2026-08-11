@@ -75,7 +75,7 @@ export default function Card({ event }) {
         <div className="mt-auto pt-4 border-t border-white/10 flex items-center justify-between">
           <div>
             <span className="text-[11px] text-slate-400 uppercase tracking-wider block font-medium">
-              From
+              Mulai Dari
             </span>
             <span className="text-base font-extrabold text-white">
               {formatPrice(lowestPrice)}

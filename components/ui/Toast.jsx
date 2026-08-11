@@ -2,17 +2,17 @@
 
 import React, { createContext, useContext, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { CheckCircle2, AlertTriangle, X, Info } from "lucide-react";
+import { Check, AlertCircle, Info, X } from "lucide-react";
 
 const ToastContext = createContext(null);
 
 export function ToastProvider({ children }) {
   const [toasts, setToasts] = useState([]);
 
-  const addToast = useCallback((message, type = "success", duration = 3000) => {
+  const addToast = useCallback((message, type = "success", duration = 3500) => {
     const id = Date.now() + Math.random().toString(36).substr(2, 9);
     setToasts((prev) => [...prev, { id, message, type, duration }]);
-    
+
     setTimeout(() => {
       removeToast(id);
     }, duration);
@@ -25,8 +25,10 @@ export function ToastProvider({ children }) {
   return (
     <ToastContext.Provider value={{ addToast, removeToast }}>
       {children}
-      <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3 max-w-md w-full pointer-events-none">
-        <AnimatePresence>
+      
+      {/* Apple Dynamic Island / macOS Floating Container Top-Center */}
+      <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2.5 max-w-md w-[90vw] pointer-events-none">
+        <AnimatePresence mode="sync">
           {toasts.map((toast) => (
             <ToastItem
               key={toast.id}
@@ -53,19 +55,25 @@ function ToastItem({ toast, onClose }) {
 
   const typeConfig = {
     success: {
-      bg: "bg-[#0d0e14]/90 border-[#e5c158]/30 shadow-[#e5c158]/10",
-      icon: <CheckCircle2 className="w-5 h-5 text-[#e5c158]" />,
+      badgeBg: "bg-[#e5c158]/20 text-[#e5c158] border border-[#e5c158]/40",
+      icon: <Check className="w-3.5 h-3.5" />,
+      glowColor: "shadow-[#e5c158]/10",
       barBg: "bg-[#e5c158]",
+      label: "Sukses",
     },
     error: {
-      bg: "bg-[#0d0e14]/90 border-rose-500/30 shadow-rose-500/10",
-      icon: <AlertTriangle className="w-5 h-5 text-rose-400" />,
+      badgeBg: "bg-rose-500/20 text-rose-400 border border-rose-500/40",
+      icon: <AlertCircle className="w-3.5 h-3.5" />,
+      glowColor: "shadow-rose-500/10",
       barBg: "bg-rose-500",
+      label: "Pemberitahuan",
     },
     info: {
-      bg: "bg-[#0d0e14]/90 border-sky-500/30 shadow-sky-500/10",
-      icon: <Info className="w-5 h-5 text-sky-400" />,
+      badgeBg: "bg-sky-500/20 text-sky-400 border border-sky-500/40",
+      icon: <Info className="w-3.5 h-3.5" />,
+      glowColor: "shadow-sky-500/10",
       barBg: "bg-sky-400",
+      label: "Informasi",
     },
   };
 
@@ -74,36 +82,52 @@ function ToastItem({ toast, onClose }) {
   return (
     <motion.div
       layout
-      initial={{ opacity: 0, y: 30, scale: 0.95 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.15 } }}
-      className={`pointer-events-auto flex flex-col overflow-hidden rounded-2xl border backdrop-blur-xl p-4 shadow-2xl ${config.bg}`}
+      initial={{ opacity: 0, y: -30, scale: 0.9 }}
+      animate={{ 
+        opacity: 1, 
+        y: 0, 
+        scale: 1, 
+        transition: { type: "spring", stiffness: 500, damping: 28 } 
+      }}
+      exit={{ 
+        opacity: 0, 
+        y: -20, 
+        scale: 0.95, 
+        transition: { duration: 0.2 } 
+      }}
+      className={`pointer-events-auto w-full max-w-sm glass-panel-premium bg-[#0a0b10]/90 backdrop-blur-2xl rounded-full px-4 py-2.5 shadow-2xl ${config.glowColor} border border-white/20 flex items-center justify-between gap-3 relative overflow-hidden ring-1 ring-white/10`}
     >
-      <div className="flex items-start justify-between gap-3">
-        <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 min-w-0 flex-1">
+        {/* Apple Status Badge Pill */}
+        <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ${config.badgeBg}`}>
           {config.icon}
-          <p className="text-xs font-semibold text-white tracking-tight">
-            {message}
-          </p>
         </div>
-        <button
-          onClick={onClose}
-          className="text-slate-400 hover:text-white transition-colors cursor-pointer"
-        >
-          <X className="w-4 h-4" />
-        </button>
+
+        {/* Message */}
+        <p className="text-xs font-semibold text-white truncate tracking-tight">
+          {message}
+        </p>
       </div>
-      
-      {/* Progress Bar Animation */}
-      <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-white/10">
+
+      {/* Close Button */}
+      <button
+        onClick={onClose}
+        className="w-5 h-5 rounded-full bg-white/5 hover:bg-white/15 text-slate-400 hover:text-white flex items-center justify-center transition-colors cursor-pointer flex-shrink-0"
+      >
+        <X className="w-3 h-3" />
+      </button>
+
+      {/* Subtle Apple-style progress hairline */}
+      <div className="absolute bottom-0 left-4 right-4 h-[1px] bg-white/10">
         <motion.div
           initial={{ width: "100%" }}
           animate={{ width: "0%" }}
           transition={{ duration: duration / 1000, ease: "linear" }}
-          className={`h-full ${config.barBg}`}
+          className={`h-full ${config.barBg} opacity-80`}
         />
       </div>
     </motion.div>
   );
 }
+
 

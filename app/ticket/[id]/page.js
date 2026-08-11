@@ -22,7 +22,7 @@ export default function TicketConfirmationPage() {
   useEffect(() => {
     async function fetchOrder() {
       if (!isAuthenticated()) {
-        addToast("Please login to view your ticket", "error");
+        addToast("Silakan masuk untuk melihat tiket Anda", "error");
         router.push("/login");
         return;
       }
@@ -42,13 +42,13 @@ export default function TicketConfirmationPage() {
   }, [params.id, router, addToast]);
 
   const handleDownload = () => {
-    addToast("Saved Digital Pass to your Downloads!", "success");
+    addToast("Tiket Digital berhasil disimpan ke folder Unduhan!", "success");
   };
 
   const handleShare = () => {
     if (typeof window !== "undefined") {
       navigator.clipboard.writeText(window.location.href);
-      addToast("Ticket URL copied to clipboard!", "info");
+      addToast("Tautan tiket berhasil disalin!", "info");
     }
   };
 
@@ -64,12 +64,12 @@ export default function TicketConfirmationPage() {
     return (
       <div className="max-w-7xl mx-auto px-6 py-24 text-center">
         <ShieldCheck className="w-12 h-12 text-[#e5c158] mx-auto mb-4" />
-        <h2 className="text-xl font-bold uppercase mb-2">Ticket Not Found</h2>
+        <h2 className="text-xl font-bold uppercase mb-2">Tiket Tidak Ditemukan</h2>
         <p className="text-slate-400 text-xs mb-8">
-          The booking confirmation ID could not be retrieved.
+          ID konfirmasi tiket tidak dapat ditemukan.
         </p>
         <Link href="/events" data-cursor="pointer">
-          <Button variant="accent">Browse Events</Button>
+          <Button variant="accent">Cari Konser</Button>
         </Link>
       </div>
     );
@@ -90,12 +90,12 @@ export default function TicketConfirmationPage() {
           data-cursor="pointer"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>My Purchased Passes</span>
+          <span>Kembali ke Tiket Saya</span>
         </Link>
         
         <span className="text-xs text-[#e5c158] font-bold flex items-center gap-1.5 bg-[#e5c158]/10 border border-[#e5c158]/30 px-3 py-1 rounded-full">
           <CheckCircle2 className="w-4 h-4" />
-          <span>CONFIRMED PASS</span>
+          <span>TIKET TERKONFIRMASI</span>
         </span>
       </div>
 
@@ -117,7 +117,7 @@ export default function TicketConfirmationPage() {
             <div className="p-6 border-b border-white/10 flex justify-between items-center bg-black/30">
               <div>
                 <span className="text-[10px] text-[#e5c158] uppercase tracking-widest block font-bold">
-                  Concert Pass
+                  Tiket Konser Resmi
                 </span>
                 <span className="text-white font-bold text-sm">ECHOTIC TICKETS</span>
               </div>
@@ -145,19 +145,19 @@ export default function TicketConfirmationPage() {
             <div className="p-6 space-y-6">
               <div className="grid grid-cols-2 gap-4 text-xs">
                 <div className="space-y-1">
-                  <span className="text-[10px] text-slate-400 uppercase tracking-wider block font-medium">Attendee</span>
+                  <span className="text-[10px] text-slate-400 uppercase tracking-wider block font-medium">Pemegang Tiket</span>
                   <span className="text-white font-bold truncate block">{order.attendeeName}</span>
                 </div>
                 <div className="space-y-1">
-                  <span className="text-[10px] text-slate-400 uppercase tracking-wider block font-medium font-mono">Pass Code</span>
+                  <span className="text-[10px] text-slate-400 uppercase tracking-wider block font-medium font-mono">Kode Tiket</span>
                   <span className="text-[#e5c158] font-mono font-bold block">{order.ticketCode}</span>
                 </div>
                 <div className="space-y-1">
-                  <span className="text-[10px] text-slate-400 uppercase tracking-wider block font-medium">Date & Time</span>
+                  <span className="text-[10px] text-slate-400 uppercase tracking-wider block font-medium">Tanggal & Waktu</span>
                   <span className="text-white block">{order.eventDate} @ {order.eventTime}</span>
                 </div>
                 <div className="space-y-1">
-                  <span className="text-[10px] text-slate-400 uppercase tracking-wider block font-medium">Pass Tier</span>
+                  <span className="text-[10px] text-slate-400 uppercase tracking-wider block font-medium">Kategori Tiket</span>
                   <span className="text-[#e5c158] font-bold block uppercase">{order.categoryName}</span>
                 </div>
               </div>
@@ -165,7 +165,7 @@ export default function TicketConfirmationPage() {
               {/* Seating detailed items */}
               {order.isSeated && (
                 <div className="border-t border-white/10 pt-4 flex justify-between items-center text-xs">
-                  <span className="text-[10px] text-slate-400 uppercase font-medium">Seats</span>
+                  <span className="text-[10px] text-slate-400 uppercase font-medium">Nomor Kursi</span>
                   <div className="flex gap-2">
                     {order.seats.map((s) => (
                       <span
@@ -208,10 +208,10 @@ export default function TicketConfirmationPage() {
         <div className="md:col-span-5 glass-panel-premium rounded-3xl p-6 md:p-8 space-y-6 shadow-2xl">
           <div className="text-center pb-4 border-b border-white/10">
             <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-1">
-              Venue Admission QR
+              QR Scan Gate Venue
             </h4>
             <span className="text-xs text-slate-400">
-              Present at gate for scanning
+              Tunjukkan kode QR di gate saat masuk venue
             </span>
           </div>
 
@@ -220,12 +220,12 @@ export default function TicketConfirmationPage() {
             {order.status === "approved" || order.status === "used" ? (
               <div className="bg-emerald-950/80 border border-emerald-500/40 text-emerald-400 text-xs font-semibold px-4 py-1.5 rounded-full flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                <span>ADMISSION VERIFIED</span>
+                <span>MASUK TERVERIFIKASI</span>
               </div>
             ) : (
               <div className="bg-white/5 border border-white/10 text-slate-300 text-xs font-semibold px-4 py-1.5 rounded-full flex items-center gap-2">
                 <Ticket className="w-4 h-4 text-[#e5c158]" />
-                <span>READY FOR GATE SCAN</span>
+                <span>SIAP SCAN DI GATE</span>
               </div>
             )}
           </div>
@@ -239,14 +239,14 @@ export default function TicketConfirmationPage() {
             <div className="flex gap-2.5 text-slate-300">
               <User className="w-4 h-4 text-[#e5c158] flex-shrink-0 mt-0.5" />
               <div>
-                <span className="text-[10px] text-slate-400 uppercase block">Ticket Holder</span>
+                <span className="text-[10px] text-slate-400 uppercase block">Pemegang Tiket</span>
                 <span className="text-white font-bold">{order.attendeeName} ({order.attendeeId})</span>
               </div>
             </div>
             <div className="flex gap-2.5 text-slate-300">
               <MapPin className="w-4 h-4 text-[#e5c158] flex-shrink-0 mt-0.5" />
               <div>
-                <span className="text-[10px] text-slate-400 uppercase block">Venue</span>
+                <span className="text-[10px] text-slate-400 uppercase block">Lokasi Venue</span>
                 <span className="text-white">{order.venueName}</span>
               </div>
             </div>
@@ -260,7 +260,7 @@ export default function TicketConfirmationPage() {
               className="w-full py-3.5 text-center justify-center font-semibold text-xs"
               data-cursor="pointer"
             >
-              <Download className="w-4 h-4 mr-2" /> SAVE DIGITAL PASS
+              <Download className="w-4 h-4 mr-2" /> SIMPAN TIKET DIGITAL
             </Button>
             <Button
               variant="glass"
@@ -268,7 +268,7 @@ export default function TicketConfirmationPage() {
               className="w-full py-3.5 text-center justify-center font-semibold text-xs"
               data-cursor="pointer"
             >
-              <Share2 className="w-4 h-4 mr-2" /> SHARE PASS
+              <Share2 className="w-4 h-4 mr-2" /> BAGIKAN TIKET
             </Button>
           </div>
         </div>
@@ -277,3 +277,4 @@ export default function TicketConfirmationPage() {
     </motion.div>
   );
 }
+
