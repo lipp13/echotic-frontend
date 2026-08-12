@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -9,13 +9,12 @@ import { Menu, X, LogOut, Ticket, Search } from "lucide-react";
 import { useToast } from "@/components/ui/Toast";
 import { isAuthenticated, getUserData, apiLogout } from "@/lib/api";
 
-export default function Navbar() {
+function NavbarContentInner({ searchParams }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [user, setUser] = useState(null);
 
   const pathname = usePathname();
-  const searchParams = useSearchParams();
   const { addToast } = useToast();
 
   useEffect(() => {
@@ -81,7 +80,7 @@ export default function Navbar() {
 
   const isLinkActive = (href) => {
     if (href === "/events") {
-      return pathname === "/events" && searchParams.get("genre") === null;
+      return pathname === "/events" && (searchParams ? searchParams.get("genre") === null : true);
     }
     return pathname === href;
   };
@@ -569,5 +568,18 @@ export default function Navbar() {
         )}
       </AnimatePresence>
     </>
+  );
+}
+
+function NavbarContentWithSearchParams() {
+  const searchParams = useSearchParams();
+  return <NavbarContentInner searchParams={searchParams} />;
+}
+
+export default function Navbar() {
+  return (
+    <Suspense fallback={<NavbarContentInner searchParams={null} />}>
+      <NavbarContentWithSearchParams />
+    </Suspense>
   );
 }
