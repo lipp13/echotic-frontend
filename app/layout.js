@@ -4,6 +4,7 @@ import { ToastProvider } from "@/components/ui/Toast";
 import NoiseFilter from "@/components/ui/NoiseFilter";
 import Navbar from "@/components/sections/Navbar";
 import Footer from "@/components/sections/Footer";
+import SmoothScrollProvider from "@/components/ui/SmoothScroll";
 
 const plusJakarta = Plus_Jakarta_Sans({
   variable: "--font-sans",
@@ -34,14 +35,16 @@ export default function RootLayout({ children }) {
       className={`${plusJakarta.variable} ${inter.variable} ${geistMono.variable} h-full antialiased dark`}
     >
       <body className="min-h-full flex flex-col bg-[#060608] text-[#f8fafc] font-sans selection:bg-[#e5c158] selection:text-[#060608]">
-        <ToastProvider>
-          <NoiseFilter />
-          <Navbar />
-          <div className="flex-grow flex flex-col pt-20 md:pt-24">
-            {children}
-          </div>
-          <Footer />
-        </ToastProvider>
+        <SmoothScrollProvider>
+          <ToastProvider>
+            <NoiseFilter />
+            <Navbar />
+            <div className="flex-grow flex flex-col pt-20 md:pt-24">
+              {children}
+            </div>
+            <Footer />
+          </ToastProvider>
+        </SmoothScrollProvider>
       </body>
     </html>
   );
