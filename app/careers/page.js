@@ -29,7 +29,7 @@ export default function CareersPage() {
       avatar: "/team/alif.jpg",
       bio: "Fokus pada arsitektur web modern Next.js, pembuatan visualizer 3D panggung, sistem desain liquid glass bertema musik, serta animasi mikro antarmuka pengguna.",
       badge: "Frontend & UI Visionary",
-      tech: ["Next.js 16", "React 19", "Three.js / R3F", "Framer Motion", "TailwindCSS", "JavaScript ES6+"],
+      tech: ["Next.js 16", "React 19", "Three.js / R3F", "Framer Motion", "TailwindCSS", "JavaScript ES6+", "UI/UX Design"],
       timeline: [
         {
           year: "2026 - Sekarang",
@@ -38,8 +38,8 @@ export default function CareersPage() {
         },
         {
           year: "2024 - 2025",
-          title: "Fullstack Web Developer",
-          desc: "Mengembangkan aplikasi web dinamis berkinerja tinggi, sistem otentikasi JWT, dan integrasi API pembayaran modern.",
+          title: "Junior Web Developer",
+          desc: "Mengembangkan aplikasi web dinamis berkinerja menengah, sistem otentikasi JWT, dan integrasi API pembayaran modern.",
         },
       ],
       socials: {
