@@ -14,14 +14,13 @@ import {
   Compass,
 } from "lucide-react";
 import { apiGetEvents, apiGetTestimonials } from "@/lib/api";
-import Card from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
 import Countdown from "@/components/ui/Countdown";
 import Marquee from "@/components/ui/Marquee";
 import Hero3D from "@/components/sections/Hero3D";
+import HorizontalConcerts from "@/components/sections/HorizontalConcerts";
 
 export default function Home() {
-  const [selectedGenre, setSelectedGenre] = useState("all");
   const [events, setEvents] = useState([]);
   const [testimonials, setTestimonials] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -44,12 +43,6 @@ export default function Home() {
     }
     fetchData();
   }, []);
-
-  // Filter events based on genre
-  const filteredEvents =
-    selectedGenre === "all"
-      ? events
-      : events.filter((e) => e.genre?.toLowerCase() === selectedGenre.toLowerCase());
 
   const genresList = [
     { id: "all", name: "Semua Genre" },
@@ -180,83 +173,8 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* 4. FEATURED EVENTS & GENRE FILTERS */}
-      <section className="py-24 bg-[#08090d] border-b border-white/10 relative">
-        <div className="max-w-7xl mx-auto px-6 md:px-10">
-          {/* Header */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12"
-          >
-            <div>
-              <span className="text-xs font-bold text-[#e5c158] tracking-widest uppercase block mb-2">
-                Pengalaman Live
-              </span>
-              <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white">
-                Konser Pilihan Terbaru.
-              </h2>
-              <p className="text-sm text-slate-400 mt-2">
-                Penampilan terbaik dari musisi papan atas tanah air dan mancanegara.
-              </p>
-            </div>
-
-            {/* Minimal Pill Filters */}
-            <div className="flex flex-wrap gap-2">
-              {genresList.map((g) => (
-                <button
-                  key={g.id}
-                  onClick={() => setSelectedGenre(g.id)}
-                  className={`px-4 py-2 rounded-full text-xs font-semibold tracking-wide transition-all cursor-pointer ${
-                    selectedGenre.toLowerCase() === g.id.toLowerCase()
-                      ? "bg-[#e5c158] text-black font-bold shadow-md shadow-[#e5c158]/20"
-                      : "bg-white/5 text-slate-300 hover:text-white hover:bg-white/10 border border-white/10"
-                  }`}
-                  data-cursor="pointer"
-                >
-                  {g.name}
-                </button>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Events Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredEvents.map((event, idx) => (
-              <motion.div
-                key={event.id}
-                initial={{ opacity: 0, y: 25 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: idx * 0.1 }}
-              >
-                <Card event={event} />
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Empty State */}
-          {filteredEvents.length === 0 && (
-            <div className="glass-panel-premium rounded-3xl p-16 text-center">
-              <Compass className="w-10 h-10 text-slate-500 mx-auto mb-3" />
-              <p className="text-slate-300 text-sm font-medium">
-                Belum ada jadwal konser untuk genre ini. Cek kembali nanti!
-              </p>
-            </div>
-          )}
-
-          {/* View Catalog Link */}
-          <div className="mt-14 text-center">
-            <Link href="/events" data-cursor="pointer">
-              <Button variant="secondary" size="md">
-                LIHAT SEMUA KONSER ({events.length}) <ArrowRight className="ml-2 w-4 h-4" />
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
+      {/* 4. FEATURED EVENTS HORIZONTAL SHOWCASE (TOP 5) */}
+      <HorizontalConcerts events={events} genresList={genresList} />
 
       {/* 5. HOW IT WORKS */}
       <section id="how-it-works" className="py-28 bg-[#060608] border-b border-white/10 relative overflow-hidden">
