@@ -12,15 +12,16 @@ import { ArrowUp } from "lucide-react";
 function ScrollProgressBar() {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
-    stiffness: 200,
-    damping: 30,
-    restDelta: 0.001,
+    stiffness: 350,
+    damping: 35,
+    mass: 0.1,
+    restDelta: 0.0001,
   });
 
   return (
     <div className="fixed top-0 left-0 right-0 z-[9999] h-[2.5px] pointer-events-none bg-transparent">
       <motion.div
-        className="h-full origin-left bg-gradient-to-r from-[#e5c158] via-[#ff2e63] to-[#e5c158] shadow-[0_0_12px_rgba(229,193,88,0.7)]"
+        className="h-full origin-left bg-gradient-to-r from-[#e5c158] via-[#ff2e63] to-[#e5c158] shadow-[0_0_12px_rgba(229,193,88,0.7)] will-change-transform"
         style={{ scaleX }}
       />
     </div>
@@ -148,11 +149,14 @@ export default function SmoothScrollProvider({ children }) {
   }, []);
 
   const lenisOptions = {
-    lerp: 0.09,
-    duration: 1.2,
+    lerp: 0.085,
+    duration: 1.25,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    orientation: "vertical",
+    gestureOrientation: "vertical",
     smoothWheel: true,
-    wheelMultiplier: 1,
-    touchMultiplier: 1.2,
+    wheelMultiplier: 0.95,
+    touchMultiplier: 1.4,
     infinite: false,
     autoRaf: true,
   };

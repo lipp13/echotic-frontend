@@ -253,11 +253,12 @@ export default function HorizontalConcerts({ events = [], genresList = [] }) {
     offset: ["start start", "end end"],
   });
 
-  // Silky smooth spring interpolation
+  // Ultra-fluid 120fps spring interpolation
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 90,
-    damping: 26,
-    restDelta: 0.001,
+    stiffness: 65,
+    damping: 20,
+    mass: 0.1,
+    restDelta: 0.0001,
   });
 
   // Calculate actual pixel width to translate smoothly
@@ -400,7 +401,7 @@ export default function HorizontalConcerts({ events = [], genresList = [] }) {
             <motion.div
               ref={trackRef}
               style={{ x }}
-              className="flex items-center gap-6 md:gap-8 px-6 md:px-12 w-max"
+              className="flex items-center gap-6 md:gap-8 px-6 md:px-12 w-max will-change-transform"
             >
               {/* TOP 5 CONCERT CARDS */}
               {filteredEvents.map((event, idx) => (

@@ -28,6 +28,8 @@ export const metadata = {
   description: "Discover, book, and experience live concert passes with Apple Music-inspired dark elegance.",
 };
 
+import CustomCursor from "@/components/ui/CustomCursor";
+
 export default function RootLayout({ children }) {
   return (
     <html
@@ -37,6 +39,7 @@ export default function RootLayout({ children }) {
       <body className="min-h-full flex flex-col bg-[#060608] text-[#f8fafc] font-sans selection:bg-[#e5c158] selection:text-[#060608]">
         <SmoothScrollProvider>
           <ToastProvider>
+            <CustomCursor />
             <NoiseFilter />
             <Navbar />
             <div className="flex-grow flex flex-col pt-20 md:pt-24">
