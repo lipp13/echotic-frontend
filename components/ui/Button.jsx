@@ -15,7 +15,7 @@ export default function Button({
   ...props
 }) {
   const baseStyles =
-    "inline-flex items-center justify-center font-semibold tracking-tight transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#e5c158] select-none cursor-pointer rounded-full border text-center";
+    "shimmer-btn inline-flex items-center justify-center font-semibold tracking-tight transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#e5c158] select-none cursor-pointer rounded-full border text-center active:scale-95";
 
   const variants = {
     primary:

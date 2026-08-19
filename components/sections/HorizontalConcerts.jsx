@@ -72,17 +72,20 @@ function HorizontalCard({ event, index }) {
     <motion.div
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      whileHover={{ y: -8 }}
+      whileHover={{ y: -10, scale: 1.02 }}
       transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-      className="group relative flex flex-col w-[320px] sm:w-[380px] md:w-[420px] h-[460px] sm:h-[490px] md:h-[520px] max-h-[64vh] shrink-0 rounded-3xl overflow-hidden glass-panel-premium border border-white/10 hover:border-[#e5c158]/50 shadow-2xl transition-colors duration-500 select-none"
+      className="group relative flex flex-col w-[320px] sm:w-[380px] md:w-[420px] h-[460px] sm:h-[490px] md:h-[520px] max-h-[64vh] shrink-0 rounded-3xl overflow-hidden glass-panel-premium border border-white/10 hover:border-[#e5c158]/60 shadow-2xl transition-all duration-500 select-none"
     >
+      {/* Top Glass Shine Line */}
+      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#e5c158]/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20" />
+
       {/* Background Poster Image with Zoom */}
       <div className="absolute inset-0 overflow-hidden bg-slate-950">
         {image && (
           <motion.img
             src={image}
             alt={title || "Concert Poster"}
-            className="w-full h-full object-cover object-center filter brightness-[0.82] contrast-[1.08] transition-transform duration-700 ease-out group-hover:scale-108"
+            className="w-full h-full object-cover object-center filter brightness-[0.82] contrast-[1.08] transition-transform duration-700 ease-out group-hover:scale-110"
             loading="lazy"
           />
         )}
@@ -95,9 +98,17 @@ function HorizontalCard({ event, index }) {
       <div className="relative z-10 p-5 md:p-6 flex items-start justify-between">
         <div className="flex flex-wrap items-center gap-2">
           {/* Index Pill */}
-          <span className="px-2.5 py-1 rounded-full bg-black/70 backdrop-blur-xl border border-white/15 text-[11px] font-mono font-bold text-[#e5c158]">
+          <span className="px-2.5 py-1 rounded-full bg-black/70 backdrop-blur-xl border border-white/15 text-[11px] font-mono font-bold text-[#e5c158] shadow-md group-hover:border-[#e5c158]/40 transition-colors">
             #{String(index + 1).padStart(2, "0")}
           </span>
+
+          {/* Featured Tag for #1 */}
+          {index === 0 && (
+            <span className="px-2.5 py-1 rounded-full bg-[#e5c158]/20 backdrop-blur-xl border border-[#e5c158]/40 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-[#e5c158] shadow-[0_0_12px_rgba(229,193,88,0.3)] flex items-center gap-1">
+              <Sparkles className="w-3 h-3 animate-spin" style={{ animationDuration: "6s" }} />
+              <span>POPULER</span>
+            </span>
+          )}
 
           {/* Genre Pill */}
           {genre && (
@@ -108,7 +119,7 @@ function HorizontalCard({ event, index }) {
         </div>
 
         {/* Date Badge */}
-        <div className="px-3 py-1 rounded-full bg-[#060608]/80 backdrop-blur-xl border border-white/15 text-xs font-semibold text-slate-200 shadow-lg flex items-center gap-1.5">
+        <div className="px-3 py-1 rounded-full bg-[#060608]/80 backdrop-blur-xl border border-white/15 text-xs font-semibold text-slate-200 shadow-lg flex items-center gap-1.5 group-hover:border-[#e5c158]/40 transition-colors">
           <Calendar className="w-3.5 h-3.5 text-[#e5c158]" />
           <span>{displayDate}</span>
         </div>
@@ -156,7 +167,7 @@ function HorizontalCard({ event, index }) {
 
           <Link
             href={`/events/${id}`}
-            className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-full bg-white/10 hover:bg-[#e5c158] text-white hover:text-black border border-white/20 hover:border-[#e5c158] font-bold text-xs tracking-wider uppercase transition-all duration-300 shadow-md group/btn"
+            className="shimmer-btn inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-full bg-white/10 hover:bg-[#e5c158] text-white hover:text-black border border-white/20 hover:border-[#e5c158] font-bold text-xs tracking-wider uppercase transition-all duration-300 shadow-md group/btn"
           >
             <span>Pesan</span>
             <ArrowRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" />

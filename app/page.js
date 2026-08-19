@@ -102,8 +102,12 @@ export default function Home() {
     <main className="flex-grow bg-[#060608] text-[#f8fafc]">
       {/* 1. HERO SECTION */}
       <section className="relative pt-24 pb-20 md:pt-36 md:pb-28 overflow-hidden hero-ambient-glow border-b border-white/10">
+        {/* Ambient Floating Glow Orbs */}
+        <div className="ambient-orb-1 -top-20 -left-20 opacity-70" />
+        <div className="ambient-orb-2 top-1/3 -right-20 opacity-60" />
+
         {/* Subtle Ambient Vignette Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#060608]/70 via-transparent to-[#060608]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#060608]/70 via-transparent to-[#060608] pointer-events-none" />
 
         <div className="max-w-7xl mx-auto px-6 md:px-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
           {/* Left Column: Refined Headline */}
@@ -113,14 +117,19 @@ export default function Home() {
             transition={{ duration: 0.6 }}
             className="lg:col-span-7 space-y-7 text-left"
           >
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-xs font-semibold text-slate-300">
-              <span className="w-2 h-2 rounded-full bg-[#e5c158] animate-pulse" />
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-xs font-semibold text-slate-300 hover:border-[#e5c158]/40 transition-colors shadow-lg shadow-black/40">
+              <span className="w-2 h-2 rounded-full bg-[#e5c158] animate-pulse shadow-[0_0_8px_#e5c158]" />
               <span>TIKET KONSER RESMI 2026</span>
+              <div className="flex items-end gap-0.5 h-3 ml-1">
+                <span className="w-0.5 h-2.5 bg-[#e5c158] rounded-full animate-pulse" />
+                <span className="w-0.5 h-3.5 bg-[#e5c158] rounded-full animate-pulse delay-75" />
+                <span className="w-0.5 h-1.5 bg-[#e5c158] rounded-full animate-pulse delay-150" />
+              </div>
             </div>
 
             <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight leading-[1.02] text-white">
               Nikmati Musik <br />
-              <span className="text-gradient-gold">
+              <span className="text-gradient-gold drop-shadow-[0_0_35px_rgba(229,193,88,0.25)]">
                 Tanpa Batas.
               </span>
             </h1>
@@ -131,12 +140,13 @@ export default function Home() {
 
             <div className="flex flex-col sm:flex-row gap-4 pt-3">
               <Link href="/events" data-cursor="pointer">
-                <Button variant="accent" size="lg" className="w-full sm:w-auto shadow-lg shadow-[#e5c158]/10">
-                  JELAJAHI KONSER <ArrowRight className="ml-2.5 w-4 h-4" />
+                <Button variant="accent" size="lg" className="w-full sm:w-auto shadow-xl shadow-[#e5c158]/20 group">
+                  <span>JELAJAHI KONSER</span>
+                  <ArrowRight className="ml-2.5 w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </Button>
               </Link>
               <Link href="/about" data-cursor="pointer">
-                <Button variant="secondary" size="lg" className="w-full sm:w-auto">
+                <Button variant="secondary" size="lg" className="w-full sm:w-auto hover:border-[#e5c158]/30">
                   TENTANG ECHOTIC
                 </Button>
               </Link>
@@ -216,13 +226,17 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: idx * 0.15 }}
-                className="glass-panel-premium glass-panel-hover rounded-3xl p-8 md:p-10 flex flex-col justify-between"
+                whileHover={{ y: -6, scale: 1.01 }}
+                className="group glass-panel-premium glass-panel-hover rounded-3xl p-8 md:p-10 flex flex-col justify-between relative overflow-hidden"
               >
+                {/* Ambient Top Glow Line */}
+                <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#e5c158]/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
                 <div>
-                  <span className="text-4xl md:text-5xl font-extrabold text-[#e5c158]/40 block mb-6 font-mono">
+                  <span className="text-4xl md:text-5xl font-extrabold text-[#e5c158]/30 group-hover:text-[#e5c158] block mb-6 font-mono transition-colors duration-300 drop-shadow-[0_0_20px_rgba(229,193,88,0.15)]">
                     {step.num}
                   </span>
-                  <h3 className="text-xl font-bold text-white tracking-tight mb-3">
+                  <h3 className="text-xl font-bold text-white tracking-tight mb-3 group-hover:text-[#e5c158] transition-colors">
                     {step.title}
                   </h3>
                   <p className="text-sm text-slate-300 leading-relaxed font-normal">
@@ -231,7 +245,7 @@ export default function Home() {
                 </div>
 
                 <div className="mt-8 pt-6 border-t border-white/10 flex items-center gap-2 text-xs font-semibold text-slate-400">
-                  <span className="w-2 h-2 rounded-full bg-[#e5c158]" />
+                  <span className="w-2 h-2 rounded-full bg-[#e5c158] group-hover:shadow-[0_0_8px_#e5c158] transition-shadow" />
                   <span>Tiket Resmi EchoTic</span>
                 </div>
               </motion.div>
@@ -242,7 +256,10 @@ export default function Home() {
 
       {/* 6. TESTIMONIALS */}
       <section className="py-28 bg-[#08090d] border-b border-white/10 relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6 md:px-10">
+        {/* Floating Subtle Ambient Orb */}
+        <div className="ambient-orb-2 -bottom-20 -left-20 opacity-50" />
+
+        <div className="max-w-7xl mx-auto px-6 md:px-10 relative z-10">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -267,16 +284,21 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: idx * 0.15 }}
-                className="glass-panel-premium glass-panel-hover rounded-3xl p-8 flex flex-col justify-between relative"
+                whileHover={{ y: -6, scale: 1.01 }}
+                className="group glass-panel-premium glass-panel-hover rounded-3xl p-8 flex flex-col justify-between relative overflow-hidden"
               >
-                <span className="text-5xl font-serif text-[#e5c158]/40 leading-none select-none block mb-4">
+                {/* Quote symbol */}
+                <span className="text-5xl font-serif text-[#e5c158]/30 group-hover:text-[#e5c158]/80 leading-none select-none block mb-4 transition-colors duration-300">
                   “
                 </span>
                 <p className="text-slate-200 text-base font-medium leading-relaxed mb-6">
                   {item.quote}
                 </p>
-                <div className="pt-4 border-t border-white/10 font-semibold text-xs text-slate-300">
-                  — {item.author}, <span className="text-slate-500">{item.location}</span>
+                <div className="pt-4 border-t border-white/10 font-semibold text-xs text-slate-300 flex items-center justify-between">
+                  <span>— {item.author}, <span className="text-slate-500">{item.location}</span></span>
+                  <div className="flex text-[#e5c158] gap-0.5 text-xs">
+                    {"★★★★★"}
+                  </div>
                 </div>
               </motion.div>
             ))}

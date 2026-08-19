@@ -69,14 +69,20 @@ export default function Countdown({ targetDate, title = "PRESALE KONSER BERIKUTN
 
       <div className="grid grid-cols-4 gap-3 md:gap-5 z-10">
         {timeBlocks.map((block, idx) => (
-          <div key={idx} className="flex flex-col items-center">
+          <div key={idx} className="flex flex-col items-center group">
             {/* Number Card */}
-            <div className="w-16 h-20 md:w-22 md:h-26 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center text-2xl md:text-4xl font-extrabold text-white font-mono shadow-inner backdrop-blur-md">
-              {block.value}
+            <div className="w-16 h-20 md:w-22 md:h-26 bg-[#0e1017]/80 group-hover:bg-[#151824] border border-white/10 group-hover:border-[#e5c158]/50 rounded-2xl flex items-center justify-center text-2xl md:text-4xl font-extrabold text-white group-hover:text-[#e5c158] font-mono shadow-xl backdrop-blur-md transition-all duration-300 transform group-hover:-translate-y-1 relative overflow-hidden">
+              <span className="relative z-10">{block.value}</span>
+              {/* Subtle top reflection line */}
+              <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+              {/* Soft glow on last item (seconds) */}
+              {idx === 3 && (
+                <div className="absolute inset-0 bg-[#e5c158]/5 animate-pulse pointer-events-none" />
+              )}
             </div>
             
             {/* Label */}
-            <span className="text-[10px] font-bold text-slate-400 tracking-widest mt-2 uppercase">
+            <span className="text-[10px] font-bold text-slate-400 group-hover:text-slate-200 tracking-widest mt-2 uppercase transition-colors">
               {block.label}
             </span>
           </div>
