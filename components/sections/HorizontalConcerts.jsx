@@ -2,7 +2,7 @@
 
 import React, { useRef, useState, useEffect, useMemo } from "react";
 import Link from "next/link";
-import { motion, useScroll, useTransform, useSpring, useMotionValueEvent } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import {
   ArrowRight,
   ArrowLeft,
@@ -16,7 +16,6 @@ import {
   Flame,
 } from "lucide-react";
 import { formatPrice, formatDate } from "@/lib/utils";
-import { useLenis } from "@/components/ui/SmoothScroll";
 import Button from "@/components/ui/Button";
 
 /**
@@ -49,18 +48,21 @@ function SoundwaveAnimation({ isHovered }) {
 /**
  * Premium Showcase Concert Card for Horizontal Reel
  */
-function HorizontalCard({ event, index, total }) {
+function HorizontalCard({ event, index }) {
   const [isHovered, setIsHovered] = useState(false);
+  if (!event) return null;
+
   const { id, title, subtitle, date, venueId, ticketCategories, image, artist_name, genre } = event;
 
   const lowestPrice =
-    ticketCategories && ticketCategories.length > 0
-      ? Math.min(...ticketCategories.map((c) => c.price))
+    ticketCategories && Array.isArray(ticketCategories) && ticketCategories.length > 0
+      ? Math.min(...ticketCategories.map((c) => c?.price || 0))
       : 0;
 
   const displayArtist = artist_name || subtitle || "Featured Musician";
   const displayVenue = event.venue_name || event.venue || (venueId ? venueId.replace(/_/g, " ") : "Venue Konser");
   const formattedDate = formatDate(date);
+  const displayDate = formattedDate.includes(",") ? formattedDate.split(",")[1]?.trim() : formattedDate;
 
   return (
     <motion.div
@@ -71,12 +73,15 @@ function HorizontalCard({ event, index, total }) {
       className="group relative flex flex-col w-[320px] sm:w-[380px] md:w-[420px] h-[460px] sm:h-[490px] md:h-[520px] max-h-[64vh] shrink-0 rounded-3xl overflow-hidden glass-panel-premium border border-white/10 hover:border-[#e5c158]/50 shadow-2xl transition-colors duration-500 select-none"
     >
       {/* Background Poster Image with Zoom */}
-      <div className="absolute inset-0 overflow-hidden">
-        <motion.img
-          src={image}
-          alt={title}
-          className="w-full h-full object-cover object-center filter brightness-[0.82] contrast-[1.08] transition-transform duration-700 ease-out group-hover:scale-108"
-        />
+      <div className="absolute inset-0 overflow-hidden bg-slate-950">
+        {image && (
+          <motion.img
+            src={image}
+            alt={title || "Concert Poster"}
+            className="w-full h-full object-cover object-center filter brightness-[0.82] contrast-[1.08] transition-transform duration-700 ease-out group-hover:scale-108"
+            loading="lazy"
+          />
+        )}
         {/* Cinematic Vignette Overlays */}
         <div className="absolute inset-0 bg-gradient-to-t from-[#060608] via-[#060608]/75 to-[#060608]/20" />
         <div className="absolute inset-0 bg-radial-at-t from-transparent via-[#060608]/40 to-[#060608]" />
@@ -101,7 +106,7 @@ function HorizontalCard({ event, index, total }) {
         {/* Date Badge */}
         <div className="px-3 py-1 rounded-full bg-[#060608]/80 backdrop-blur-xl border border-white/15 text-xs font-semibold text-slate-200 shadow-lg flex items-center gap-1.5">
           <Calendar className="w-3.5 h-3.5 text-[#e5c158]" />
-          <span>{formattedDate.split(",")[1]?.trim() || formattedDate}</span>
+          <span>{displayDate}</span>
         </div>
       </div>
 
@@ -214,18 +219,18 @@ export default function HorizontalConcerts({ events = [], genresList = [] }) {
   const trackRef = useRef(null);
   const [trackWidth, setTrackWidth] = useState(0);
   const [currentIdx, setCurrentIdx] = useState(1);
-  const lenis = useLenis();
+
+  // Safe events list
+  const safeEvents = Array.isArray(events) ? events : [];
 
   // Filter events based on genre & LIMIT strictly to TOP 5
   const filteredEvents = useMemo(() => {
     const list =
       selectedGenre === "all"
-        ? events
-        : events.filter((e) => e.genre?.toLowerCase() === selectedGenre.toLowerCase());
+        ? safeEvents
+        : safeEvents.filter((e) => e?.genre?.toLowerCase() === selectedGenre.toLowerCase());
     return list.slice(0, 5); // STRICTLY 5 ITEMS ONLY
-  }, [events, selectedGenre]);
-
-  const totalCards = filteredEvents.length + 1; // 5 cards + 1 Explore All card
+  }, [safeEvents, selectedGenre]);
 
   // Framer Motion Scroll Progress for the pinned section
   const { scrollYProgress } = useScroll({
@@ -243,10 +248,9 @@ export default function HorizontalConcerts({ events = [], genresList = [] }) {
   // Calculate actual pixel width to translate smoothly
   useEffect(() => {
     const updateDimensions = () => {
-      if (trackRef.current) {
+      if (trackRef.current && typeof window !== "undefined") {
         const scrollW = trackRef.current.scrollWidth;
         const windowW = window.innerWidth;
-        // Total distance to scroll so last card is fully visible with comfortable padding
         const distance = Math.max(0, scrollW - windowW + 80);
         setTrackWidth(distance);
       }
@@ -261,35 +265,37 @@ export default function HorizontalConcerts({ events = [], genresList = [] }) {
     };
   }, [filteredEvents]);
 
-  // Transform scroll progress to X translation
-  const x = useTransform(smoothProgress, [0, 1], [0, -trackWidth]);
-
-  // Track active card index for HUD indicator
-  useMotionValueEvent(smoothProgress, "change", (latest) => {
-    if (filteredEvents.length === 0) return;
-    const step = 1 / Math.max(1, filteredEvents.length);
-    const idx = Math.min(filteredEvents.length, Math.floor(latest / step) + 1);
-    setCurrentIdx(idx || 1);
+  // Safe function transform for x translation that never throws with dynamic distance
+  const x = useTransform(smoothProgress, (val) => {
+    const distance = trackWidth > 0 ? trackWidth : (filteredEvents.length * 360);
+    return `-${val * distance}px`;
   });
+
+  // Track active index
+  useEffect(() => {
+    const unsubscribe = smoothProgress.on("change", (latest) => {
+      if (!filteredEvents || filteredEvents.length === 0) return;
+      const step = 1 / Math.max(1, filteredEvents.length);
+      const idx = Math.min(filteredEvents.length, Math.floor(latest / step) + 1);
+      setCurrentIdx(idx || 1);
+    });
+
+    return () => unsubscribe();
+  }, [smoothProgress, filteredEvents]);
 
   // Manual scroll helper buttons
   const handleScrollToCard = (direction) => {
-    if (!containerRef.current) return;
+    if (!containerRef.current || typeof window === "undefined") return;
     const rect = containerRef.current.getBoundingClientRect();
     const currentScrollY = window.scrollY;
     const containerTop = currentScrollY + rect.top;
     const totalScrollableHeight = rect.height - window.innerHeight;
 
-    let targetRatio = direction === "next" ? (currentIdx / filteredEvents.length) : ((currentIdx - 2) / filteredEvents.length);
+    let targetRatio = direction === "next" ? (currentIdx / Math.max(1, filteredEvents.length)) : ((currentIdx - 2) / Math.max(1, filteredEvents.length));
     targetRatio = Math.max(0, Math.min(1, targetRatio));
 
     const targetY = containerTop + targetRatio * totalScrollableHeight;
-
-    if (lenis) {
-      lenis.scrollTo(targetY, { duration: 1.2 });
-    } else {
-      window.scrollTo({ top: targetY, behavior: "smooth" });
-    }
+    window.scrollTo({ top: targetY, behavior: "smooth" });
   };
 
   return (
@@ -298,7 +304,6 @@ export default function HorizontalConcerts({ events = [], genresList = [] }) {
       id="featured-concerts"
       className="relative bg-[#060608] border-b border-white/10"
       style={{
-        // Height proportional to items for natural vertical scroll pace
         height: `${Math.max(200, (filteredEvents.length + 1) * 55)}vh`,
       }}
     >
@@ -332,22 +337,24 @@ export default function HorizontalConcerts({ events = [], genresList = [] }) {
             {/* Right Controls: Filters & Manual Nav */}
             <div className="flex flex-wrap items-center gap-3">
               {/* Genre Filter Pills */}
-              <div className="flex flex-wrap gap-1.5 p-1 bg-white/5 border border-white/10 rounded-full backdrop-blur-md">
-                {genresList.map((g) => (
-                  <button
-                    key={g.id}
-                    onClick={() => setSelectedGenre(g.id)}
-                    className={`px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all cursor-pointer ${
-                      selectedGenre.toLowerCase() === g.id.toLowerCase()
-                        ? "bg-[#e5c158] text-black font-bold shadow-md shadow-[#e5c158]/20"
-                        : "text-slate-300 hover:text-white hover:bg-white/10"
-                    }`}
-                    data-cursor="pointer"
-                  >
-                    {g.name}
-                  </button>
-                ))}
-              </div>
+              {Array.isArray(genresList) && genresList.length > 0 && (
+                <div className="flex flex-wrap gap-1.5 p-1 bg-white/5 border border-white/10 rounded-full backdrop-blur-md">
+                  {genresList.map((g) => (
+                    <button
+                      key={g.id}
+                      onClick={() => setSelectedGenre(g.id)}
+                      className={`px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all cursor-pointer ${
+                        selectedGenre.toLowerCase() === g.id.toLowerCase()
+                          ? "bg-[#e5c158] text-black font-bold shadow-md shadow-[#e5c158]/20"
+                          : "text-slate-300 hover:text-white hover:bg-white/10"
+                      }`}
+                      data-cursor="pointer"
+                    >
+                      {g.name}
+                    </button>
+                  ))}
+                </div>
+              )}
 
               {/* Prev / Next Buttons */}
               <div className="hidden sm:flex items-center gap-2">
@@ -378,20 +385,19 @@ export default function HorizontalConcerts({ events = [], genresList = [] }) {
             <motion.div
               ref={trackRef}
               style={{ x }}
-              className="flex items-center gap-6 md:gap-8 px-6 md:px-12 w-max cursor-grab active:cursor-grabbing"
+              className="flex items-center gap-6 md:gap-8 px-6 md:px-12 w-max"
             >
               {/* TOP 5 CONCERT CARDS */}
               {filteredEvents.map((event, idx) => (
                 <HorizontalCard
-                  key={event.id}
+                  key={event.id || idx}
                   event={event}
                   index={idx}
-                  total={filteredEvents.length}
                 />
               ))}
 
               {/* 6TH CARD: EXPLORE MORE PORTAL */}
-              <ExploreMoreCard totalEvents={events.length} />
+              <ExploreMoreCard totalEvents={safeEvents.length} />
             </motion.div>
           ) : (
             <div className="max-w-md mx-auto p-12 glass-panel-premium rounded-3xl text-center">
@@ -439,7 +445,7 @@ export default function HorizontalConcerts({ events = [], genresList = [] }) {
               data-cursor="pointer"
               className="inline-flex items-center gap-1.5 text-slate-300 hover:text-[#e5c158] font-semibold transition-colors group"
             >
-              <span>Buka Halaman Semua Konser ({events.length})</span>
+              <span>Buka Halaman Semua Konser ({safeEvents.length})</span>
               <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1 text-[#e5c158]" />
             </Link>
           </div>
