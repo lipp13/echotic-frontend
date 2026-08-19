@@ -13,12 +13,21 @@ import {
   ChevronRight,
   Compass,
 } from "lucide-react";
+import dynamic from "next/dynamic";
 import { apiGetEvents, apiGetTestimonials } from "@/lib/api";
 import Button from "@/components/ui/Button";
 import Countdown from "@/components/ui/Countdown";
 import Marquee from "@/components/ui/Marquee";
-import Hero3D from "@/components/sections/Hero3D";
 import HorizontalConcerts from "@/components/sections/HorizontalConcerts";
+
+const Hero3D = dynamic(() => import("@/components/sections/Hero3D"), {
+  ssr: false,
+  loading: () => (
+    <div className="relative w-full h-[350px] md:h-[450px] flex items-center justify-center bg-[#0d0e14]/70 border border-white/10 rounded-3xl overflow-hidden shadow-2xl backdrop-blur-xl">
+      <div className="w-10 h-10 border-2 border-[#e5c158] border-t-transparent rounded-full animate-spin" />
+    </div>
+  ),
+});
 
 export default function Home() {
   const [events, setEvents] = useState([]);

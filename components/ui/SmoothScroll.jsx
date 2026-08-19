@@ -141,6 +141,12 @@ function NavigationScrollHandler() {
  * Global Smooth Scroll Provider wrapping ReactLenis
  */
 export default function SmoothScrollProvider({ children }) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const lenisOptions = {
     lerp: 0.09,
     duration: 1.2,
@@ -150,6 +156,10 @@ export default function SmoothScrollProvider({ children }) {
     infinite: false,
     autoRaf: true,
   };
+
+  if (!mounted) {
+    return <>{children}</>;
+  }
 
   return (
     <ReactLenis root options={lenisOptions}>

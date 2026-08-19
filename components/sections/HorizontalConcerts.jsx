@@ -25,19 +25,12 @@ function SoundwaveAnimation({ isHovered }) {
   return (
     <div className="flex items-end gap-[3px] h-4">
       {[0.4, 0.9, 0.6, 1, 0.7, 0.5, 0.85, 0.3].map((heightRatio, i) => (
-        <motion.span
+        <span
           key={i}
-          className="w-[2.5px] rounded-full bg-[#e5c158]"
-          animate={{
-            height: isHovered
-              ? [`${Math.max(4, heightRatio * 16)}px`, `${Math.max(4, (1 - heightRatio) * 16)}px`, `${Math.max(4, heightRatio * 16)}px`]
-              : "3px",
-          }}
-          transition={{
-            duration: 0.6 + (i % 3) * 0.2,
-            repeat: isHovered ? Infinity : 0,
-            ease: "easeInOut",
-            delay: i * 0.08,
+          className="w-[2.5px] rounded-full bg-[#e5c158] transition-all duration-300"
+          style={{
+            height: isHovered ? `${Math.max(4, heightRatio * 16)}px` : "3.5px",
+            opacity: isHovered ? 1 : 0.45,
           }}
         />
       ))}
