@@ -15,7 +15,18 @@ export default function Card({ event }) {
     : 0;
 
   const displayArtist = artist_name || subtitle || "Featured Act";
-  const displayVenue = event.venue_name || event.venue || (venueId ? venueId.replace(/_/g, " ") : "Venue Konser");
+  const displayVenue =
+    typeof event.venue_name === "string" && event.venue_name
+      ? event.venue_name
+      : typeof event.venue === "string" && event.venue
+      ? event.venue
+      : typeof event.venue === "object" && event.venue?.name
+      ? event.venue.name
+      : typeof venueId === "string" && venueId
+      ? venueId.replace(/_/g, " ")
+      : typeof event.venue_id === "string" && event.venue_id
+      ? event.venue_id.replace(/_/g, " ")
+      : "Venue Konser";
   const formattedDate = formatDate(date);
 
   return (
@@ -41,7 +52,7 @@ export default function Card({ event }) {
         {/* Floating Glass Date Badge */}
         <div className="absolute top-3.5 left-3.5 flex gap-2">
           <span className="bg-[#060608]/75 backdrop-blur-xl border border-white/10 px-3 py-1 rounded-full text-xs font-semibold text-slate-200 tracking-tight shadow-md">
-            {formatDate(date).split(",")[1]?.trim() || date}
+            {formattedDate.includes(",") ? formattedDate.split(",")[1]?.trim() : formattedDate}
           </span>
         </div>
       </div>
@@ -64,12 +75,12 @@ export default function Card({ event }) {
         <div className="flex items-center gap-3 text-xs text-slate-400 mb-6 font-normal">
           <div className="flex items-center gap-1.5 truncate">
             <MapPin className="w-3.5 h-3.5 text-[#e5c158]/80 flex-shrink-0" />
-            <span className="truncate capitalize font-medium">{displayVenue.toLowerCase()}</span>
+            <span className="truncate capitalize font-medium">{String(displayVenue)}</span>
           </div>
           <span className="text-slate-600">•</span>
           <div className="flex items-center gap-1.5 flex-shrink-0">
             <Calendar className="w-3.5 h-3.5 text-slate-400" />
-            <span>{formattedDate.split(",")[1]?.trim() || formattedDate}</span>
+            <span>{formattedDate.includes(",") ? formattedDate.split(",")[1]?.trim() : formattedDate}</span>
           </div>
         </div>
 

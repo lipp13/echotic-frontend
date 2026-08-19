@@ -53,7 +53,18 @@ function HorizontalCard({ event, index }) {
       : 0;
 
   const displayArtist = artist_name || subtitle || "Featured Musician";
-  const displayVenue = event.venue_name || event.venue || (venueId ? venueId.replace(/_/g, " ") : "Venue Konser");
+  const displayVenue =
+    typeof event.venue_name === "string" && event.venue_name
+      ? event.venue_name
+      : typeof event.venue === "string" && event.venue
+      ? event.venue
+      : typeof event.venue === "object" && event.venue?.name
+      ? event.venue.name
+      : typeof venueId === "string" && venueId
+      ? venueId.replace(/_/g, " ")
+      : typeof event.venue_id === "string" && event.venue_id
+      ? event.venue_id.replace(/_/g, " ")
+      : "Venue Konser";
   const formattedDate = formatDate(date);
   const displayDate = formattedDate.includes(",") ? formattedDate.split(",")[1]?.trim() : formattedDate;
 
@@ -91,7 +102,7 @@ function HorizontalCard({ event, index }) {
           {/* Genre Pill */}
           {genre && (
             <span className="px-2.5 py-1 rounded-full bg-white/10 backdrop-blur-xl border border-white/10 text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-slate-200">
-              {genre}
+              {String(genre)}
             </span>
           )}
         </div>
@@ -129,7 +140,7 @@ function HorizontalCard({ event, index }) {
         {/* Venue Info */}
         <div className="flex items-center gap-1.5 text-xs text-slate-300 mb-4 sm:mb-5">
           <MapPin className="w-3.5 h-3.5 text-[#e5c158] shrink-0" />
-          <span className="truncate font-medium capitalize">{displayVenue.toLowerCase()}</span>
+          <span className="truncate font-medium capitalize">{String(displayVenue)}</span>
         </div>
 
         {/* Footer: Price & CTA Action */}
@@ -221,7 +232,7 @@ export default function HorizontalConcerts({ events = [], genresList = [] }) {
     const list =
       selectedGenre === "all"
         ? safeEvents
-        : safeEvents.filter((e) => e?.genre?.toLowerCase() === selectedGenre.toLowerCase());
+        : safeEvents.filter((e) => String(e?.genre || "").toLowerCase() === String(selectedGenre || "").toLowerCase());
     return list.slice(0, 5); // STRICTLY 5 ITEMS ONLY
   }, [safeEvents, selectedGenre]);
 
@@ -337,7 +348,7 @@ export default function HorizontalConcerts({ events = [], genresList = [] }) {
                       key={g.id}
                       onClick={() => setSelectedGenre(g.id)}
                       className={`px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all cursor-pointer ${
-                        selectedGenre.toLowerCase() === g.id.toLowerCase()
+                        String(selectedGenre || "").toLowerCase() === String(g?.id || "").toLowerCase()
                           ? "bg-[#e5c158] text-black font-bold shadow-md shadow-[#e5c158]/20"
                           : "text-slate-300 hover:text-white hover:bg-white/10"
                       }`}
